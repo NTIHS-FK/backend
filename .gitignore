@@ -6,4 +6,5 @@
 *.ipr
 *.iws
 /resources/twitter4j.properties
+/resources/hikari.properties
 /target

@@ -1,5 +1,6 @@
 package com.ntihs_fk
 
+import com.ntihs_fk.router.post
 import io.ktor.application.*
 import io.ktor.response.*
 import io.ktor.request.*
@@ -42,5 +43,9 @@ fun Application.module(testing: Boolean = false) {
             twitter.updateStatus(statusUpdate)
             call.respondText("HELLO WORLD!", contentType = ContentType.Text.Plain)
         }
+    }
+
+    routing {
+        post()
     }
 }
