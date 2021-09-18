@@ -21,7 +21,7 @@ fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 @Suppress("unused") // Referenced in application.conf
 @kotlin.jvm.JvmOverloads
 fun Application.module(testing: Boolean = false) {
-    initDatabase()
+    if (!testing) initDatabase(log)
     install(Sessions) {
     }
 
@@ -40,14 +40,14 @@ fun Application.module(testing: Boolean = false) {
 
     routing {
         get("/") {
-            val twitter = TwitterFactory.getSingleton()
-            val statusUpdate = StatusUpdate("a")
-            twitter.updateStatus(statusUpdate)
+//            val twitter = TwitterFactory.getSingleton()
+//            val statusUpdate = StatusUpdate("a")
+//            twitter.updateStatus(statusUpdate)
             call.respondText("HELLO WORLD!", contentType = ContentType.Text.Plain)
         }
     }
 
     routing {
-        post()
+        post(testing)
     }
 }

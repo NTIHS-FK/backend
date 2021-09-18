@@ -1,10 +1,11 @@
 /.gradle
 /.idea
 /out
+/target
 /build
 *.iml
 *.ipr
 *.iws
+*.jpg
 /resources/twitter4j.properties
 /resources/hikari.properties
-/target
