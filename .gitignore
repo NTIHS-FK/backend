@@ -1,0 +1,9 @@
+/.gradle
+/.idea
+/out
+/build
+*.iml
+*.ipr
+*.iws
+/resources/twitter4j.properties
+/target
