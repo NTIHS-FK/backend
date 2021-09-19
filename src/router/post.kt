@@ -59,13 +59,13 @@ fun Route.post(testing: Boolean) {
 
             // log OAO
             call.application.log.info(
-                "${call.request.host()} " +
-                        "Say:\n\u001B[34m[Text]\u001b[0m \n\u001B[43m\u001B[32m$text\u001B[0m\n" +
+                "[${call.request.host()}] " +
+                        "Say:\n\u001B[34m[Text]\u001b[0m \n\u001B[35m$text\u001B[0m\n" +
                         "\u001B[34m[Image]\u001B[0m ${fileName ?: "No image"} " +
                         "\u001B[34m[Text Image]\u001B[0m $drawImageFileName"
             )
 
-            // respond
+            // respond api
             call.respond(apiFrameworkFun(null))
         }
 
