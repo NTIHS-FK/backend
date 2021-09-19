@@ -3,6 +3,8 @@ package com.ntihs_fk.database
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
 import org.jetbrains.exposed.sql.Database
+import org.jetbrains.exposed.sql.SchemaUtils
+import org.jetbrains.exposed.sql.transactions.transaction
 import org.slf4j.Logger
 
 fun initDatabase(log: Logger) {
@@ -11,4 +13,8 @@ fun initDatabase(log: Logger) {
     config.schema = "public"
     val dataSource = HikariDataSource(config)
     Database.connect(dataSource)
+    // init table
+    transaction {
+        SchemaUtils.create(ArticleTable)
+    }
 }

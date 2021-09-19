@@ -1,6 +1,6 @@
 package com.ntihs_fk.router
 
-import com.ntihs_fk.drawImage.defaultDraw
+import com.ntihs_fk.database.ArticleTable
 import com.ntihs_fk.drawImage.draw
 import com.ntihs_fk.functions.apiFrameworkFun
 import com.ntihs_fk.functions.randomString
@@ -11,6 +11,8 @@ import io.ktor.request.*
 import io.ktor.response.*
 import io.ktor.routing.*
 import org.apache.tika.Tika
+import org.jetbrains.exposed.sql.insert
+import org.jetbrains.exposed.sql.transactions.transaction
 import java.io.File
 import java.util.*
 
@@ -21,7 +23,7 @@ fun Route.post(testing: Boolean) {
         val article = call.receiveMultipart()
         var fileName: String? = null
         var text: String? = null
-        var contentImageType = "default"
+        var textImageType = "default"
 
         article.forEachPart { part ->
             when(part) {
@@ -45,7 +47,7 @@ fun Route.post(testing: Boolean) {
                 is PartData.FormItem -> {
                     when(part.name) {
                         "text" -> text = part.value
-                        "contentImageType" -> contentImageType = part.value
+                        "textImageType" -> textImageType = part.value
                     }
                 }
                 else -> throw BadRequestException("Multipart error")
@@ -54,9 +56,16 @@ fun Route.post(testing: Boolean) {
         if (text == null) throw BadRequestException("Missing text")
         else {
             // draw image
-            val drawImageFileName = draw(contentImageType)(text!!)
+            val drawImageFileName = draw(textImageType)(text!!)
             // database
-
+            if (!testing)
+                transaction {
+                    ArticleTable.insert {
+                        it[this.text] = text!!
+                        it[this.image] = fileName.toString()
+                        it[this.textImageType] = drawImageFileName
+                    }
+                }
             // log OAO
             call.application.log.info(
                 "[${call.request.host()}] " +

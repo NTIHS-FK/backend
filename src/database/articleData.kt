@@ -6,9 +6,9 @@ import org.joda.time.DateTime
 
 object ArticleTable : Table() {
     val id = integer("ArticleId").autoIncrement().primaryKey()
-    val data = date("time").clientDefault { DateTime.now() }
+    val time = datetime("time").clientDefault { DateTime.now() }
     val text = text("Text")
     val image = text("Image")
-    val contentImageType = text("ContentImageType")
+    val textImageType = text("TextImageType")
     val vote = bool("Vote").clientDefault { false }
 }

@@ -39,7 +39,7 @@ fun defaultDraw(text: String): String {
     drawNowTime(g2d, height, width, font)
     // 寫入檔案
     g2d.dispose()
-    ImageIO.write(image, "png", File("./textImage/${fileName}.png"))
+    ImageIO.write(image, "jpeg", File("./textImage/${fileName}.jpg"))
 
     return fileName
 }
