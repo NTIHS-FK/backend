@@ -1,6 +1,7 @@
 package com.ntihs_fk
 
 import com.ntihs_fk.database.initDatabase
+import com.ntihs_fk.functions.apiFrameworkFun
 import com.ntihs_fk.router.post
 import io.ktor.application.*
 import io.ktor.response.*
@@ -25,6 +26,12 @@ fun Application.module(testing: Boolean = false) {
     install(Sessions) {
     }
 
+    install(StatusPages) {
+        exception<BadRequestException> {
+            call.respond(apiFrameworkFun(null, true, this.context.toString()))
+        }
+    }
+
     install(CallLogging) {
         level = Level.INFO
         filter { call -> call.request.path().startsWith("/") }
@@ -40,9 +47,6 @@ fun Application.module(testing: Boolean = false) {
 
     routing {
         get("/") {
-//            val twitter = TwitterFactory.getSingleton()
-//            val statusUpdate = StatusUpdate("a")
-//            twitter.updateStatus(statusUpdate)
             call.respondText("HELLO WORLD!", contentType = ContentType.Text.Plain)
         }
     }

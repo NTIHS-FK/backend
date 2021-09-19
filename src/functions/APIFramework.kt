@@ -1,7 +1,7 @@
 package com.ntihs_fk.functions
 
-data class APIData <T>(val error: Boolean = false, val message: String = "ok", val data: T?)
+data class APIData <T>(val error: Boolean, val message: String, val data: T?)
 
-fun <T> apiFrameworkFun(data: T?): APIData<T> {
-    return APIData(data = data)
+fun <T> apiFrameworkFun(data: T?, error: Boolean = false, message: String = "ok"): APIData<T> {
+    return APIData(error, message, data)
 }
