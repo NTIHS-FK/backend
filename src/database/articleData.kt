@@ -6,5 +6,5 @@ object ArticleTable : Table() {
     val id = integer("ArticleId").autoIncrement().primaryKey()
     val text = integer("Text")
     val image = integer("Image")
-    val contentImage = integer("ContentImage")
+    val contentImageType = integer("ContentImageType")
 }

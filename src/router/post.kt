@@ -1,6 +1,7 @@
 package com.ntihs_fk.router
 
 import com.ntihs_fk.functions.apiFrameworkFun
+import com.ntihs_fk.functions.randomString
 import io.ktor.application.*
 import io.ktor.features.*
 import io.ktor.http.content.*
@@ -22,22 +23,23 @@ fun Route.post(testing: Boolean) {
 
         article.forEachPart { part ->
             when(part) {
+                // upload image file
                 is PartData.FileItem -> {
                     if (fileName != null) throw BadRequestException("Multipart error")
                     val fileBytes = part.streamProvider().readBytes()
                     val fileType = Tika().detect(fileBytes)
 
-                    fileName = Date().time.toString() + part.originalFileName as String
+                    fileName = Date().time.toString() + randomString() + part.originalFileName as String
 
                     call.application.log.info(fileType)
 
                     if (fileType.startsWith("image")) {
                         if (!testing)
                             File("./img/$fileName").writeBytes(fileBytes)
-                        call.respond(apiFrameworkFun(null))
                     }
                     else throw BadRequestException("This file not image")
                 }
+                // 貼文內容
                 is PartData.FormItem -> {
                     when(part.name) {
                         "text" -> text = part.value
@@ -47,5 +49,20 @@ fun Route.post(testing: Boolean) {
                 else -> throw BadRequestException("Multipart error")
             }
         }
+        if (text == null) throw BadRequestException("Missing text")
+
+        // log OAO
+        call.application.log.info(
+            "${call.request.host()} " +
+                    "say: \u001B[34m[Text]\u001b[0m $text " +
+                    "\u001B[34m[Image]\u001B[0m $fileName"
+        )
+        call.respond(apiFrameworkFun(null))
+
+        // draw image
+
+        // database
+
+        // post
     }
 }

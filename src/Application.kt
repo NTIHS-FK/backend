@@ -28,7 +28,7 @@ fun Application.module(testing: Boolean = false) {
 
     install(StatusPages) {
         exception<BadRequestException> {
-            call.respond(apiFrameworkFun(null, true, this.context.toString()))
+            call.respond(apiFrameworkFun(null, true, it.message))
         }
     }
 
