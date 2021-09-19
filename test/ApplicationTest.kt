@@ -47,10 +47,26 @@ class ApplicationTest {
 
     @Test
     fun testDraw() {
-        defaultDraw("想問大家有沒有遇見不斷勤說別人離職，但自己卻在公司待了很久的人？\n" +
-                "\n" +
-                "我明白這有可能是因為忌才而說的話，但有些能力平平，甚至是職務上完全威脅不到他的人也被他勸說，老實說我真的不明白。\n" +
-                "\n" +
-                "如果他是認為公司待遇差，那他應該自己先辭職吧？自己不辭還要三番四次纏上不同部門的人，什麼心態？")
+        defaultDraw("\\Young 教我/\n" +
+                "台南高工網頁設計社電神Young" +
+                "幫網頁社寫了一個官網" +
+
+                "很會Python的專家" +
+
+                "很會社交的社交大師" +
+
+                "Facebook: Yang Wang" +
+
+                "Twitter: Young___TW" +
+
+                "Instagram: _young_wang" +
+
+                "GitHub: Young-TW" +
+
+                "Blog: Young Blog" +
+
+                "Contact: young20050727@gmail.com" +
+
+                "'信不信我用OSU電爆你'--Young 2021.08.23")
     }
 }
