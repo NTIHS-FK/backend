@@ -13,23 +13,31 @@ import java.util.*
 
 fun Route.post(testing: Boolean) {
     post("/api/post") {
+        if (call.request.contentType().contentType != "multipart")
+            throw BadRequestException("Error request")
         val article = call.receiveMultipart()
-        val part = article.readPart() ?: throw BadRequestException("Fail")
+        var fileName: String?
 
-        if (part is PartData.FileItem) {
-            val fileName: String = Date().time.toString() + part.originalFileName as String
-            val fileBytes = part.streamProvider().readBytes()
-            val fileType = Tika().detect(fileBytes)
-            call.application.log.info(fileType)
+        article.forEachPart { part ->
+            when(part) {
+                is PartData.FileItem -> {
+                    fileName = Date().time.toString() + part.originalFileName as String
+                    val fileBytes = part.streamProvider().readBytes()
+                    val fileType = Tika().detect(fileBytes)
+                    call.application.log.info(fileType)
 
-            if (fileType.startsWith("image")) {
-                if (!testing)
-                    File("./img/$fileName").writeBytes(fileBytes)
+                    if (fileType.startsWith("image")) {
+                        if (!testing)
+                            File("./img/$fileName").writeBytes(fileBytes)
+                        call.respondText("ok")
+                    }
+                    else throw BadRequestException("This file not image")
+                }
+                is PartData.FormItem -> {
+                    part.name
+                }
+                else -> throw BadRequestException("Multipart error")
             }
-            else throw BadRequestException("Fail")
-        }
-        call.respondText("ok", status = HttpStatusCode.OK).apply {
-            call.application.log.info("aasd")
         }
     }
 }
