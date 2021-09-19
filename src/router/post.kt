@@ -1,5 +1,6 @@
 package com.ntihs_fk.router
 
+import com.ntihs_fk.data.Article
 import com.ntihs_fk.database.ArticleTable
 import com.ntihs_fk.drawImage.draw
 import com.ntihs_fk.functions.apiFrameworkFun
@@ -12,6 +13,7 @@ import io.ktor.response.*
 import io.ktor.routing.*
 import org.apache.tika.Tika
 import org.jetbrains.exposed.sql.insert
+import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.io.File
 import java.util.*
@@ -77,6 +79,23 @@ fun Route.post(testing: Boolean) {
             // respond api
             call.respond(apiFrameworkFun(null))
         }
+    }
 
+    get("/api/posts") {
+        val rePots = mutableListOf<Article>()
+        transaction {
+            val data = ArticleTable.selectAll()
+
+            for(i in data) {
+                rePots.add(Article(
+                    i[ArticleTable.id],
+                    i[ArticleTable.time].millis,
+                    i[ArticleTable.text],
+                    i[ArticleTable.image],
+                    i[ArticleTable.textImageType]
+                ))
+            }
+        }
+        call.respond(apiFrameworkFun(rePots))
     }
 }

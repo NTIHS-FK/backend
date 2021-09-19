@@ -11,6 +11,6 @@ fun drawNowTime(graphics: Graphics2D, height: Int, width: Int, font: Font) {
     val now = Date()
     val strDate = sdfDate.format(now)
 
-    graphics.font = font.deriveFont(14f)
-    graphics.drawString(strDate, width - 7 * 20, height - 20)
+    graphics.font = font.deriveFont(30f)
+    graphics.drawString(strDate, width - 15 * 20, height - 20)
 }

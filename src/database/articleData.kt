@@ -1,7 +1,6 @@
 package com.ntihs_fk.database
 
 import org.jetbrains.exposed.sql.Table
-import java.util.*
 import org.joda.time.DateTime
 
 object ArticleTable : Table() {

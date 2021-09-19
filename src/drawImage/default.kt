@@ -11,12 +11,12 @@ import java.util.*
 import javax.imageio.ImageIO
 
 fun defaultDraw(text: String): String {
-    val width = 364
-    val top = 40
-    val left = 20
-    val fontSize = 20f
+    val width = 960
+    val top = 200
+    val left = 100
+    val fontSize = 64f
     val linesData = lines(text, width, left, fontSize.toInt())
-    val height = top + 30 * linesData.size + 50
+    val height = top + fontSize.toInt() * linesData.size + 400
     val image = BufferedImage(width, height, BufferedImage.TYPE_INT_RGB)
     val g2d = image.createGraphics()
     val fileName = Date().time.toString() + randomString()
