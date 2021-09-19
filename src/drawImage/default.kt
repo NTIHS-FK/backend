@@ -37,10 +37,9 @@ fun defaultDraw(text: String): String {
     // 繪製內容
     drawString(g2d, top, left, linesData, font, fontSize.toInt())
     drawNowTime(g2d, height, width, font)
-
-    g2d.dispose()
     // 寫入檔案
-    ImageIO.write(image, "png", File("./${fileName}.png"))
+    g2d.dispose()
+    ImageIO.write(image, "png", File("./textImage/${fileName}.png"))
 
     return fileName
 }

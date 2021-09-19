@@ -2,6 +2,7 @@ package com.ntihs_fk
 
 import com.ntihs_fk.database.initDatabase
 import com.ntihs_fk.functions.apiFrameworkFun
+import com.ntihs_fk.functions.init
 import com.ntihs_fk.router.post
 import io.ktor.application.*
 import io.ktor.response.*
@@ -22,7 +23,10 @@ fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 @Suppress("unused") // Referenced in application.conf
 @kotlin.jvm.JvmOverloads
 fun Application.module(testing: Boolean = false) {
-    if (!testing) initDatabase(log)
+    if (!testing) {
+        initDatabase(log)
+        init(log)
+    }
     install(Sessions) {
     }
 
