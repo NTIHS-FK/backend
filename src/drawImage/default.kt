@@ -23,6 +23,7 @@ fun defaultDraw(text: String): String {
     val ge = GraphicsEnvironment.getLocalGraphicsEnvironment()
     val font = Font.createFont(
         Font.PLAIN,
+        // 該死的字體
         File("./sarasa-mono-sc-bolditalic.ttf")
     ).deriveFont(fontSize)
     // 消除字體鋸齒
@@ -36,6 +37,7 @@ fun defaultDraw(text: String): String {
     g2d.clearRect(0, 0, width, height)
     drawString(g2d, top, left, linesData)
     g2d.dispose()
+    // 寫入檔案
     ImageIO.write(image, "png", File("./${fileName}.png"))
 
     return fileName
