@@ -16,7 +16,7 @@ fun defaultDraw(text: String): String {
     val left = 100
     val fontSize = 64f
     val linesData = lines(text, width, left, fontSize.toInt())
-    val height = top + fontSize.toInt() * linesData.size + 400
+    val height = top + (fontSize.toInt() + 10) * linesData.size + 100
     val image = BufferedImage(width, height, BufferedImage.TYPE_INT_RGB)
     val g2d = image.createGraphics()
     val fileName = Date().time.toString() + randomString()
