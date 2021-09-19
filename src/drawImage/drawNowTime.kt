@@ -13,5 +13,5 @@ fun drawNowTime(graphics: Graphics2D, height: Int, width: Int, font: Font) {
     val sdfDate = SimpleDateFormat("yyyy-MM-dd HH:mm:ss") //dd/MM/yyyy
     val now = Date()
     val strDate = sdfDate.format(now)
-    graphics.drawString(strDate, width - 7 * 20, height - 30)
+    graphics.drawString(strDate, width - 7 * 20, height - 20)
 }
