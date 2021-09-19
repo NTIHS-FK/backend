@@ -60,8 +60,9 @@ fun Route.post(testing: Boolean) {
             // log OAO
             call.application.log.info(
                 "${call.request.host()} " +
-                        "say: \u001B[34m[Text]\u001b[0m $text " +
-                        "\u001B[34m[Image]\u001B[0m $fileName"
+                        "Say:\n\u001B[34m[Text]\u001b[0m \n\u001B[43m\u001B[32m$text\u001B[0m\n" +
+                        "\u001B[34m[Image]\u001B[0m ${fileName ?: "No image"} " +
+                        "\u001B[34m[Text Image]\u001B[0m $drawImageFileName"
             )
 
             // respond
