@@ -43,7 +43,7 @@ class ApplicationTest {
                 )
                 )
             }.apply {
-                assertEquals("ok", response.content)
+                assertEquals("{\"error\":false,\"message\":\"ok\"}", response.content)
             }
         }
     }
