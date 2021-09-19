@@ -1,5 +1,7 @@
 package com.ntihs_fk.router
 
+import com.ntihs_fk.drawImage.defaultDraw
+import com.ntihs_fk.drawImage.draw
 import com.ntihs_fk.functions.apiFrameworkFun
 import com.ntihs_fk.functions.randomString
 import io.ktor.application.*
@@ -19,7 +21,7 @@ fun Route.post(testing: Boolean) {
         val article = call.receiveMultipart()
         var fileName: String? = null
         var text: String? = null
-        var contentImageType: String? = "default"
+        var contentImageType = "default"
 
         article.forEachPart { part ->
             when(part) {
@@ -50,19 +52,21 @@ fun Route.post(testing: Boolean) {
             }
         }
         if (text == null) throw BadRequestException("Missing text")
+        else {
+            // draw image
+            val drawImageFileName = draw(contentImageType)(text!!)
+            // database
 
-        // log OAO
-        call.application.log.info(
-            "${call.request.host()} " +
-                    "say: \u001B[34m[Text]\u001b[0m $text " +
-                    "\u001B[34m[Image]\u001B[0m $fileName"
-        )
-        call.respond(apiFrameworkFun(null))
+            // log OAO
+            call.application.log.info(
+                "${call.request.host()} " +
+                        "say: \u001B[34m[Text]\u001b[0m $text " +
+                        "\u001B[34m[Image]\u001B[0m $fileName"
+            )
 
-        // draw image
+            // respond
+            call.respond(apiFrameworkFun(null))
+        }
 
-        // database
-
-        // post
     }
 }
