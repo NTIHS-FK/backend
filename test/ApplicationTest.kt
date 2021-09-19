@@ -67,6 +67,6 @@ class ApplicationTest {
 
                 "Contact: young20050727@gmail.com" +
 
-                "'信不信我用OSU電爆你'--Young 2021.08.23")
+                "'信不信我用OSU電爆你'---Young 2021.08.23")
     }
 }

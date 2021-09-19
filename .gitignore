@@ -7,5 +7,7 @@
 *.ipr
 *.iws
 *.jpg
+*.ttf
+*.png
 /resources/twitter4j.properties
 /resources/hikari.properties
