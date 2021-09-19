@@ -12,7 +12,7 @@ import javax.imageio.ImageIO
 
 fun defaultDraw(text: String): String {
     val width = 960
-    val top = 200
+    val top = 100
     val left = 100
     val fontSize = 64f
     val linesData = lines(text, width, left, fontSize.toInt())
@@ -21,10 +21,12 @@ fun defaultDraw(text: String): String {
     val g2d = image.createGraphics()
     val fileName = Date().time.toString() + randomString()
     val ge = GraphicsEnvironment.getLocalGraphicsEnvironment()
+    val classloader = Thread.currentThread().contextClassLoader
+    val fontFile = classloader.getResource("font/sarasa-mono-sc-bolditalic.ttf")
     val font = Font.createFont(
         Font.TRUETYPE_FONT,
         // 該死的字體
-        File("./sarasa-mono-sc-bolditalic.ttf")
+        File(fontFile!!.toURI())
     )
     // 消除字體鋸齒
     g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON)

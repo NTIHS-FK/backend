@@ -13,7 +13,7 @@ import io.ktor.response.*
 import io.ktor.routing.*
 import org.apache.tika.Tika
 import org.jetbrains.exposed.sql.insert
-import org.jetbrains.exposed.sql.selectAll
+import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.io.File
 import java.util.*
@@ -84,7 +84,9 @@ fun Route.post(testing: Boolean) {
     get("/api/posts") {
         val rePots = mutableListOf<Article>()
         transaction {
-            val data = ArticleTable.selectAll()
+            val data = ArticleTable.select{
+                ArticleTable.vote.eq(true)
+            }
 
             for(i in data) {
                 rePots.add(Article(
