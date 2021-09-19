@@ -42,7 +42,7 @@ fun Char.isFullWidth(): Boolean
 }
 
 fun lines(text: String, width: Int, left: Int, fontSize: Int): MutableList<MutableList<Char>> {
-    val textLeft = width - left - 100
+    val textLeft = width - left * 2
     val lines = mutableListOf<MutableList<Char>>()
     var thisLineWidth = 0
     var line = mutableListOf<Char>()
