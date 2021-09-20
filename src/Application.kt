@@ -2,6 +2,7 @@ package com.ntihs_fk
 
 import com.ntihs_fk.data.Login
 import com.ntihs_fk.database.initDatabase
+import com.ntihs_fk.error.UnauthorizedException
 import com.ntihs_fk.functions.apiFrameworkFun
 import com.ntihs_fk.functions.init
 import com.ntihs_fk.router.loginSystem.login
@@ -44,6 +45,10 @@ fun Application.module(testing: Boolean = false) {
 
     install(StatusPages) {
         exception<BadRequestException> {
+            println(it.cause)
+            call.respond(apiFrameworkFun(null, true, it.message))
+        }
+        exception<UnauthorizedException> {
             println(it.cause)
             call.respond(apiFrameworkFun(null, true, it.message))
         }

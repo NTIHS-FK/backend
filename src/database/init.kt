@@ -16,6 +16,6 @@ fun initDatabase(log: Logger) {
 
     // init table
     transaction {
-        SchemaUtils.create(ArticleTable)
+        SchemaUtils.create(ArticleTable, UserTable)
     }
 }

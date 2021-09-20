@@ -3,6 +3,7 @@
 /out
 /target
 /build
+/.sessions
 *.iml
 *.ipr
 *.iws
