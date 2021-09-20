@@ -35,14 +35,16 @@ class DrawImageAPITest {
                     HttpHeaders.ContentType,
                     ContentType.MultiPart.FormData.withParameter("boundary", boundary).toString()
                 )
-                setBody(boundary, listOf(
-                    PartData.FormItem(text, { }, headersOf(
-                        HttpHeaders.ContentDisposition,
-                        ContentDisposition.Inline
-                            .withParameter(ContentDisposition.Parameters.Name, "text")
-                            .toString()
-                    )
-                    ),
+                setBody(
+                    boundary, listOf(
+                        PartData.FormItem(
+                            text, { }, headersOf(
+                                HttpHeaders.ContentDisposition,
+                                ContentDisposition.Inline
+                                    .withParameter(ContentDisposition.Parameters.Name, "text")
+                                    .toString()
+                            )
+                        ),
 //                    PartData.FileItem({ fileBytes.inputStream().asInput() }, {}, headersOf(
 //                        HttpHeaders.ContentDisposition,
 //                        ContentDisposition.File
@@ -51,7 +53,7 @@ class DrawImageAPITest {
 //                            .toString()
 //                    )
 //                    )
-                )
+                    )
                 )
             }.apply {
                 assertEquals("{\"error\":false,\"message\":\"ok\"}", response.content)

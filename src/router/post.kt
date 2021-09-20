@@ -32,7 +32,7 @@ fun Route.post(testing: Boolean) {
         var textImageType = "default"
 
         article.forEachPart { part ->
-            when(part) {
+            when (part) {
                 // upload image file
                 is PartData.FileItem -> {
                     if (fileName != null) throw BadRequestException("Multipart error")
@@ -46,12 +46,11 @@ fun Route.post(testing: Boolean) {
                     if (fileType.startsWith("image")) {
                         if (!testing)
                             File("./img/$fileName").writeBytes(fileBytes)
-                    }
-                    else throw BadRequestException("This file not image")
+                    } else throw BadRequestException("This file not image")
                 }
                 // 貼文內容
                 is PartData.FormItem -> {
-                    when(part.name) {
+                    when (part.name) {
                         "text" -> text = part.value
                         "textImageType" -> textImageType = part.value
                     }
@@ -88,18 +87,20 @@ fun Route.post(testing: Boolean) {
     get("/api/posts") {
         val rePots = mutableListOf<Article>()
         transaction {
-            val data = ArticleTable.select{
+            val data = ArticleTable.select {
                 ArticleTable.vote.eq(true)
             }
 
-            for(i in data) {
-                rePots.add(Article(
-                    i[ArticleTable.id],
-                    i[ArticleTable.time].millis,
-                    i[ArticleTable.text],
-                    i[ArticleTable.image],
-                    i[ArticleTable.textImageType]
-                ))
+            for (i in data) {
+                rePots.add(
+                    Article(
+                        i[ArticleTable.id],
+                        i[ArticleTable.time].millis,
+                        i[ArticleTable.text],
+                        i[ArticleTable.image],
+                        i[ArticleTable.textImageType]
+                    )
+                )
             }
         }
         call.respond(apiFrameworkFun(rePots))
@@ -107,7 +108,7 @@ fun Route.post(testing: Boolean) {
 
     get("/post/{id}") {
         val id = call.parameters["id"]?.toInt() ?: throw BadRequestException("Missing parameter")
-        var data:  ResultRow? = null
+        var data: ResultRow? = null
         transaction {
             data = ArticleTable.select {
                 ArticleTable.id.eq(id)
@@ -123,7 +124,12 @@ fun Route.post(testing: Boolean) {
                     meta("og:image", "https://$domain/image/${data!![ArticleTable.textImageType]}.jpg")
                     meta("og:url", "https://$domain/post/$id")
                     meta("og:type", "website")
-    //                script()
+                    link {
+                        href = ""
+                    }
+                    script {
+                        src = ""
+                    }
                 }
                 body {
                     div {
