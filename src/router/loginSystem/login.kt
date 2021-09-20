@@ -31,12 +31,19 @@ fun Route.login(testing: Boolean) {
         System.getenv("jwt_secret") ?: "secret"
 
     post("/api/login") {
-        call.sessions.get<Login>()
+        val sessionToken = call.sessions.get<Login>()
+
+        if (sessionToken != null) {
+            call.respond(apiFrameworkFun(hashMapOf("token" to sessionToken)))
+            return@post
+        }
+
         val user = call.receive<User>()
         var userData: ResultRow? = null
 
         if (user.nameOrEmail == null || user.password == null)
             throw BadRequestException("Missing parameter")
+
         transaction {
             userData = UserTable.select {
                 UserTable.name.eq(user.nameOrEmail).or(
