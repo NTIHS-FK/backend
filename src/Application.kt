@@ -1,11 +1,7 @@
 package com.ntihs_fk
 
-import com.auth0.jwk.JwkProviderBuilder
-import com.auth0.jwt.JWT
-import com.auth0.jwt.algorithms.Algorithm
 import com.ntihs_fk.database.initDatabase
 import com.ntihs_fk.functions.apiFrameworkFun
-import com.ntihs_fk.functions.domain
 import com.ntihs_fk.functions.init
 import com.ntihs_fk.loginSystem.login
 import com.ntihs_fk.router.post
@@ -30,13 +26,11 @@ fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 @kotlin.jvm.JvmOverloads
 fun Application.module(testing: Boolean = false) {
 
-
     val myRealm: String = if (testing) {
         "Access to 'hello'"
     } else {
         System.getenv("jwt_realm") ?: "Access to 'hello'"
     }
-
 
     if (!testing) {
         initDatabase(log)
@@ -74,7 +68,6 @@ fun Application.module(testing: Boolean = false) {
     install(ContentNegotiation) {
         gson {
         }
-
     }
 
     routing {
