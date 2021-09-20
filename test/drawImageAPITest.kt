@@ -4,10 +4,8 @@ import com.ntihs_fk.drawImage.defaultDraw
 import io.ktor.http.*
 import io.ktor.http.content.*
 import io.ktor.server.testing.*
-import io.ktor.utils.io.streams.*
+import junit.framework.TestCase.assertEquals
 import org.junit.Test
-import java.io.File
-import kotlin.test.assertEquals
 
 class DrawImageAPITest {
     private val text = "\\Young 教我/" +

@@ -31,4 +31,8 @@ fun Route.vote(testing: Boolean) {
         }
         call.respond(apiFrameworkFun(rePots))
     }
+
+    post("/api/votes") {
+
+    }
 }

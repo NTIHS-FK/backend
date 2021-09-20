@@ -6,6 +6,7 @@ import com.ntihs_fk.drawImage.draw
 import com.ntihs_fk.functions.apiFrameworkFun
 import com.ntihs_fk.functions.domain
 import com.ntihs_fk.functions.randomString
+import com.ntihs_fk.functions.ssl
 import io.ktor.application.*
 import io.ktor.features.*
 import io.ktor.html.*
@@ -121,8 +122,11 @@ fun Route.post(testing: Boolean) {
                     meta("og:title", "靠北南工")
                     meta("og:site_name", "靠北南工")
                     meta("og:description", data!![ArticleTable.text])
-                    meta("og:image", "https://$domain/image/${data!![ArticleTable.textImageType]}.jpg")
-                    meta("og:url", "https://$domain/post/$id")
+                    meta(
+                        "og:image",
+                        "http${if (ssl) "s" else ""}://$domain/image/${data!![ArticleTable.textImageType]}.jpg"
+                    )
+                    meta("og:url", "http${if (ssl) "s" else ""}://$domain/post/$id")
                     meta("og:type", "website")
                     link {
                         href = ""
@@ -134,6 +138,15 @@ fun Route.post(testing: Boolean) {
                 body {
                     div {
                         this.id = "root"
+                        p {
+                            +Article(
+                                data!![ArticleTable.id],
+                                data!![ArticleTable.time].millis,
+                                data!![ArticleTable.text],
+                                data!![ArticleTable.image],
+                                data!![ArticleTable.textImageType]
+                            ).toString()
+                        }
                     }
                 }
             }
