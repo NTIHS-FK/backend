@@ -1,5 +1,6 @@
 package com.ntihs_fk
 
+import com.ntihs_fk.data.Login
 import com.ntihs_fk.database.initDatabase
 import com.ntihs_fk.functions.apiFrameworkFun
 import com.ntihs_fk.functions.init
@@ -38,6 +39,7 @@ fun Application.module(testing: Boolean = false) {
     }
 
     install(Sessions) {
+        cookie<Login>("SessionId", directorySessionStorage(File(".sessions"), cached = true))
     }
 
     install(StatusPages) {

@@ -68,8 +68,8 @@ fun Route.post(testing: Boolean) {
                 transaction {
                     ArticleTable.insert {
                         it[this.text] = text!!
-                        it[this.image] = fileName.toString()
-                        it[this.textImageType] = drawImageFileName
+                        it[this.image] = fileName
+                        it[this.textImage] = drawImageFileName
                     }
                 }
             // log OAO
@@ -99,7 +99,7 @@ fun Route.post(testing: Boolean) {
                         i[ArticleTable.time].millis,
                         i[ArticleTable.text],
                         i[ArticleTable.image],
-                        i[ArticleTable.textImageType]
+                        i[ArticleTable.textImage]
                     )
                 )
             }
@@ -124,7 +124,7 @@ fun Route.post(testing: Boolean) {
                     meta("og:description", data!![ArticleTable.text])
                     meta(
                         "og:image",
-                        "http${if (ssl) "s" else ""}://$domain/image/${data!![ArticleTable.textImageType]}.jpg"
+                        "http${if (ssl) "s" else ""}://$domain/image/${data!![ArticleTable.textImage]}.jpg"
                     )
                     meta("og:url", "http${if (ssl) "s" else ""}://$domain/post/$id")
                     meta("og:type", "website")
@@ -144,7 +144,7 @@ fun Route.post(testing: Boolean) {
                                 data!![ArticleTable.time].millis,
                                 data!![ArticleTable.text],
                                 data!![ArticleTable.image],
-                                data!![ArticleTable.textImageType]
+                                data!![ArticleTable.textImage]
                             ).toString()
                         }
                     }

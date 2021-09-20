@@ -13,6 +13,7 @@ fun initDatabase(log: Logger) {
     config.schema = "public"
     val dataSource = HikariDataSource(config)
     Database.connect(dataSource)
+
     // init table
     transaction {
         SchemaUtils.create(ArticleTable)

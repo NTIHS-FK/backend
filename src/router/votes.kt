@@ -24,7 +24,7 @@ fun Route.vote(testing: Boolean) {
                         i[ArticleTable.time].millis,
                         i[ArticleTable.text],
                         i[ArticleTable.image],
-                        i[ArticleTable.textImageType]
+                        i[ArticleTable.textImage]
                     )
                 )
             }

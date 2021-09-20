@@ -7,7 +7,7 @@ object ArticleTable : Table() {
     val id = integer("ArticleId").autoIncrement().primaryKey()
     val time = datetime("time").clientDefault { DateTime.now() }
     val text = text("Text")
-    val image = text("Image")
-    val textImageType = text("TextImageType")
+    val image = text("Image").nullable()
+    val textImage = text("textImage")
     val vote = bool("Vote").clientDefault { false }
 }
