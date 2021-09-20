@@ -44,13 +44,33 @@ fun Application.module(testing: Boolean = false) {
     }
 
     install(StatusPages) {
-        exception<BadRequestException> {
-            println(it.cause)
-            call.respond(apiFrameworkFun(null, true, it.message))
+
+        status(*HttpStatusCode.allStatusCodes.toTypedArray()) {
+            call.respond(
+                HttpStatusCode(it.value, it.description),
+                apiFrameworkFun(null, true, it.description)
+            )
         }
+
+        exception<BadRequestException> {
+            call.respond(
+                HttpStatusCode.BadRequest,
+                apiFrameworkFun(null, true, it.message)
+            )
+        }
+
         exception<UnauthorizedException> {
-            println(it.cause)
-            call.respond(apiFrameworkFun(null, true, it.message))
+            call.respond(
+                HttpStatusCode.Unauthorized,
+                apiFrameworkFun(null, true, it.message)
+            )
+        }
+
+        exception<Throwable> {
+            call.respond(
+                HttpStatusCode.InternalServerError,
+                apiFrameworkFun(null, true, it.message)
+            )
         }
     }
 

@@ -34,7 +34,7 @@ fun Route.login(testing: Boolean) {
         val sessionToken = call.sessions.get<Login>()
 
         if (sessionToken != null) {
-            call.respond(apiFrameworkFun(hashMapOf("token" to sessionToken)))
+            call.respond(apiFrameworkFun(sessionToken))
             return@post
         }
 
@@ -91,6 +91,8 @@ fun Route.login(testing: Boolean) {
 
         // email verify
 
+        // add data to the database
+
         transaction {
             UserTable.insert {
                 it[name] = user.name
@@ -100,5 +102,10 @@ fun Route.login(testing: Boolean) {
         }
 
         call.respond(user)
+    }
+
+    post("/api/log-out") {
+        call.sessions.clear<Login>()
+        call.respond(apiFrameworkFun(null))
     }
 }
