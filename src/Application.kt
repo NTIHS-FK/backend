@@ -3,7 +3,7 @@ package com.ntihs_fk
 import com.ntihs_fk.database.initDatabase
 import com.ntihs_fk.functions.apiFrameworkFun
 import com.ntihs_fk.functions.init
-import com.ntihs_fk.loginSystem.login
+import com.ntihs_fk.router.loginSystem.login
 import com.ntihs_fk.router.post
 import com.ntihs_fk.router.vote
 import io.ktor.application.*

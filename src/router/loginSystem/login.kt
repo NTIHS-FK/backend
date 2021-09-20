@@ -1,4 +1,4 @@
-package com.ntihs_fk.loginSystem
+package com.ntihs_fk.router.loginSystem
 
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
