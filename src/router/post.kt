@@ -4,14 +4,18 @@ import com.ntihs_fk.data.Article
 import com.ntihs_fk.database.ArticleTable
 import com.ntihs_fk.drawImage.draw
 import com.ntihs_fk.functions.apiFrameworkFun
+import com.ntihs_fk.functions.domain
 import com.ntihs_fk.functions.randomString
 import io.ktor.application.*
 import io.ktor.features.*
+import io.ktor.html.*
 import io.ktor.http.content.*
 import io.ktor.request.*
 import io.ktor.response.*
 import io.ktor.routing.*
+import kotlinx.html.*
 import org.apache.tika.Tika
+import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -99,5 +103,37 @@ fun Route.post(testing: Boolean) {
             }
         }
         call.respond(apiFrameworkFun(rePots))
+    }
+
+    get("/post/{id}") {
+        val id = call.parameters["id"]?.toInt() ?: throw BadRequestException("Missing parameter")
+        var data:  ResultRow? = null
+        transaction {
+            data = ArticleTable.select {
+                ArticleTable.id.eq(id)
+            }.firstOrNull()
+        }
+        if (data == null) throw NotFoundException()
+        else
+            call.respondHtml {
+                head {
+                    meta("og:title", "靠北南工")
+                    meta("og:site_name", "靠北南工")
+                    meta("og:description", data!![ArticleTable.text])
+                    meta("og:image", "https://$domain/image/${data!![ArticleTable.textImageType]}.jpg")
+                    meta("og:url", "https://$domain/post/$id")
+                    meta("og:type", "website")
+    //                script()
+                }
+                body {
+                    div {
+                        this.id = "root"
+                    }
+                }
+            }
+    }
+
+    get("/api/post/{id}") {
+
     }
 }
