@@ -101,10 +101,6 @@ fun Application.module(testing: Boolean = false) {
         get("/") {
             call.respondText("HELLO WORLD!", contentType = ContentType.Text.Plain)
         }
-        static(".well-known") {
-            staticRootFolder = File("certs")
-            file("jwks.json")
-        }
     }
 
     routing {

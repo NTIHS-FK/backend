@@ -9,7 +9,7 @@ import org.slf4j.Logger
 
 /**
  * 初始化資料庫
- * 傳入 [log]
+ * 傳入: [log]
  */
 fun initDatabase(log: Logger) {
     log.info("Init Database")

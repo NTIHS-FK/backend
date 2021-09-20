@@ -5,7 +5,9 @@ import java.awt.Graphics2D
 import java.text.SimpleDateFormat
 import java.util.*
 
-
+/**
+ * 繪製發文時間
+ */
 fun drawNowTime(graphics: Graphics2D, height: Int, width: Int, font: Font) {
     val sdfDate = SimpleDateFormat("yyyy-MM-dd HH:mm:ss") //dd/MM/yyyy
     val now = Date()

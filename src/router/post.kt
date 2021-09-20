@@ -27,6 +27,7 @@ fun Route.post(testing: Boolean) {
     post("/api/post") {
         if (call.request.contentType().contentType != "multipart")
             throw BadRequestException("Error request")
+
         val article = call.receiveMultipart()
         var fileName: String? = null
         var text: String? = null
@@ -34,6 +35,7 @@ fun Route.post(testing: Boolean) {
 
         article.forEachPart { part ->
             when (part) {
+
                 // upload image file
                 is PartData.FileItem -> {
                     if (fileName != null) throw BadRequestException("Multipart error")
@@ -49,6 +51,7 @@ fun Route.post(testing: Boolean) {
                             File("./img/$fileName").writeBytes(fileBytes)
                     } else throw BadRequestException("This file not image")
                 }
+
                 // 貼文內容
                 is PartData.FormItem -> {
                     when (part.name) {
@@ -59,10 +62,13 @@ fun Route.post(testing: Boolean) {
                 else -> throw BadRequestException("Multipart error")
             }
         }
+
         if (text == null) throw BadRequestException("Missing text")
         else {
+
             // draw image
             val drawImageFileName = draw(textImageType)(text!!)
+
             // database
             if (!testing)
                 transaction {
@@ -72,6 +78,7 @@ fun Route.post(testing: Boolean) {
                         it[this.textImage] = drawImageFileName
                     }
                 }
+
             // log OAO
             call.application.log.info(
                 "[${call.request.host()}] " +
@@ -82,12 +89,15 @@ fun Route.post(testing: Boolean) {
 
             // respond api
             call.respond(apiFrameworkFun(null))
+
         }
     }
 
     get("/api/posts") {
         val rePots = mutableListOf<Article>()
+
         transaction {
+
             val data = ArticleTable.select {
                 ArticleTable.vote.eq(true)
             }
@@ -108,13 +118,16 @@ fun Route.post(testing: Boolean) {
     }
 
     get("/post/{id}") {
+
         val id = call.parameters["id"]?.toInt() ?: throw BadRequestException("Missing parameter")
         var data: ResultRow? = null
+
         transaction {
             data = ArticleTable.select {
                 ArticleTable.id.eq(id)
             }.firstOrNull()
         }
+
         if (data == null) throw NotFoundException()
         else
             call.respondHtml {

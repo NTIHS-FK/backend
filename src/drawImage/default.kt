@@ -10,6 +10,10 @@ import java.io.File
 import java.util.*
 import javax.imageio.ImageIO
 
+/**
+ * 預設圖文
+ * 傳入: [text]
+ */
 fun defaultDraw(text: String): String {
     val width = 960
     val top = 100
