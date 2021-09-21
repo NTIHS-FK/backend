@@ -28,9 +28,11 @@
 
     <!-- disable hikari debug log -->
     <logger name="com.zaxxer.hikari">
-        <level value="error"/>
+        <level value="ERROR"/>
+        <level value="INFO"/>
     </logger>
 
     <logger name="org.eclipse.jetty" level="INFO"/>
     <logger name="io.netty" level="INFO"/>
+    <logger name="org.jetbrains.exposed" level="INFO"/>
 </configuration>
