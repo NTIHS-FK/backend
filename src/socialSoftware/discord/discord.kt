@@ -5,14 +5,8 @@ import com.google.gson.Gson
 import com.ntihs_fk.functions.domain
 import com.ntihs_fk.functions.ssl
 import io.ktor.http.*
-import java.awt.Color
-import java.io.File
-import kotlin.random.Random
 
-
-
-
-// vote webhook
+// discord publish
 
 fun discordPost(webhookUrl: String, text: String, textImage: String, id: Int) {
     val embed = DiscordWebhookEmbed(

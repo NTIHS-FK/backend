@@ -4,10 +4,7 @@ import com.google.gson.Gson
 import com.ntihs_fk.data.Article
 import com.ntihs_fk.database.ArticleTable
 import com.ntihs_fk.drawImage.draw
-import com.ntihs_fk.functions.apiFrameworkFun
-import com.ntihs_fk.functions.domain
-import com.ntihs_fk.functions.randomString
-import com.ntihs_fk.functions.ssl
+import com.ntihs_fk.functions.*
 import com.ntihs_fk.socialSoftware.discord.DiscordConfig
 import com.ntihs_fk.socialSoftware.discord.discordPost
 import io.ktor.application.*
@@ -27,11 +24,7 @@ import java.io.File
 import java.util.*
 
 fun Route.post(testing: Boolean) {
-    val classloader: ClassLoader = Thread.currentThread().contextClassLoader
-    val discordConfigJSONFileUrl =
-        classloader.getResource("DiscordWebhook/config.json") ?: throw Error("No DiscordWebhook/config.json")
-    val discordConfigJSONString = File(discordConfigJSONFileUrl.toURI()).readText()
-    val discordConfig: DiscordConfig = Gson().fromJson(discordConfigJSONString, DiscordConfig::class.java)
+
 
     post("/api/post") {
         val article = call.receiveMultipart()
