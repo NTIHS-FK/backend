@@ -1,11 +1,9 @@
 package com.ntihs_fk.router
 
-import com.google.gson.Gson
 import com.ntihs_fk.data.Article
 import com.ntihs_fk.database.ArticleTable
 import com.ntihs_fk.drawImage.draw
 import com.ntihs_fk.functions.*
-import com.ntihs_fk.socialSoftware.discord.DiscordConfig
 import com.ntihs_fk.socialSoftware.discord.discordPost
 import io.ktor.application.*
 import io.ktor.features.*

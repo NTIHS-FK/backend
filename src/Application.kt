@@ -1,10 +1,11 @@
 package com.ntihs_fk
 
+import com.auth0.jwt.JWT
+import com.auth0.jwt.algorithms.Algorithm
 import com.ntihs_fk.data.Login
 import com.ntihs_fk.database.initDatabase
 import com.ntihs_fk.error.UnauthorizedException
-import com.ntihs_fk.functions.apiFrameworkFun
-import com.ntihs_fk.functions.init
+import com.ntihs_fk.functions.*
 import com.ntihs_fk.router.loginSystem.login
 import com.ntihs_fk.router.post
 import com.ntihs_fk.router.vote
@@ -76,11 +77,18 @@ fun Application.module(testing: Boolean = false) {
     install(CallLogging) {
         level = Level.INFO
         filter { call -> call.request.path().startsWith("/") }
+
     }
 
     install(Authentication) {
-        jwt {
+        jwt("auth-jwt") {
             realm = myRealm
+            verifier(
+                JWT
+                .require(Algorithm.HMAC256(secret))
+                .withAudience(audience)
+                .withIssuer(issuer)
+                .build())
             validate { credential ->
                 if (credential.payload.getClaim("username").asString() != "") {
                     JWTPrincipal(credential.payload)
@@ -103,7 +111,7 @@ fun Application.module(testing: Boolean = false) {
     }
 
     routing {
-        login(testing)
+        login()
         post(testing)
         vote(testing)
     }

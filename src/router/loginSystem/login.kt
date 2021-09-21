@@ -8,11 +8,8 @@ import com.ntihs_fk.data.SignIn
 import com.ntihs_fk.data.User
 import com.ntihs_fk.database.UserTable
 import com.ntihs_fk.error.UnauthorizedException
-import com.ntihs_fk.functions.apiFrameworkFun
-import com.ntihs_fk.functions.domain
-import com.ntihs_fk.functions.ssl
+import com.ntihs_fk.functions.*
 import io.ktor.application.*
-import io.ktor.auth.*
 import io.ktor.features.*
 import io.ktor.request.*
 import io.ktor.response.*
@@ -20,15 +17,11 @@ import io.ktor.routing.*
 import io.ktor.sessions.*
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
-import java.util.*
 import java.util.Date
 
 
-fun Route.login(testing: Boolean) {
-    val secret = if (testing)
-        "secret"
-    else
-        System.getenv("jwt_secret") ?: "secret"
+fun Route.login() {
+
 
     post("/api/login") {
         val sessionToken = call.sessions.get<Login>()
@@ -59,7 +52,8 @@ fun Route.login(testing: Boolean) {
 
         if (verify) {
             val token = JWT.create()
-                .withIssuer("http${if (ssl) "s" else ""}://$domain")
+                .withIssuer(issuer)
+                .withAudience(audience)
                 .withClaim("username", userData!![UserTable.name])
                 .withExpiresAt(Date(System.currentTimeMillis() + 60000))
                 .sign(Algorithm.HMAC256(secret))
