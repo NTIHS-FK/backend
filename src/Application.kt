@@ -77,7 +77,6 @@ fun Application.module(testing: Boolean = false) {
     install(CallLogging) {
         level = Level.INFO
         filter { call -> call.request.path().startsWith("/") }
-
     }
 
     install(Authentication) {
@@ -88,7 +87,8 @@ fun Application.module(testing: Boolean = false) {
                 .require(Algorithm.HMAC256(secret))
                 .withAudience(audience)
                 .withIssuer(issuer)
-                .build())
+                .build()
+            )
             validate { credential ->
                 if (credential.payload.getClaim("username").asString() != "") {
                     JWTPrincipal(credential.payload)
