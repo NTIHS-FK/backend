@@ -14,7 +14,7 @@ import kotlin.random.Random
 
 // vote webhook
 
-fun discordPost(webhookUrl: String,text: String, textImage: String, id: Int) {
+fun discordPost(webhookUrl: String, text: String, textImage: String, id: Int) {
     val embed = DiscordWebhookEmbed(
         author = Author(
             name = "xiao xigua#8787",
@@ -30,13 +30,14 @@ fun discordPost(webhookUrl: String,text: String, textImage: String, id: Int) {
             text = "靠北南工",
             icon_url = "https://cdn.discordapp.com/avatars/889564072088068197/195b80329d0cd6eb999fd6ee2f5b34f6.webp"
         ),
-        title = "靠北南工",
+        title = "#靠北南工$id",
         url = "http${if (ssl) "s" else ""}://$domain/post/$id",
     )
     val json = Gson().toJson(DiscordWebhookData("靠北南工", embeds = listOf(embed)))
     val code = HttpRequest.post(webhookUrl)
         .contentType(ContentType.Application.Json.toString())
         .send(json)
+        .code()
 
     println(code)
 }

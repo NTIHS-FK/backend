@@ -19,7 +19,6 @@ import org.slf4j.event.*
 import io.ktor.auth.*
 import io.ktor.auth.jwt.*
 import io.ktor.gson.*
-import io.ktor.http.content.*
 import java.io.File
 
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
@@ -29,9 +28,9 @@ fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 fun Application.module(testing: Boolean = false) {
 
     val myRealm: String = if (testing) {
-        "Access to 'hello'"
+        "Access to login"
     } else {
-        System.getenv("jwt_realm") ?: "Access to 'hello'"
+        System.getenv("jwt_realm") ?: "Access to login"
     }
 
     if (!testing) {
