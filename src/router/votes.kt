@@ -5,6 +5,7 @@ import com.ntihs_fk.database.ArticleTable
 import com.ntihs_fk.functions.apiFrameworkFun
 import io.ktor.application.*
 import io.ktor.auth.*
+import io.ktor.features.*
 import io.ktor.response.*
 import io.ktor.routing.*
 import org.jetbrains.exposed.sql.select
@@ -35,7 +36,8 @@ fun Route.vote(testing: Boolean) {
     }
     authenticate("auth-jwt") {
         post("/api/vote/{id}") {
-            call.respond("a")
+            val id = call.parameters["id"] ?: throw BadRequestException("Missing parameter")
+
         }
     }
 
