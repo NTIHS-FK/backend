@@ -4,6 +4,7 @@
 /target
 /build
 /.sessions
+/logs
 *.iml
 *.ipr
 *.iws
