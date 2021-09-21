@@ -26,6 +26,11 @@
         <appender-ref ref="FILE"/>
     </root>
 
+    <!-- disable hikari debug log -->
+    <logger name="com.zaxxer.hikari">
+        <level value="error"/>
+    </logger>
+
     <logger name="org.eclipse.jetty" level="INFO"/>
     <logger name="io.netty" level="INFO"/>
 </configuration>
