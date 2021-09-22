@@ -4,6 +4,7 @@ import com.github.kevinsawicki.http.HttpRequest
 import com.google.gson.Gson
 import com.ntihs_fk.functions.domain
 import com.ntihs_fk.functions.ssl
+import io.ktor.features.*
 import io.ktor.http.*
 
 // discord publish
@@ -29,10 +30,10 @@ fun discordPost(webhookUrl: String, text: String, textImage: String, id: Int) {
         url = "http${if (ssl) "s" else ""}://$domain/post/$id",
     )
     val json = Gson().toJson(DiscordWebhookData("靠北南工", embeds = listOf(embed)))
-    val code = HttpRequest.post(webhookUrl)
-        .contentType(ContentType.Application.Json.toString())
-        .send(json)
-        .code()
-
-    println(code)
+    if (
+        !HttpRequest.post(webhookUrl)
+            .contentType(ContentType.Application.Json.toString())
+            .send(json)
+            .ok()
+    ) throw BadRequestException("Discord post error")
 }
