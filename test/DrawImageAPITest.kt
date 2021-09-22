@@ -43,14 +43,14 @@ class DrawImageAPITest {
                                     .toString()
                             )
                         ),
-//                    PartData.FileItem({ fileBytes.inputStream().asInput() }, {}, headersOf(
-//                        HttpHeaders.ContentDisposition,
-//                        ContentDisposition.File
-//                            .withParameter(ContentDisposition.Parameters.Name, "image")
-//                            .withParameter(ContentDisposition.Parameters.FileName, "a.jpg")
-//                            .toString()
-//                    )
-//                    )
+//                        PartData.FileItem({ fileBytes.inputStream().asInput() }, {}, headersOf(
+//                            HttpHeaders.ContentDisposition,
+//                            ContentDisposition.File
+//                                .withParameter(ContentDisposition.Parameters.Name, "image")
+//                                .withParameter(ContentDisposition.Parameters.FileName, "a.jpg")
+//                                .toString()
+//                        )
+//                        )
                     )
                 )
             }.apply {

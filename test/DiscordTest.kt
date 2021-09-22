@@ -1,7 +1,7 @@
 package com.ntihs_fk
 
 import com.google.gson.Gson
-import com.ntihs_fk.socialSoftware.discord.DiscordConfig
+import com.ntihs_fk.data.DiscordConfig
 import com.ntihs_fk.socialSoftware.discord.discordPost
 import kotlinx.coroutines.DelicateCoroutinesApi
 import org.junit.Test

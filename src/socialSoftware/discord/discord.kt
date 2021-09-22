@@ -9,6 +9,7 @@ import io.ktor.http.*
 // discord publish
 
 fun discordPost(webhookUrl: String, text: String, textImage: String, id: Int) {
+
     val embed = DiscordWebhookEmbed(
         author = Author(
             name = "xiao xigua#8787",

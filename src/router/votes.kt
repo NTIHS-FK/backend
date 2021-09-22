@@ -34,6 +34,7 @@ fun Route.vote(testing: Boolean) {
         }
         call.respond(apiFrameworkFun(rePots))
     }
+
     authenticate("auth-jwt") {
         post("/api/vote/{id}") {
             val id = call.parameters["id"] ?: throw BadRequestException("Missing parameter")

@@ -1,7 +1,7 @@
 package com.ntihs_fk.functions
 
 import com.google.gson.Gson
-import com.ntihs_fk.socialSoftware.discord.DiscordConfig
+import com.ntihs_fk.data.DiscordConfig
 import java.io.File
 
 private val classloader: ClassLoader = Thread.currentThread().contextClassLoader
