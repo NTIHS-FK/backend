@@ -3,6 +3,8 @@ package com.ntihs_fk.functions
 import com.github.kevinsawicki.http.HttpRequest
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import com.ntihs_fk.functions.DiscordOAuth2.Companion.serializeToMap
+import io.ktor.features.*
 
 class DiscordOAuth2 {
     companion object {
@@ -28,6 +30,14 @@ class DiscordOAuth2 {
             return convert()
         }
 
+        private fun requestForm(formData: Map<String, Any>) {
+            if (
+                HttpRequest.post("$discordAPIUrl/oauth2/token")
+                    .form(formData)
+                    .created()
+            ) throw BadRequestException("Discord OAuth2 error")
+        }
+
         fun exchange_code(code: String, redirect_uri: String) {
             val data = Data(
                 client_id = discordConfig.discord_id,
@@ -36,10 +46,8 @@ class DiscordOAuth2 {
                 code = code,
                 redirect_uri = redirect_uri
             )
-            HttpRequest.post("$discordAPIUrl/oauth2/token")
-                .form(data.serializeToMap())
-                .created()
 
+            requestForm(data.serializeToMap())
         }
 
         fun refresh_token(refresh_token: String) {
@@ -52,9 +60,7 @@ class DiscordOAuth2 {
                 )
             )
 
-            HttpRequest.post("$discordAPIUrl/oauth2/token")
-                .form(data.serializeToMap())
-                .created()
+            requestForm(data.serializeToMap())
         }
     }
 }
