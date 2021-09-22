@@ -43,12 +43,14 @@ class DiscordOAuth2 {
         }
 
         fun refresh_token(refresh_token: String) {
-            val data = gson.toJson(Data(
-                client_id = discordConfig.discord_id,
-                client_secret = discordConfig.discord_secret,
-                grant_type = "refresh_token",
-                refresh_token = refresh_token
-            ))
+            val data = gson.toJson(
+                Data(
+                    client_id = discordConfig.discord_id,
+                    client_secret = discordConfig.discord_secret,
+                    grant_type = "refresh_token",
+                    refresh_token = refresh_token
+                )
+            )
 
             HttpRequest.post("$discordAPIUrl/oauth2/token")
                 .form(data.serializeToMap())
