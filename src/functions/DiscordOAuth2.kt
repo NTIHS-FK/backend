@@ -26,17 +26,12 @@ class DiscordOAuth2 {
             return gson.fromJson(json, object : TypeToken<O>() {}.type)
         }
 
-        private fun <T> T.serializeToMap(): Map<String, Any> {
-            return convert()
-        }
+        private fun <T> T.serializeToMap(): Map<String, Any> = convert()
 
-        private fun requestForm(formData: Map<String, Any>) {
-            if (
-                HttpRequest.post("$discordAPIUrl/oauth2/token")
-                    .form(formData)
-                    .created()
-            ) throw BadRequestException("Discord OAuth2 error")
-        }
+        private fun requestForm(formData: Map<String, Any>): String =
+            HttpRequest.post("$discordAPIUrl/oauth2/token")
+                .form(formData)
+                .body()
 
         fun exchange_code(code: String, redirect_uri: String) {
             val data = Data(
