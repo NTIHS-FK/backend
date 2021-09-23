@@ -6,6 +6,7 @@ import com.ntihs_fk.data.Login
 import com.ntihs_fk.database.initDatabase
 import com.ntihs_fk.error.UnauthorizedException
 import com.ntihs_fk.functions.*
+import com.ntihs_fk.router.loginSystem.discord
 import com.ntihs_fk.router.loginSystem.login
 import com.ntihs_fk.router.post
 import com.ntihs_fk.router.vote
@@ -114,5 +115,6 @@ fun Application.module(testing: Boolean = false) {
         login()
         post(testing)
         vote(testing)
+        discord()
     }
 }
