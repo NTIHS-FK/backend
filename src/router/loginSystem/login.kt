@@ -55,13 +55,21 @@ fun Route.login() {
                 .withIssuer(issuer)
                 .withAudience(audience)
                 .withClaim("username", userData!![UserTable.name])
+                .withClaim("avatar", userData!![UserTable.name])
                 .withExpiresAt(Date(System.currentTimeMillis() + 60000))
                 .sign(Algorithm.HMAC256(secret))
 
             call.sessions.set(Login(token))
-            call.respond(apiFrameworkFun(hashMapOf("token" to token)))
+            call.respond(
+                apiFrameworkFun(
+                    hashMapOf(
+                        "token" to token,
+                        "username" to userData!![UserTable.name],
+                        "avatar" to ""
+                    )
+                )
+            )
         } else throw UnauthorizedException()
-
     }
 
     post("/api/sign-up") {
