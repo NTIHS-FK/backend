@@ -141,7 +141,11 @@
             <artifactId>http-request</artifactId>
             <version>6.0</version>
         </dependency>
-
+        <dependency>
+            <groupId>org.simplejavamail</groupId>
+            <artifactId>simple-java-mail</artifactId>
+            <version>6.6.1</version>
+        </dependency>
 
     </dependencies>
     <build>
