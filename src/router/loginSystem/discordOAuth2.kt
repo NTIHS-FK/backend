@@ -33,6 +33,7 @@ fun Route.discord() {
             .withIssuer(issuer)
             .withAudience(audience)
             .withClaim("username", "${userData.username}#${userData.discriminator}")
+            .withClaim("avatar", userData.avatar)
             .withExpiresAt(Date(System.currentTimeMillis() + 60000))
             .sign(Algorithm.HMAC256(secret))
 
@@ -47,9 +48,7 @@ fun Route.discord() {
         call.respond(
             apiFrameworkFun(
                 hashMapOf(
-                    "token" to token,
-                    "username" to userData.username,
-                    "avatar" to userData.avatar
+                    "token" to token
                 )
             )
         )
