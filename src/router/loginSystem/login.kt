@@ -4,12 +4,15 @@ import at.favre.lib.crypto.bcrypt.BCrypt
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
 import com.ntihs_fk.data.Login
+import com.ntihs_fk.data.LoginData
 import com.ntihs_fk.data.SignIn
-import com.ntihs_fk.data.User
+import com.ntihs_fk.data.UserData
 import com.ntihs_fk.database.UserTable
 import com.ntihs_fk.error.UnauthorizedException
 import com.ntihs_fk.functions.*
 import io.ktor.application.*
+import io.ktor.auth.*
+import io.ktor.auth.jwt.*
 import io.ktor.features.*
 import io.ktor.request.*
 import io.ktor.response.*
@@ -31,7 +34,7 @@ fun Route.login() {
             return@post
         }
 
-        val user = call.receive<User>()
+        val user = call.receive<LoginData>()
         var userData: ResultRow? = null
 
         if (user.nameOrEmail == null || user.password == null)
@@ -63,9 +66,7 @@ fun Route.login() {
             call.respond(
                 apiFrameworkFun(
                     hashMapOf(
-                        "token" to token,
-                        "username" to userData!![UserTable.name],
-                        "avatar" to ""
+                        "token" to token
                     )
                 )
             )
@@ -79,6 +80,11 @@ fun Route.login() {
             throw BadRequestException("Missing parameter")
 
         // check email and name
+        if (
+            !UserDataFormat.isName(user.name) &&
+            !UserDataFormat.isEmail(user.email) &&
+            !UserDataFormat.isPassword(user.password)
+        ) throw BadRequestException("name or email or password wrong format")
 
         transaction {
             if (
@@ -103,11 +109,22 @@ fun Route.login() {
             }
         }
 
-        call.respond(user)
+        call.respond(apiFrameworkFun(null))
     }
 
     post("/api/log-out") {
         call.sessions.clear<Login>()
         call.respond(apiFrameworkFun(null))
     }
+
+    authenticate("auth-jwt") {
+        get("/api/user-data") {
+            val principal = call.principal<JWTPrincipal>()
+            val username = principal!!.payload.getClaim("username").asString()
+            val avatar = principal.payload.getClaim("avatar").asString()
+
+            call.respond(UserData(username, avatar))
+        }
+    }
+
 }
