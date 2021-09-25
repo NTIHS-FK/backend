@@ -38,7 +38,7 @@ class DiscordOAuth2 {
 
         private fun requestForm(formData: Map<String, Any>): AccessTokenResponse {
             val response = HttpRequest.post("$discordAPIUrl/oauth2/token")
-                .basic(discordConfig.discord_id, discordConfig.discord_secret)
+                .basic(Config.discordConfig.discord_id, Config.discordConfig.discord_secret)
                 .form(formData)
 
             if (!response.ok()) throw BadRequestException("Discord OAuth2 error")
@@ -48,8 +48,8 @@ class DiscordOAuth2 {
 
         fun exchangeCode(code: String): AccessTokenResponse {
             val data = Data(
-                client_id = discordConfig.discord_id,
-                client_secret = discordConfig.discord_secret,
+                client_id = Config.discordConfig.discord_id,
+                client_secret = Config.discordConfig.discord_secret,
                 grant_type = "authorization_code",
                 code = code,
                 redirect_uri = redirect_uri
@@ -61,8 +61,8 @@ class DiscordOAuth2 {
         fun refreshToken(refresh_token: String): AccessTokenResponse {
             val data = gson.toJson(
                 Data(
-                    client_id = discordConfig.discord_id,
-                    client_secret = discordConfig.discord_secret,
+                    client_id = Config.discordConfig.discord_id,
+                    client_secret = Config.discordConfig.discord_secret,
                     grant_type = "refresh_token",
                     refresh_token = refresh_token
                 )

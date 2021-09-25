@@ -78,7 +78,7 @@ fun Route.post(testing: Boolean) {
                     // post discord
                     for (i in data) {
                         discordPost(
-                            discordConfig.voteChannelWebhook,
+                            Config.discordConfig.voteChannelWebhook,
                             i[ArticleTable.text],
                             i[ArticleTable.textImage],
                             i[ArticleTable.id]
@@ -144,9 +144,9 @@ fun Route.post(testing: Boolean) {
                     meta("og:description", data!![ArticleTable.text])
                     meta(
                         "og:image",
-                        "http${if (ssl) "s" else ""}://$domain/image/${data!![ArticleTable.textImage]}.jpg"
+                        "${Config.issuer}/image/${data!![ArticleTable.textImage]}.jpg"
                     )
-                    meta("og:url", "http${if (ssl) "s" else ""}://$domain/post/$id")
+                    meta("og:url", "${Config.issuer}/post/$id")
                     meta("og:type", "website")
                     link {
                         href = ""

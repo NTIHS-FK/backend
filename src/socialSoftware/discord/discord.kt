@@ -2,8 +2,7 @@ package com.ntihs_fk.socialSoftware.discord
 
 import com.github.kevinsawicki.http.HttpRequest
 import com.google.gson.Gson
-import com.ntihs_fk.functions.domain
-import com.ntihs_fk.functions.ssl
+import com.ntihs_fk.functions.Config
 import io.ktor.features.*
 import io.ktor.http.*
 
@@ -19,7 +18,7 @@ fun discordPost(webhookUrl: String, text: String, textImage: String, id: Int) {
         ),
         color = 0xE8D44F,
         image = Image(
-            url = "http${if (ssl) "s" else ""}://$domain/textImage/$textImage.jpg"
+            url = "${Config.issuer}/textImage/$textImage.jpg"
         ),
         description = text,
         footer = Footer(
@@ -27,7 +26,7 @@ fun discordPost(webhookUrl: String, text: String, textImage: String, id: Int) {
             icon_url = "https://cdn.discordapp.com/avatars/889564072088068197/195b80329d0cd6eb999fd6ee2f5b34f6.webp"
         ),
         title = "#靠北南工$id",
-        url = "http${if (ssl) "s" else ""}://$domain/post/$id",
+        url = "${Config.issuer}/post/$id",
     )
     val json = Gson().toJson(DiscordWebhookData("靠北南工", embeds = listOf(embed)))
     if (

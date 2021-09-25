@@ -30,12 +30,12 @@ fun Route.discord() {
         val userData = Gson().fromJson(userDataJsonString, DiscordUserData::class.java)
 
         val token = JWT.create()
-            .withIssuer(issuer)
-            .withAudience(audience)
+            .withIssuer(Config.issuer)
+            .withAudience(Config.audience)
             .withClaim("username", "${userData.username}#${userData.discriminator}")
             .withClaim("avatar", userData.avatar)
             .withExpiresAt(Date(System.currentTimeMillis() + 60000))
-            .sign(Algorithm.HMAC256(secret))
+            .sign(Algorithm.HMAC256(Config.secret))
 
         transaction {
             DiscordOAuth2Table.insert {

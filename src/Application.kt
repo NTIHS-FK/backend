@@ -23,7 +23,9 @@ import io.ktor.auth.jwt.*
 import io.ktor.gson.*
 import java.io.File
 
-fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
+fun main(args: Array<String>) {
+    io.ktor.server.netty.EngineMain.main(args)
+}
 
 @Suppress("unused") // Referenced in application.conf
 @kotlin.jvm.JvmOverloads
@@ -85,9 +87,9 @@ fun Application.module(testing: Boolean = false) {
             realm = myRealm
             verifier(
                 JWT
-                .require(Algorithm.HMAC256(secret))
-                .withAudience(audience)
-                .withIssuer(issuer)
+                .require(Algorithm.HMAC256(Config.secret))
+                .withAudience(Config.audience)
+                .withIssuer(Config.issuer)
                 .build()
             )
             validate { credential ->

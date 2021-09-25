@@ -55,12 +55,12 @@ fun Route.login() {
 
         if (verify) {
             val token = JWT.create()
-                .withIssuer(issuer)
-                .withAudience(audience)
+                .withIssuer(Config.issuer)
+                .withAudience(Config.audience)
                 .withClaim("username", userData!![UserTable.name])
                 .withClaim("avatar", userData!![UserTable.name])
                 .withExpiresAt(Date(System.currentTimeMillis() + 60000))
-                .sign(Algorithm.HMAC256(secret))
+                .sign(Algorithm.HMAC256(Config.secret))
 
             call.sessions.set(Login(token))
             call.respond(

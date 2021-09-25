@@ -10,7 +10,7 @@
     <properties>
         <ktor_version>1.6.3</ktor_version>
         <kotlin.code.style>official</kotlin.code.style>
-        <kotlin_version>1.4.21</kotlin_version>
+        <kotlin_version>1.4.32</kotlin_version>
         <logback_version>1.2.1</logback_version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <kotlin.compiler.incremental>true</kotlin.compiler.incremental>
@@ -150,7 +150,7 @@
     </dependencies>
     <build>
         <sourceDirectory>${project.basedir}/src</sourceDirectory>
-        <testSourceDirectory>${project.basedir}/test</testSourceDirectory>
+<!--        <testSourceDirectory>${project.basedir}/test</testSourceDirectory>-->
         <resources>
             <resource>
                 <directory>${project.basedir}/resources</directory>
@@ -164,8 +164,8 @@
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
+                    <source>15</source>
+                    <target>15</target>
                 </configuration>
             </plugin>
             <plugin>
@@ -192,6 +192,9 @@
                         </configuration>
                     </execution>
                 </executions>
+                <configuration>
+                    <jvmTarget>15</jvmTarget>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
