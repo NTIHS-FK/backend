@@ -35,18 +35,37 @@ fun Route.vote(testing: Boolean) {
                 )
             }
         }
+
         call.respond(apiFrameworkFun(rePots))
+    }
+
+    get("/api/vote/{id}/count") {
+        val id = call.parameters["id"] ?: throw BadRequestException("Missing parameter")
+        var count = 0
+        transaction {
+            count = VoteTable.select {
+                VoteTable.postId.eq(id.toInt())
+            }.filterNotNull().size
+        }
+        call.respond(apiFrameworkFun(mapOf("count" to count)))
     }
 
     authenticate("auth-jwt") {
         post("/api/vote/{id}") {
             val id = call.parameters["id"]
             val voteQuery = call.request.queryParameters["vote"]
-            if (id == null && voteQuery == null) throw BadRequestException("Missing parameter")
             val principal = call.principal<JWTPrincipal>()
             val username = principal!!.payload.getClaim("username").asString()
 
+            if (id == null && voteQuery == null) throw BadRequestException("Missing parameter")
+
             transaction {
+                if (
+                    VoteTable.select {
+                        VoteTable.name.eq(username)
+                    }.firstOrNull() != null
+                ) throw BadRequestException("Voted")
+
                 VoteTable.insert {
                     it[name] = username
                     it[postId] = id!!.toInt()
