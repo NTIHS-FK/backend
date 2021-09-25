@@ -13,7 +13,9 @@ import io.ktor.features.*
 import io.ktor.response.*
 import io.ktor.routing.*
 import io.ktor.sessions.*
+import org.jetbrains.exposed.sql.and
 import org.jetbrains.exposed.sql.insert
+import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.util.*
 
@@ -34,14 +36,21 @@ fun Route.discord() {
             .withAudience(Config.audience)
             .withClaim("username", "${userData.username}#${userData.discriminator}")
             .withClaim("avatar", userData.avatar)
-            .withExpiresAt(Date(System.currentTimeMillis() + 60000))
+            .withExpiresAt(Date(System.currentTimeMillis() + Config.expiresAt))
             .sign(Algorithm.HMAC256(Config.secret))
 
         transaction {
-            DiscordOAuth2Table.insert {
-                it[id] = userData.id
-                it[email] = userData.email
-            }
+            if (
+                DiscordOAuth2Table.select {
+                    DiscordOAuth2Table.id.eq(userData.id).and(
+                        DiscordOAuth2Table.email.eq(userData.email)
+                    )
+                }.firstOrNull() == null
+            )
+                DiscordOAuth2Table.insert {
+                    it[id] = userData.id
+                    it[email] = userData.email
+                }
         }
 
         call.sessions.set(Login(token))

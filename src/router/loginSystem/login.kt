@@ -59,7 +59,7 @@ fun Route.login() {
                 .withAudience(Config.audience)
                 .withClaim("username", userData!![UserTable.name])
                 .withClaim("avatar", userData!![UserTable.name])
-                .withExpiresAt(Date(System.currentTimeMillis() + 60000))
+                .withExpiresAt(Date(System.currentTimeMillis() + Config.expiresAt))
                 .sign(Algorithm.HMAC256(Config.secret))
 
             call.sessions.set(Login(token))
