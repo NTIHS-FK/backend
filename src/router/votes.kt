@@ -10,6 +10,7 @@ import io.ktor.auth.jwt.*
 import io.ktor.features.*
 import io.ktor.response.*
 import io.ktor.routing.*
+import org.jetbrains.exposed.sql.and
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -20,7 +21,7 @@ fun Route.vote(testing: Boolean) {
 
         transaction {
             val data = ArticleTable.select {
-                ArticleTable.vote.eq(false)
+                ArticleTable.votingThreshold.eq(false)
             }
 
             for (i in data) {
@@ -30,7 +31,8 @@ fun Route.vote(testing: Boolean) {
                         i[ArticleTable.time].millis,
                         i[ArticleTable.text],
                         i[ArticleTable.image],
-                        i[ArticleTable.textImage]
+                        i[ArticleTable.textImage],
+                        i[ArticleTable.votingThreshold]
                     )
                 )
             }
@@ -41,13 +43,31 @@ fun Route.vote(testing: Boolean) {
 
     get("/api/vote/{id}/count") {
         val id = call.parameters["id"] ?: throw BadRequestException("Missing parameter")
-        var count = 0
+        var approve = 0
+        var against = 0
+
         transaction {
-            count = VoteTable.select {
-                VoteTable.postId.eq(id.toInt())
+            approve = VoteTable.select {
+                VoteTable.postId.eq(id.toInt()).and(
+                    VoteTable.vote.eq(true)
+                )
+            }.filterNotNull().size
+
+            against = VoteTable.select {
+                VoteTable.postId.eq(id.toInt()).and(
+                    VoteTable.vote.eq(false)
+                )
             }.filterNotNull().size
         }
-        call.respond(apiFrameworkFun(mapOf("count" to count)))
+
+        call.respond(
+            apiFrameworkFun(
+                mapOf(
+                    "approve" to approve,
+                    "against" to against
+                )
+            )
+        )
     }
 
     authenticate("auth-jwt") {

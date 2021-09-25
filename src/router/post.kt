@@ -15,6 +15,7 @@ import io.ktor.routing.*
 import kotlinx.html.*
 import org.apache.tika.Tika
 import org.jetbrains.exposed.sql.ResultRow
+import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -106,7 +107,7 @@ fun Route.post(testing: Boolean) {
         transaction {
 
             val data = ArticleTable.select {
-                ArticleTable.vote.eq(true)
+                ArticleTable.votingThreshold.eq(true)
             }
 
             for (i in data) {
@@ -116,7 +117,8 @@ fun Route.post(testing: Boolean) {
                         i[ArticleTable.time].millis,
                         i[ArticleTable.text],
                         i[ArticleTable.image],
-                        i[ArticleTable.textImage]
+                        i[ArticleTable.textImage],
+                        i[ArticleTable.votingThreshold]
                     )
                 )
             }
@@ -158,21 +160,34 @@ fun Route.post(testing: Boolean) {
                 body {
                     div {
                         this.id = "root"
-                        p {
-                            +Article(
-                                data!![ArticleTable.id],
-                                data!![ArticleTable.time].millis,
-                                data!![ArticleTable.text],
-                                data!![ArticleTable.image],
-                                data!![ArticleTable.textImage]
-                            ).toString()
-                        }
                     }
                 }
             }
     }
 
     get("/api/post/{id}") {
+        val id = call.parameters["id"]?.toInt() ?: throw BadRequestException("Missing parameter")
+        var articleData: ResultRow? = null
 
+        transaction {
+            articleData = ArticleTable.select {
+                ArticleTable.id.eq(id)
+            }.firstOrNull() ?: throw BadRequestException("Not id")
+        }
+
+        if (articleData == null) throw BadRequestException("error")
+
+        call.respond(
+            apiFrameworkFun(
+                Article(
+                    articleData!![ArticleTable.id],
+                    articleData!![ArticleTable.time].millis,
+                    articleData!![ArticleTable.text],
+                    articleData!![ArticleTable.image],
+                    articleData!![ArticleTable.textImage],
+                    articleData!![ArticleTable.votingThreshold]
+                )
+            )
+        )
     }
 }

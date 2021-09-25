@@ -9,5 +9,5 @@ object ArticleTable : Table() {
     val text = text("Text")
     val image = text("Image").nullable()
     val textImage = text("textImage")
-    val vote = bool("Vote").clientDefault { false }
+    val votingThreshold = bool("Vote").clientDefault { false }
 }
