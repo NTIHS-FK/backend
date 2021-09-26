@@ -14,7 +14,7 @@ class EmailVerify {
         .withSMTPServer("smtp.gmail.com", 465, Config.gmailConfig.email, Config.gmailConfig.password)
         .withTransportStrategy(TransportStrategy.SMTPS)
         .withSessionTimeout(10 * 1000)
-        .withDebugLogging(true)
+        .withDebugLogging(false)
         .buildMailer()
 
     private fun createJWSToken(email: String): String {
@@ -45,7 +45,8 @@ class EmailVerify {
         val email = EmailBuilder.startingBlank()
             .to(email)
             .from(Config.gmailConfig.email)
-            .withPlainText(token)
+            .withSubject("靠北南工Email驗證信")
+            .withPlainText("${Config.issuer}/email-verify?code=$token")
             .buildEmail()
         mailer.sendMail(email)
     }

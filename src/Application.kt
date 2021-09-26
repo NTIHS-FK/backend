@@ -7,6 +7,7 @@ import com.ntihs_fk.database.initDatabase
 import com.ntihs_fk.error.UnauthorizedException
 import com.ntihs_fk.functions.*
 import com.ntihs_fk.router.loginSystem.discord
+import com.ntihs_fk.router.loginSystem.emailVerify
 import com.ntihs_fk.router.loginSystem.login
 import com.ntihs_fk.router.post
 import com.ntihs_fk.router.vote
@@ -71,7 +72,9 @@ fun Application.module(testing: Boolean = false) {
         initDatabase(log)
         init(log)
     }
+
     if (Config.ssl) install(HSTS)
+
     install(Sessions) {
         cookie<Login>("SessionId", directorySessionStorage(File(".sessions"), cached = true))
     }
@@ -155,5 +158,6 @@ fun Application.module(testing: Boolean = false) {
         post(testing)
         vote(testing)
         discord()
+        emailVerify()
     }
 }
