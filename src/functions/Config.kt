@@ -15,8 +15,10 @@ class Config {
 
         private val gson = Gson()
 
-        private val domain = System.getenv("DOMAIN") ?: "127.0.0.1:8080"
-        val ssl = System.getenv("SSL").toBoolean()
+        var port: Int = (System.getenv("PORT") ?: 8080) as Int
+        var domain = System.getenv("DOMAIN") ?: "127.0.0.1:$port"
+
+        var ssl = System.getenv("SSL").toBoolean()
 
         // JWT config
         val secret = System.getenv("jwt_secret") ?: "secret"

@@ -100,6 +100,8 @@ fun Route.login() {
 
         // email verify
 
+        emailVerifyFun.sendEmail(user.email)
+
         // add data to the database
 
         transaction {
@@ -126,6 +128,25 @@ fun Route.login() {
             val verify = principal.payload.getClaim("verify").asBoolean()
 
             call.respond(UserData(username, avatar, verify))
+        }
+
+        post("/api/resend-email") {
+            val principal = call.principal<JWTPrincipal>()
+            val username = principal!!.payload.getClaim("username").asString()
+            val verify = principal.payload.getClaim("verify").asBoolean()
+            var email = ""
+
+            transaction {
+                email = UserTable.select {
+                    UserTable.name.eq(username)
+                }.first()[UserTable.email]
+            }
+
+            if (!verify) {
+                emailVerifyFun.sendEmail(email)
+                call.respond(apiFrameworkFun(null))
+            } else throw BadRequestException("Verified")
+
         }
     }
 

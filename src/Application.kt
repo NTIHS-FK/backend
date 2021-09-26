@@ -2,6 +2,7 @@ package com.ntihs_fk
 
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
+import com.ntihs_fk.cli.Main
 import com.ntihs_fk.data.Login
 import com.ntihs_fk.database.initDatabase
 import com.ntihs_fk.error.UnauthorizedException
@@ -23,44 +24,9 @@ import org.slf4j.event.*
 import io.ktor.auth.*
 import io.ktor.auth.jwt.*
 import io.ktor.gson.*
-import io.ktor.network.tls.certificates.*
-import io.ktor.server.engine.*
-import io.ktor.server.netty.*
-import org.slf4j.LoggerFactory
 import java.io.File
 
-fun main(args: Array<String>) {
-
-    val environment = applicationEngineEnvironment {
-        log = LoggerFactory.getLogger("ktor.application")
-        connector {
-            port = 8080
-        }
-
-        if (Config.ssl) {
-            val keyStoreFile = File("build/keystore.jks")
-            val keystore = generateCertificate(
-                file = keyStoreFile,
-                keyAlias = "sampleAlias",
-                keyPassword = "foobar",
-                jksPassword = "foobar"
-            )
-
-            sslConnector(
-                keyStore = keystore,
-                keyAlias = "sampleAlias",
-                keyStorePassword = { "foobar".toCharArray() },
-                privateKeyPassword = { "foobar".toCharArray() }) {
-                port = 8443
-                keyStorePath = keyStoreFile
-            }
-        }
-
-        module(Application::module)
-    }
-
-    embeddedServer(Netty, environment).start(wait = true)
-}
+fun main(args: Array<String>) = Main().main(args)
 
 @Suppress("unused") // Referenced in application.conf
 @kotlin.jvm.JvmOverloads
