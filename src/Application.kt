@@ -122,7 +122,7 @@ fun Application.module(testing: Boolean = false) {
     routing {
         login()
         post(testing)
-        vote(testing)
+        vote()
         discord()
         emailVerify()
     }

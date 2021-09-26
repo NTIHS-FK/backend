@@ -58,17 +58,17 @@ class DiscordOAuth2 {
             return requestForm(data.serializeToMap())
         }
 
-        fun refreshToken(refresh_token: String): AccessTokenResponse {
-            val data = gson.toJson(
-                Data(
-                    client_id = Config.discordConfig.discord_id,
-                    client_secret = Config.discordConfig.discord_secret,
-                    grant_type = "refresh_token",
-                    refresh_token = refresh_token
-                )
-            )
-
-            return requestForm(data.serializeToMap())
-        }
+//        fun refreshToken(refresh_token: String): AccessTokenResponse {
+//            val data = gson.toJson(
+//                Data(
+//                    client_id = Config.discordConfig.discord_id,
+//                    client_secret = Config.discordConfig.discord_secret,
+//                    grant_type = "refresh_token",
+//                    refresh_token = refresh_token
+//                )
+//            )
+//
+//            return requestForm(data.serializeToMap())
+//        }
     }
 }

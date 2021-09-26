@@ -15,7 +15,7 @@ import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.transactions.transaction
 
-fun Route.vote(testing: Boolean) {
+fun Route.vote() {
     get("/api/votes") {
         val rePots = mutableListOf<Article>()
 

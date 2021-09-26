@@ -42,13 +42,13 @@ class EmailVerify {
 
     fun sendEmail(email: String) {
         val token = this.createJWSToken(email)
-        val email = EmailBuilder.startingBlank()
+        val emailData = EmailBuilder.startingBlank()
             .to(email)
             .from(Config.gmailConfig.email)
             .withSubject("靠北南工Email驗證信")
             .withPlainText("${Config.issuer}/email-verify?code=$token")
             .buildEmail()
-        mailer.sendMail(email)
+        mailer.sendMail(emailData)
     }
 }
 

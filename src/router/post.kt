@@ -15,7 +15,6 @@ import io.ktor.routing.*
 import kotlinx.html.*
 import org.apache.tika.Tika
 import org.jetbrains.exposed.sql.ResultRow
-import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.transactions.transaction

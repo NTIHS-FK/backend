@@ -15,7 +15,7 @@ class Config {
 
         private val gson = Gson()
 
-        var port: Int = (System.getenv("PORT") ?: 8080) as Int
+        var port: Int = System.getenv("PORT").toInt()
         var domain = System.getenv("DOMAIN") ?: "127.0.0.1:$port"
 
         var ssl = System.getenv("SSL").toBoolean()

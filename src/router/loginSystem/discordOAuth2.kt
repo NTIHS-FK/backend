@@ -7,7 +7,6 @@ import com.google.gson.Gson
 import com.ntihs_fk.data.DiscordUserData
 import com.ntihs_fk.data.Login
 import com.ntihs_fk.database.DiscordOAuth2Table
-import com.ntihs_fk.database.UserTable
 import com.ntihs_fk.functions.*
 import io.ktor.application.*
 import io.ktor.features.*
