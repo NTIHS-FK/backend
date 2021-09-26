@@ -14,8 +14,8 @@ class Config {
         val discordConfig: DiscordConfig = Gson().fromJson(discordConfigJSONString, DiscordConfig::class.java)
 
         private val domain = System.getenv("DOMAIN") ?: "127.0.0.1:8080"
-        private val ssl = System.getenv("SSL").toBoolean()
-        // JWT
+        val ssl = System.getenv("SSL").toBoolean()
+        // JWT config
         val secret = System.getenv("jwt_secret") ?: "secret"
         val issuer = "http${if (ssl) "s" else ""}://$domain"
         val audience = "$issuer/vote"

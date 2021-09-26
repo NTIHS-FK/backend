@@ -76,8 +76,10 @@ fun Route.vote(testing: Boolean) {
             val voteQuery = call.request.queryParameters["vote"]
             val principal = call.principal<JWTPrincipal>()
             val username = principal!!.payload.getClaim("username").asString()
+            val verify = principal.payload.getClaim("verify").asBoolean()
 
             if (id == null && voteQuery == null) throw BadRequestException("Missing parameter")
+            if (!verify) throw BadRequestException("Email not verify")
 
             transaction {
                 if (

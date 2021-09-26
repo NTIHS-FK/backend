@@ -7,6 +7,7 @@ import com.google.gson.Gson
 import com.ntihs_fk.data.DiscordUserData
 import com.ntihs_fk.data.Login
 import com.ntihs_fk.database.DiscordOAuth2Table
+import com.ntihs_fk.database.UserTable
 import com.ntihs_fk.functions.*
 import io.ktor.application.*
 import io.ktor.features.*
@@ -36,6 +37,7 @@ fun Route.discord() {
             .withAudience(Config.audience)
             .withClaim("username", "${userData.username}#${userData.discriminator}")
             .withClaim("avatar", userData.avatar)
+            .withClaim("verify", true)
             .withExpiresAt(Date(System.currentTimeMillis() + Config.expiresAt))
             .sign(Algorithm.HMAC256(Config.secret))
 

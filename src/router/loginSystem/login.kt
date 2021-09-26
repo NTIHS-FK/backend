@@ -59,6 +59,7 @@ fun Route.login() {
                 .withAudience(Config.audience)
                 .withClaim("username", userData!![UserTable.name])
                 .withClaim("avatar", userData!![UserTable.name])
+                .withClaim("verify", userData!![UserTable.verify])
                 .withExpiresAt(Date(System.currentTimeMillis() + Config.expiresAt))
                 .sign(Algorithm.HMAC256(Config.secret))
 
@@ -122,8 +123,9 @@ fun Route.login() {
             val principal = call.principal<JWTPrincipal>()
             val username = principal!!.payload.getClaim("username").asString()
             val avatar = principal.payload.getClaim("avatar").asString()
+            val verify = principal.payload.getClaim("verify").asBoolean()
 
-            call.respond(UserData(username, avatar))
+            call.respond(UserData(username, avatar, verify))
         }
     }
 
