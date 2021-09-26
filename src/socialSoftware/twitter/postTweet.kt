@@ -1,12 +1,20 @@
 package socialSoftware.twitter
 
+import com.ntihs_fk.functions.Config
 import twitter4j.StatusUpdate
 import twitter4j.TwitterFactory
+import twitter4j.conf.ConfigurationBuilder
 import java.io.File
 
 fun postTweet(text: String, imagePath: String? = null, textImage: String) {
     val mediaIds = mutableListOf<Long>()
-    val twitter = TwitterFactory.getSingleton()
+    val cb = ConfigurationBuilder()
+    cb.setDebugEnabled(false)
+        .setOAuthConsumerKey(Config.twitterConfig.consumerKey)
+        .setOAuthConsumerSecret(Config.twitterConfig.consumerSecret)
+        .setOAuthAccessToken(Config.twitterConfig.accessToken)
+        .setOAuthAccessTokenSecret(Config.twitterConfig.accessTokenSecret)
+    val twitter = TwitterFactory(cb.build()).instance
 
     // text
     val statusUpdate = StatusUpdate(text)

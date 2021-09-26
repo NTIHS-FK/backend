@@ -3,6 +3,8 @@ package com.ntihs_fk.functions
 import com.google.gson.Gson
 import com.ntihs_fk.data.DiscordConfig
 import com.ntihs_fk.data.GmailConfig
+import com.ntihs_fk.data.TwitterConfig
+import twitter4j.conf.ConfigurationBuilder
 import java.io.File
 
 class Config {
@@ -10,18 +12,26 @@ class Config {
         // read config json files
         private val discordConfigJSONString = File("./Discord.config.json").readText()
         private val gmailConfigJSONString = File("./Gmail.config.json").readText()
-        // Discord config
-        val discordConfig: DiscordConfig = Gson().fromJson(discordConfigJSONString, DiscordConfig::class.java)
+        private val twitterConfigJSONString = File("./Gmail.config.json").readText()
+
+        private val gson = Gson()
 
         private val domain = System.getenv("DOMAIN") ?: "127.0.0.1:8080"
         val ssl = System.getenv("SSL").toBoolean()
+
         // JWT config
         val secret = System.getenv("jwt_secret") ?: "secret"
         val issuer = "http${if (ssl) "s" else ""}://$domain"
         val audience = "$issuer/vote"
         const val expiresAt = 60000 * 60 * 24 * 7
-        // Gmail config
-        val gmailConfig: GmailConfig = Gson().fromJson(gmailConfigJSONString, GmailConfig::class.java)
 
+        // Discord config
+        val discordConfig: DiscordConfig = gson.fromJson(discordConfigJSONString, DiscordConfig::class.java)
+
+        // Gmail config
+        val gmailConfig: GmailConfig = gson.fromJson(gmailConfigJSONString, GmailConfig::class.java)
+
+        // Twitter config
+        val twitterConfig: TwitterConfig = gson.fromJson(twitterConfigJSONString, TwitterConfig::class.java)
     }
 }

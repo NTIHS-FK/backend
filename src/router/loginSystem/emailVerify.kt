@@ -1,7 +1,6 @@
 package com.ntihs_fk.router.loginSystem
 
 import com.ntihs_fk.database.UserTable
-import com.ntihs_fk.functions.apiFrameworkFun
 import com.ntihs_fk.functions.emailVerifyFun
 import io.ktor.application.*
 import io.ktor.features.*
@@ -23,6 +22,6 @@ fun Route.emailVerify() {
             }
         }
 
-        call.respond(apiFrameworkFun(null))
+        call.respondRedirect("/")
     }
 }
