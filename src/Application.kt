@@ -22,27 +22,56 @@ import org.slf4j.event.*
 import io.ktor.auth.*
 import io.ktor.auth.jwt.*
 import io.ktor.gson.*
+import io.ktor.network.tls.certificates.*
+import io.ktor.server.engine.*
+import io.ktor.server.netty.*
+import org.slf4j.LoggerFactory
 import java.io.File
 
 fun main(args: Array<String>) {
-    io.ktor.server.netty.EngineMain.main(args)
+
+    val environment = applicationEngineEnvironment {
+        log = LoggerFactory.getLogger("ktor.application")
+        connector {
+            port = 8080
+        }
+
+        if (Config.ssl) {
+            val keyStoreFile = File("build/keystore.jks")
+            val keystore = generateCertificate(
+                file = keyStoreFile,
+                keyAlias = "sampleAlias",
+                keyPassword = "foobar",
+                jksPassword = "foobar"
+            )
+
+            sslConnector(
+                keyStore = keystore,
+                keyAlias = "sampleAlias",
+                keyStorePassword = { "foobar".toCharArray() },
+                privateKeyPassword = { "foobar".toCharArray() }) {
+                port = 8443
+                keyStorePath = keyStoreFile
+            }
+        }
+
+        module(Application::module)
+    }
+
+    embeddedServer(Netty, environment).start(wait = true)
 }
 
 @Suppress("unused") // Referenced in application.conf
 @kotlin.jvm.JvmOverloads
 fun Application.module(testing: Boolean = false) {
 
-    val myRealm: String = if (testing) {
-        "Access to login"
-    } else {
-        System.getenv("jwt_realm") ?: "Access to login"
-    }
+    val myRealm: String = System.getenv("jwt_realm") ?: "Access to login"
 
     if (!testing) {
         initDatabase(log)
         init(log)
     }
-
+    if (Config.ssl) install(HSTS)
     install(Sessions) {
         cookie<Login>("SessionId", directorySessionStorage(File(".sessions"), cached = true))
     }
@@ -77,7 +106,12 @@ fun Application.module(testing: Boolean = false) {
             )
         }
 
-        exception<JwtException> {  }
+        exception<JwtException> {
+            call.respond(
+                HttpStatusCode.Unauthorized,
+                apiFrameworkFun(null, true, "token error")
+            )
+        }
     }
 
     install(CallLogging) {
