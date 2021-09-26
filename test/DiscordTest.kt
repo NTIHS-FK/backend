@@ -11,11 +11,9 @@ class DiscordTest {
     @OptIn(DelicateCoroutinesApi::class)
     @Test
     fun discordVoteTest() {
-        val classloader: ClassLoader = Thread.currentThread().contextClassLoader
-        val discordConfigJSONFileUrl =
-            classloader.getResource("DiscordWebhook/config.json") ?: throw Error("No DiscordWebhook/config.json")
 
-        val discordConfigJSONString = File(discordConfigJSONFileUrl.toURI()).readText()
+
+        val discordConfigJSONString = File("./Discord.config.json").readText()
         val discordConfig: DiscordConfig = Gson().fromJson(discordConfigJSONString, DiscordConfig::class.java)
         discordPost(discordConfig.voteChannelWebhook, "aasdasdasa", "a", 4)
     }

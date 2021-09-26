@@ -10,6 +10,7 @@ import com.ntihs_fk.router.loginSystem.discord
 import com.ntihs_fk.router.loginSystem.login
 import com.ntihs_fk.router.post
 import com.ntihs_fk.router.vote
+import io.jsonwebtoken.JwtException
 import io.ktor.application.*
 import io.ktor.response.*
 import io.ktor.request.*
@@ -75,6 +76,8 @@ fun Application.module(testing: Boolean = false) {
                 apiFrameworkFun(null, true, it.message)
             )
         }
+
+        exception<JwtException> {  }
     }
 
     install(CallLogging) {
