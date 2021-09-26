@@ -4,7 +4,6 @@ import com.google.gson.Gson
 import com.ntihs_fk.data.DiscordConfig
 import com.ntihs_fk.data.GmailConfig
 import com.ntihs_fk.data.TwitterConfig
-import twitter4j.conf.ConfigurationBuilder
 import java.io.File
 
 class Config {
@@ -12,7 +11,7 @@ class Config {
         // read config json files
         private val discordConfigJSONString = File("./Discord.config.json").readText()
         private val gmailConfigJSONString = File("./Gmail.config.json").readText()
-        private val twitterConfigJSONString = File("./Gmail.config.json").readText()
+        private val twitterConfigJSONString = File("./Twitter.config.json").readText()
 
         private val gson = Gson()
 

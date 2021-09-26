@@ -19,6 +19,6 @@ class TwitterTest {
 
     @Test
     fun twitterTest() {
-        postTweet(text, "a.jpg", "a")
+        postTweet(text, null, "a")
     }
 }

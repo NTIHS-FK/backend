@@ -9,12 +9,15 @@ import java.io.File
 fun postTweet(text: String, imagePath: String? = null, textImage: String) {
     val mediaIds = mutableListOf<Long>()
     val cb = ConfigurationBuilder()
+
     cb.setDebugEnabled(false)
         .setOAuthConsumerKey(Config.twitterConfig.consumerKey)
         .setOAuthConsumerSecret(Config.twitterConfig.consumerSecret)
         .setOAuthAccessToken(Config.twitterConfig.accessToken)
         .setOAuthAccessTokenSecret(Config.twitterConfig.accessTokenSecret)
-    val twitter = TwitterFactory(cb.build()).instance
+
+    val tf = TwitterFactory(cb.build())
+    val twitter = tf.instance
 
     // text
     val statusUpdate = StatusUpdate(text)
