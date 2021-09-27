@@ -51,4 +51,22 @@
        }
       ```
 
-## 
+## Vote API
+- GET `/api/votes`
+    - Respond
+      ```json5
+       {
+          "error": false,
+          "message": "ok",
+          "data": [
+             {
+                "id": 123123,
+                "time": 123123123,
+                "text": "content",
+                "image": "image path",
+                "textImage": "text image path",
+                "votingThreshold": true
+             }
+          ] 
+       }
+      ```
