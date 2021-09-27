@@ -19,7 +19,7 @@ import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.util.*
 
-fun Route.discord() {
+fun Route.discordOAuth2() {
     get("/api/discord/authorize") {
         val code = call.request.queryParameters["code"] ?: throw BadRequestException("Missing parameter")
         val data = DiscordOAuth2.exchangeCode(code)

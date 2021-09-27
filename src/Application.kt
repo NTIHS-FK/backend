@@ -7,7 +7,8 @@ import com.ntihs_fk.data.Login
 import com.ntihs_fk.database.initDatabase
 import com.ntihs_fk.error.UnauthorizedException
 import com.ntihs_fk.functions.*
-import com.ntihs_fk.router.loginSystem.discord
+import com.ntihs_fk.router.discord
+import com.ntihs_fk.router.loginSystem.discordOAuth2
 import com.ntihs_fk.router.loginSystem.emailVerify
 import com.ntihs_fk.router.loginSystem.login
 import com.ntihs_fk.router.post
@@ -126,7 +127,8 @@ fun Application.module(testing: Boolean = false) {
         login()
         post(testing)
         vote()
-        discord()
+        discordOAuth2()
         emailVerify()
+        discord()
     }
 }
