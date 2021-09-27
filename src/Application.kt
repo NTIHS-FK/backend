@@ -24,6 +24,7 @@ import org.slf4j.event.*
 import io.ktor.auth.*
 import io.ktor.auth.jwt.*
 import io.ktor.gson.*
+import io.ktor.websocket.*
 import java.io.File
 
 fun main(args: Array<String>) = Main().main(args)
@@ -112,6 +113,8 @@ fun Application.module(testing: Boolean = false) {
         gson {
         }
     }
+
+    install(WebSockets)
 
     routing {
         get("/") {
