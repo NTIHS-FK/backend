@@ -1,6 +1,8 @@
 package com.ntihs_fk.router.loginSystem.update
 
+import at.favre.lib.crypto.bcrypt.BCrypt
 import com.ntihs_fk.data.UpdateEmailData
+import com.ntihs_fk.data.UpdatePasswordData
 import com.ntihs_fk.database.UserTable
 import com.ntihs_fk.error.UnauthorizedException
 import com.ntihs_fk.functions.verifyPassword
@@ -34,6 +36,20 @@ fun Route.update() {
     }
 
     patch("/password") {
+        val updateData = call.receive<UpdatePasswordData>()
+        val principal = call.principal<JWTPrincipal>()
+        val username = principal!!.payload.getClaim("username").asString()
 
+        if (updateData.password == null) throw BadRequestException("Missing parameter")
+
+        val verifyData = verifyPassword(updateData.password, username)
+
+        if (verifyData.verify) {
+            transaction {
+                UserTable.update({ UserTable.name eq username }) {
+                    it[hashcode] = BCrypt.withDefaults().hashToString(12, updateData.password.toCharArray())
+                }
+            }
+        } else throw UnauthorizedException()
     }
 }

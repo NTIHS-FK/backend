@@ -11,6 +11,7 @@ import org.jetbrains.exposed.sql.transactions.transaction
 
 fun verifyPassword(password: String, username: String): VerifyUserPasswordData {
     var userData: ResultRow? = null
+    // 尋找有沒有這個人?
     transaction {
         userData = UserTable.select {
             UserTable.name.eq(username).or(
@@ -18,9 +19,9 @@ fun verifyPassword(password: String, username: String): VerifyUserPasswordData {
             )
         }.firstOrNull()
     }
-
+    // 沒找到就給他丟錯誤
     if (userData == null) throw UnauthorizedException()
-
+    // 驗證密碼真實性
     val verify = BCrypt.verifyer()
         .verify(password.toCharArray(), userData!![UserTable.hashcode]).verified
 
