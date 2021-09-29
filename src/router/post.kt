@@ -62,6 +62,12 @@ fun Route.post(testing: Boolean) {
 
         if (text == null) throw BadRequestException("Missing text")
         else {
+            // select text
+            transaction {
+                ArticleTable.select {
+                    ArticleTable.text.eq(text!!)
+                }.firstOrNull() ?: throw BadRequestException("WTF")
+            }
 
             // draw image
             val drawImageFileName = draw(textImageType)(text!!)
