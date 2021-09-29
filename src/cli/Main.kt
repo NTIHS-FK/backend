@@ -29,7 +29,7 @@ class Main : CliktCommand() {
         val environment = applicationEngineEnvironment {
             log = logger
             connector {
-                port = Config.port
+                port = Config.port as Int
             }
 
             if (ssl != null) {

@@ -10,6 +10,7 @@ import com.ntihs_fk.data.UserData
 import com.ntihs_fk.database.UserTable
 import com.ntihs_fk.error.UnauthorizedException
 import com.ntihs_fk.functions.*
+import com.ntihs_fk.router.loginSystem.update.update
 import io.ktor.application.*
 import io.ktor.auth.*
 import io.ktor.auth.jwt.*
@@ -35,31 +36,19 @@ fun Route.login() {
         }
 
         val user = call.receive<LoginData>()
-        var userData: ResultRow? = null
 
         if (user.nameOrEmail == null || user.password == null)
             throw BadRequestException("Missing parameter")
 
-        transaction {
-            userData = UserTable.select {
-                UserTable.name.eq(user.nameOrEmail).or(
-                    UserTable.email.eq(user.nameOrEmail)
-                )
-            }.firstOrNull()
-        }
+        val userPasswordVerifyData = verifyPassword(user.nameOrEmail, user.password)
 
-        if (userData == null) throw UnauthorizedException()
-
-        val verify = BCrypt.verifyer()
-            .verify(user.password.toCharArray(), userData!![UserTable.hashcode]).verified
-
-        if (verify) {
+        if (userPasswordVerifyData.verify) {
             val token = JWT.create()
                 .withIssuer(Config.issuer)
                 .withAudience(Config.audience)
-                .withClaim("username", userData!![UserTable.name])
-                .withClaim("avatar", userData!![UserTable.name])
-                .withClaim("verify", userData!![UserTable.verify])
+                .withClaim("username", userPasswordVerifyData.userData[UserTable.name])
+                .withClaim("avatar", userPasswordVerifyData.userData[UserTable.name])
+                .withClaim("verify", userPasswordVerifyData.userData[UserTable.verify])
                 .withExpiresAt(Date(System.currentTimeMillis() + Config.expiresAt))
                 .sign(Algorithm.HMAC256(Config.secret))
 
@@ -121,7 +110,7 @@ fun Route.login() {
     }
 
     authenticate("auth-jwt") {
-        get("/api/user-data") {
+        get("/api/user") {
             val principal = call.principal<JWTPrincipal>()
             val username = principal!!.payload.getClaim("username").asString()
             val avatar = principal.payload.getClaim("avatar").asString()
@@ -147,6 +136,10 @@ fun Route.login() {
                 call.respond(apiFrameworkFun(null))
             } else throw BadRequestException("Verified")
 
+        }
+
+        route("/api/update") {
+            update()
         }
     }
 

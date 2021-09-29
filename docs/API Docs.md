@@ -52,6 +52,7 @@
       ```
 
 ## Vote API
+
 - GET `/api/votes`
     - Respond
       ```json5

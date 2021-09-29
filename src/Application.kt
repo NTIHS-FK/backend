@@ -7,7 +7,8 @@ import com.ntihs_fk.data.Login
 import com.ntihs_fk.database.initDatabase
 import com.ntihs_fk.error.UnauthorizedException
 import com.ntihs_fk.functions.*
-import com.ntihs_fk.router.loginSystem.discord
+import com.ntihs_fk.router.discord
+import com.ntihs_fk.router.loginSystem.discordOAuth2
 import com.ntihs_fk.router.loginSystem.emailVerify
 import com.ntihs_fk.router.loginSystem.login
 import com.ntihs_fk.router.post
@@ -24,7 +25,10 @@ import org.slf4j.event.*
 import io.ktor.auth.*
 import io.ktor.auth.jwt.*
 import io.ktor.gson.*
+import io.ktor.http.cio.websocket.*
+import io.ktor.websocket.*
 import java.io.File
+import java.time.Duration
 
 fun main(args: Array<String>) = Main().main(args)
 
@@ -46,8 +50,11 @@ fun Application.module(testing: Boolean = false) {
     }
 
     install(StatusPages) {
+        val allHttpCode = HttpStatusCode.allStatusCodes.toMutableList()
+        allHttpCode.remove(HttpStatusCode.SwitchingProtocols)
 
-        status(*HttpStatusCode.allStatusCodes.toTypedArray()) {
+        status(*allHttpCode.toTypedArray()) {
+            println(it.description)
             call.respond(
                 HttpStatusCode(it.value, it.description),
                 apiFrameworkFun(null, true, it.description)
@@ -113,6 +120,13 @@ fun Application.module(testing: Boolean = false) {
         }
     }
 
+    install(WebSockets) {
+        pingPeriod = Duration.ofSeconds(15)
+        timeout = Duration.ofSeconds(15)
+        maxFrameSize = Long.MAX_VALUE
+        masking = false
+    }
+
     routing {
         get("/") {
             call.respondText("HELLO WORLD!", contentType = ContentType.Text.Plain)
@@ -123,7 +137,8 @@ fun Application.module(testing: Boolean = false) {
         login()
         post(testing)
         vote()
-        discord()
+        discordOAuth2()
         emailVerify()
+        discord()
     }
 }
