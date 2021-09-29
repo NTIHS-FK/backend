@@ -21,7 +21,7 @@ class DiscordTest {
     }
 
     @Test
-    fun testConversation() {
+    fun testPostConversation() {
         withTestApplication(Application::module) {
             handleWebSocketConversation("/post/broadcast") { incoming, _ ->
                 var greetingText = (incoming.receive() as Frame.Text).readText()
