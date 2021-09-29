@@ -9,9 +9,9 @@ import java.io.File
 class Config {
     companion object {
         // read config json files
-        private val discordConfigJSONString = File("./Discord.config.json").readText()
-        private val gmailConfigJSONString = File("./Gmail.config.json").readText()
-        private val twitterConfigJSONString = File("./Twitter.config.json").readText()
+        var discordConfigFile = File("./Discord.config.json")
+        var gmailConfigFile = File("./Gmail.config.json")
+        var twitterConfigFile = File("./Twitter.config.json")
 
         private val gson = Gson()
 
@@ -27,12 +27,12 @@ class Config {
         const val expiresAt = 60000 * 60 * 24 * 7
 
         // Discord config
-        val discordConfig: DiscordConfig = gson.fromJson(discordConfigJSONString, DiscordConfig::class.java)
+        val discordConfig: DiscordConfig = gson.fromJson(discordConfigFile.readText(), DiscordConfig::class.java)
 
         // Gmail config
-        val gmailConfig: GmailConfig = gson.fromJson(gmailConfigJSONString, GmailConfig::class.java)
+        val gmailConfig: GmailConfig = gson.fromJson(gmailConfigFile.readText(), GmailConfig::class.java)
 
         // Twitter config
-        val twitterConfig: TwitterConfig = gson.fromJson(twitterConfigJSONString, TwitterConfig::class.java)
+        val twitterConfig: TwitterConfig = gson.fromJson(twitterConfigFile.readText(), TwitterConfig::class.java)
     }
 }

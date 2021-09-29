@@ -18,7 +18,6 @@ import io.ktor.server.engine.*
 import io.ktor.server.netty.*
 import org.slf4j.LoggerFactory
 import java.io.File
-import kotlin.system.exitProcess
 
 class Main : CliktCommand() {
 
@@ -61,9 +60,13 @@ class Main : CliktCommand() {
             )
         )
 
+        // init config
         Config.port = port
         Config.domain = host
         Config.ssl = ssl != null
+        Config.twitterConfigFile = twitterConfigFIle
+        Config.discordConfigFile = discordConfigFIle
+        Config.gmailConfigFile = gmailConfigFile
 
         val environment = applicationEngineEnvironment {
             log = logger
