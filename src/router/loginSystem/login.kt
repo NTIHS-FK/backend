@@ -21,6 +21,7 @@ import io.ktor.routing.*
 import io.ktor.sessions.*
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
+import java.util.*
 import java.util.Date
 
 
@@ -46,6 +47,7 @@ fun Route.login() {
             val token = JWT.create()
                 .withIssuer(Config.issuer)
                 .withAudience(Config.audience)
+                .withJWTId(UUID.randomUUID().toString())
                 .withClaim("username", userPasswordVerifyData.userData[UserTable.name])
                 .withClaim("avatar", userPasswordVerifyData.userData[UserTable.name])
                 .withClaim("verify", userPasswordVerifyData.userData[UserTable.verify])
@@ -104,11 +106,6 @@ fun Route.login() {
         call.respond(apiFrameworkFun(null))
     }
 
-    post("/api/log-out") {
-        call.sessions.clear<Login>()
-        call.respond(apiFrameworkFun(null))
-    }
-
     authenticate("auth-jwt") {
         get("/api/user") {
             val principal = call.principal<JWTPrincipal>()
@@ -136,6 +133,13 @@ fun Route.login() {
                 call.respond(apiFrameworkFun(null))
             } else throw BadRequestException("Verified")
 
+        }
+
+        post("/api/log-out") {
+            val principal = call.principal<JWTPrincipal>()
+            jwtBlacklist.addBlacklistTokenId(principal!!.jwtId!!)
+            call.sessions.clear<Login>()
+            call.respond(apiFrameworkFun(null))
         }
 
         route("/api/update") {

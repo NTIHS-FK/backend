@@ -34,6 +34,7 @@ fun Route.discordOAuth2() {
         val token = JWT.create()
             .withIssuer(Config.issuer)
             .withAudience(Config.audience)
+            .withJWTId(UUID.randomUUID().toString())
             .withClaim("username", "${userData.username}#${userData.discriminator}")
             .withClaim("avatar", userData.avatar)
             .withClaim("verify", true)

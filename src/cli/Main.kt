@@ -67,7 +67,7 @@ class Main : CliktCommand() {
         Config.twitterConfigFile = twitterConfigFIle
         Config.discordConfigFile = discordConfigFIle
         Config.gmailConfigFile = gmailConfigFile
-
+        // server config
         val environment = applicationEngineEnvironment {
             log = logger
             connector {
@@ -94,7 +94,7 @@ class Main : CliktCommand() {
 
             module(Application::module)
         }
-
+        // start server
         embeddedServer(Netty, environment).start(wait = true)
     }
 }

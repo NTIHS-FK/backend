@@ -106,7 +106,7 @@ fun Application.module(testing: Boolean = false) {
                 .build()
             )
             validate { credential ->
-                if (credential.payload.getClaim("username").asString() != "") {
+                if (jwtBlacklist.isInside(credential.jwtId!!)) {
                     JWTPrincipal(credential.payload)
                 } else {
                     null
