@@ -64,9 +64,11 @@ fun Route.post(testing: Boolean) {
         else {
             // select text
             transaction {
-                ArticleTable.select {
-                    ArticleTable.text.eq(text!!)
-                }.firstOrNull() ?: throw BadRequestException("WTF")
+                if (
+                    ArticleTable.select {
+                        ArticleTable.text.eq(text!!)
+                    }.firstOrNull() != null
+                ) throw BadRequestException("WTF")
             }
 
             // draw image
