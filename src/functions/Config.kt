@@ -9,16 +9,16 @@ import java.io.File
 class Config {
     companion object {
         // read config json files
-        var discordConfigFile = File("./Discord.config.json")
-        var gmailConfigFile = File("./Gmail.config.json")
-        var twitterConfigFile = File("./Twitter.config.json")
+        lateinit var discordConfigFile: File
+        lateinit var gmailConfigFile: File
+        lateinit var twitterConfigFile: File
 
         private val gson = Gson()
 
         var port = System.getenv("PORT") ?: 8080
         var domain = System.getenv("DOMAIN") ?: "127.0.0.1:8080"
 
-        var ssl = System.getenv("SSL").toBoolean()
+        var ssl = false
 
         // JWT config
         val secret = System.getenv("jwt_secret") ?: "secret"

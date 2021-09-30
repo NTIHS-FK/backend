@@ -1,14 +1,32 @@
 package com.ntihs_fk.functions
 
-class JWTBlacklist {
-    private val blacklist: MutableList<String> = mutableListOf()
+import com.ntihs_fk.database.JWTBlacklistTable
+import org.jetbrains.exposed.sql.insert
+import org.jetbrains.exposed.sql.select
+import org.jetbrains.exposed.sql.transactions.transaction
+import java.util.*
 
-    fun addBlacklistTokenId(id: String) {
-        blacklist.add(id)
+class JWTBlacklist {
+
+    fun addBlacklistTokenId(id: String, dateTime: Date) {
+        transaction {
+            JWTBlacklistTable.insert {
+                it[this.id] = id
+                it[this.dateTime] = dateTime.time
+            }
+        }
     }
 
     fun isInside(id: String): Boolean {
-        return id !in blacklist
+        var isInside = false
+
+        transaction {
+            isInside = JWTBlacklistTable.select {
+                JWTBlacklistTable.id.eq(id)
+            }.firstOrNull() == null
+        }
+
+        return isInside
     }
 }
 

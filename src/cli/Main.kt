@@ -33,7 +33,7 @@ class Main : CliktCommand() {
         .default(File("./Gmail.config.json"))
 
     override fun run() {
-        val logger = LoggerFactory.getLogger("ktor.application")
+        val logger = LoggerFactory.getLogger("ntihs-fk.ktor.application")
 
         initConfigFile(
             twitterConfigFIle, TwitterConfig(
@@ -67,6 +67,7 @@ class Main : CliktCommand() {
         Config.twitterConfigFile = twitterConfigFIle
         Config.discordConfigFile = discordConfigFIle
         Config.gmailConfigFile = gmailConfigFile
+
         // server config
         val environment = applicationEngineEnvironment {
             log = logger

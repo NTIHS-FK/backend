@@ -60,7 +60,7 @@ fun Route.update() {
         } else throw UnauthorizedException()
 
         call.sessions.clear<Login>()
-        jwtBlacklist.addBlacklistTokenId(principal.jwtId!!)
+        jwtBlacklist.addBlacklistTokenId(principal.jwtId!!, principal.expiresAt!!)
         call.respondRedirect("/")
     }
 }

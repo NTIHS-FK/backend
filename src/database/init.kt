@@ -20,6 +20,6 @@ fun initDatabase(log: Logger) {
 
     // init table
     transaction {
-        SchemaUtils.create(ArticleTable, UserTable, DiscordOAuth2Table, VoteTable)
+        SchemaUtils.create(ArticleTable, UserTable, DiscordOAuth2Table, VoteTable, JWTBlacklistTable)
     }
 }
