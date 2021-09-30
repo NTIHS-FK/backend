@@ -14,12 +14,11 @@ import io.ktor.response.*
 import io.ktor.routing.*
 import kotlinx.html.*
 import org.apache.tika.Tika
-import org.jetbrains.exposed.sql.ResultRow
-import org.jetbrains.exposed.sql.insert
-import org.jetbrains.exposed.sql.select
+import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.io.File
 import java.util.*
+import java.util.Date
 
 fun Route.post(testing: Boolean) {
 
@@ -109,13 +108,14 @@ fun Route.post(testing: Boolean) {
     }
 
     get("/api/posts") {
+        val page = call.request.queryParameters["page"]?.toInt() ?: 0
         val rePots = mutableListOf<Article>()
 
         transaction {
 
             val data = ArticleTable.select {
                 ArticleTable.votingThreshold.eq(true)
-            }
+            }.limit(page * 10, (page + 1) * 10)
 
             for (i in data) {
                 rePots.add(
