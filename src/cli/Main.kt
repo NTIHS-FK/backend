@@ -69,8 +69,7 @@ class Main : CliktCommand() {
         initConfigFile(
             googleConfigFile, GoogleConfigData(
                 "you google OAuth2 id",
-                "you google OAuth2 secret",
-                "redirect uri"
+                "you google OAuth2 secret"
             )
         )
 

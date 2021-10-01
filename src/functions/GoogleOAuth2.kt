@@ -50,7 +50,7 @@ class GoogleOAuth2 {
             Config.googleConfig.client_secret,
             "authorization_code",
             code,
-            Config.googleConfig.redirect_uri
+            "${Config.issuer}/api/google/authorize"
         )
 
         return requestForm(data.serializeToMap())
