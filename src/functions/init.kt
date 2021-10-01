@@ -8,10 +8,14 @@ fun init(log: Logger) {
 
     val image = File("./image")
     val textImage = File("./textImage")
+    val config = File("./config")
 
     if (!image.exists() && !image.isDirectory)
         image.mkdir()
 
     if (!textImage.exists() && !textImage.isDirectory)
         textImage.mkdir()
+
+    if (!config.exists() && !config.isDirectory)
+        config.mkdir()
 }

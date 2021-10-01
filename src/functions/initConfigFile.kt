@@ -1,7 +1,7 @@
 package com.ntihs_fk.functions
 
 import com.google.gson.Gson
-import com.ntihs_fk.data.TwitterConfig
+import com.ntihs_fk.data.TwitterConfigData
 import java.io.File
 
 fun <T> initConfigFile(file: File, data: T) {
@@ -9,7 +9,7 @@ fun <T> initConfigFile(file: File, data: T) {
         val gson = Gson()
         file.writeText(
             gson.toJson(
-                TwitterConfig(
+                TwitterConfigData(
                     "you consumer key",
                     "you consumer secret",
                     "access token",

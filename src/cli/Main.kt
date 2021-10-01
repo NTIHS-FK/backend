@@ -6,10 +6,12 @@ import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.types.file
 import com.github.ajalt.clikt.parameters.types.int
 import com.google.gson.Gson
-import com.ntihs_fk.data.DiscordConfig
-import com.ntihs_fk.data.GmailConfig
-import com.ntihs_fk.data.TwitterConfig
+import com.ntihs_fk.data.DiscordConfigData
+import com.ntihs_fk.data.GmailConfigData
+import com.ntihs_fk.data.TwitterConfigData
+import com.ntihs_fk.data.GoogleConfigData
 import com.ntihs_fk.functions.Config
+import com.ntihs_fk.functions.init
 import com.ntihs_fk.functions.initConfigFile
 import com.ntihs_fk.module
 import io.ktor.application.*
@@ -25,18 +27,22 @@ class Main : CliktCommand() {
     private val httpsPort: Int by option(help = "listening port").int().default(8443)
     private val host: String by option(help = "host name").default("127.0.0.1")
     private val ssl by option(help = "ssl key store file path").file()
-    private val twitterConfigFIle by option(help = "twitter config file path").file()
-        .default(File("./Twitter.config.json"))
-    private val discordConfigFIle by option(help = "discord config file path").file()
-        .default(File("./Discord.config.json"))
+    private val twitterConfigFile by option(help = "twitter config file path").file()
+        .default(File("./config/Twitter.config.json"))
+    private val discordConfigFile by option(help = "discord config file path").file()
+        .default(File("./config/Discord.config.json"))
     private val gmailConfigFile by option(help = "gmail config file path").file()
-        .default(File("./Gmail.config.json"))
+        .default(File("./config/Gmail.config.json"))
+    private val googleConfigFile by option(help = "google config file path").file()
+        .default(File("./config/Google.config.json"))
 
     override fun run() {
         val logger = LoggerFactory.getLogger("ntihs-fk.ktor.application")
+        val gson = Gson()
+        init(logger)
 
         initConfigFile(
-            twitterConfigFIle, TwitterConfig(
+            twitterConfigFile, TwitterConfigData(
                 "you consumer key",
                 "you consumer secret",
                 "access token",
@@ -45,7 +51,7 @@ class Main : CliktCommand() {
         )
 
         initConfigFile(
-            discordConfigFIle, DiscordConfig(
+            discordConfigFile, DiscordConfigData(
                 "vote channel webhook link",
                 "post channel webhook link",
                 "discord bot id",
@@ -54,19 +60,28 @@ class Main : CliktCommand() {
         )
 
         initConfigFile(
-            gmailConfigFile, GmailConfig(
+            gmailConfigFile, GmailConfigData(
                 "you email",
                 "you password"
             )
         )
 
+        initConfigFile(
+            googleConfigFile, GoogleConfigData(
+                "you google OAuth2 id",
+                "you google OAuth2 secret",
+                "redirect uri"
+            )
+        )
+
         // init config
+        Config.discordConfig = gson.fromJson(discordConfigFile.readText(), DiscordConfigData::class.java)
+        Config.gmailConfig = gson.fromJson(gmailConfigFile.readText(), GmailConfigData::class.java)
+        Config.twitterConfig = gson.fromJson(twitterConfigFile.readText(), TwitterConfigData::class.java)
+        Config.googleConfig = gson.fromJson(googleConfigFile.readText(), GoogleConfigData::class.java)
         Config.port = port
         Config.domain = host
         Config.ssl = ssl != null
-        Config.twitterConfigFile = twitterConfigFIle
-        Config.discordConfigFile = discordConfigFIle
-        Config.gmailConfigFile = gmailConfigFile
 
         // server config
         val environment = applicationEngineEnvironment {
