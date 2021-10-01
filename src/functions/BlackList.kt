@@ -7,27 +7,27 @@ import org.jetbrains.exposed.sql.transactions.transaction
 import java.util.*
 
 class JWTBlacklist {
-
-    fun addBlacklistTokenId(id: String, dateTime: Date) {
-        transaction {
-            JWTBlacklistTable.insert {
-                it[this.id] = id
-                it[this.dateTime] = dateTime.time
+    companion object {
+        fun addBlacklistTokenId(id: String, dateTime: Date) {
+            transaction {
+                JWTBlacklistTable.insert {
+                    it[this.id] = id
+                    it[this.dateTime] = dateTime.time
+                }
             }
         }
-    }
 
-    fun isInside(id: String): Boolean {
-        var isInside = false
+        fun isInside(id: String): Boolean {
+            var isInside = false
 
-        transaction {
-            isInside = JWTBlacklistTable.select {
-                JWTBlacklistTable.id.eq(id)
-            }.firstOrNull() == null
+            transaction {
+                isInside = JWTBlacklistTable.select {
+                    JWTBlacklistTable.id.eq(id)
+                }.firstOrNull() == null
+            }
+
+            return isInside
         }
-
-        return isInside
     }
-}
 
-val jwtBlacklist = JWTBlacklist()
+}

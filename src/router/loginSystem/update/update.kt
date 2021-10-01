@@ -6,8 +6,8 @@ import com.ntihs_fk.data.UpdateEmailData
 import com.ntihs_fk.data.UpdatePasswordData
 import com.ntihs_fk.database.UserTable
 import com.ntihs_fk.error.UnauthorizedException
+import com.ntihs_fk.functions.JWTBlacklist
 import com.ntihs_fk.functions.apiFrameworkFun
-import com.ntihs_fk.functions.jwtBlacklist
 import com.ntihs_fk.functions.verifyPassword
 import io.ktor.application.*
 import io.ktor.auth.*
@@ -60,7 +60,7 @@ fun Route.update() {
         } else throw UnauthorizedException()
 
         call.sessions.clear<Login>()
-        jwtBlacklist.addBlacklistTokenId(principal.jwtId!!, principal.expiresAt!!)
+        JWTBlacklist.addBlacklistTokenId(principal.jwtId!!, principal.expiresAt!!)
         call.respondRedirect("/")
     }
 }
