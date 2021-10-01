@@ -3,13 +3,13 @@ package com.ntihs_fk.functions
 import com.github.kevinsawicki.http.HttpRequest
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import com.ntihs_fk.data.DiscordUserData
 import io.ktor.features.*
 
 class DiscordOAuth2 {
     companion object {
 
         private const val discordAPIUrl = "https://discord.com/api/v8"
-        private const val redirect_uri = "http://127.0.0.1:8080/api/discord/authorize"
         val gson = Gson()
 
         private data class Data(
@@ -52,10 +52,21 @@ class DiscordOAuth2 {
                 client_secret = Config.discordConfig.discord_secret,
                 grant_type = "authorization_code",
                 code = code,
-                redirect_uri = redirect_uri
+                redirect_uri = "${Config.issuer}/api/discord/authorize"
             )
 
             return requestForm(data.serializeToMap())
+        }
+
+        fun getUserinfoData(accessToken: String): DiscordUserData {
+            val response = HttpRequest.get("https://discord.com/api/v8/users/@me")
+                .header("Authorization", "Bearer $accessToken")
+
+            if (!response.ok()) throw BadRequestException("Discord authorization error")
+
+            val userDataJsonString = response.body()
+
+            return Gson().fromJson(userDataJsonString, DiscordUserData::class.java)
         }
 
 //        fun refreshToken(refresh_token: String): AccessTokenResponse {

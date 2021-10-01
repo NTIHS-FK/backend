@@ -15,9 +15,8 @@ import java.util.*
 fun Route.googleOAuth2() {
     get("/api/google/authorize") {
         val code = call.request.queryParameters["code"] ?: throw BadRequestException("Missing parameter")
-        val googleOAuth2 = GoogleOAuth2()
-        val accessToken = googleOAuth2.exchangeCode(code).access_token
-        val userData = googleOAuth2.getUserinfoProfile(accessToken)
+        val accessToken = GoogleOAuth2.exchangeCode(code).access_token
+        val userData = GoogleOAuth2.getUserinfoProfile(accessToken)
         val token = JWT.create()
             .withIssuer(Config.issuer)
             .withAudience(Config.audience)

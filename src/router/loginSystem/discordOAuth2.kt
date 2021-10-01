@@ -23,13 +23,7 @@ fun Route.discordOAuth2() {
     get("/api/discord/authorize") {
         val code = call.request.queryParameters["code"] ?: throw BadRequestException("Missing parameter")
         val data = DiscordOAuth2.exchangeCode(code)
-        val response = HttpRequest.get("https://discord.com/api/v8/users/@me")
-            .header("Authorization", "Bearer ${data.access_token}")
-
-        if (!response.ok()) throw BadRequestException("Discord authorization error")
-
-        val userDataJsonString = response.body()
-        val userData = Gson().fromJson(userDataJsonString, DiscordUserData::class.java)
+        val userData = DiscordOAuth2.getUserinfoData(data.access_token)
 
         val token = JWT.create()
             .withIssuer(Config.issuer)
