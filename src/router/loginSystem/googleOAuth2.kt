@@ -38,8 +38,8 @@ fun Route.googleOAuth2() {
             "${Config.googleConfig.auth_uri}?" +
                     "client_id=${Config.googleConfig.client_id}&" +
                     "response_type=code&" +
-                    "scope=https://www.googleapis.com/auth/userinfo.profile&" +
-                    "redirect_uri=${Config.googleConfig.redirect_uri}"
+                    "scope=https://www.googleapis.com/auth/userinfo.profile%20https://www.googleapis.com/auth/userinfo.email&" +
+                    "redirect_uri=${Config.issuer}/api/google/authorize"
         )
     }
 }

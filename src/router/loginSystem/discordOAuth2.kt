@@ -59,4 +59,14 @@ fun Route.discordOAuth2() {
         call.sessions.set(Login(token))
         call.respondRedirect("/")
     }
+
+    get("/auth/discord") {
+        call.respondRedirect(
+            "https://discord.com/api/oauth2/authorize?" +
+                "client_id=${Config.discordConfig.discord_id}&" +
+                "redirect_uri=${Config.issuer}/api/discord/authorize&" +
+                "response_type=code&" +
+                "scope=identify%20email"
+        )
+    }
 }

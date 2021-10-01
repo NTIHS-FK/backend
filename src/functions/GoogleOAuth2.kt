@@ -22,7 +22,8 @@ class GoogleOAuth2 {
 
     data class UserData(
         val name: String,
-        val picture: String
+        val picture: String,
+        val email: String
     )
 
     private inline fun <I, reified O> I.convert(): O {
@@ -38,7 +39,9 @@ class GoogleOAuth2 {
             .form(formData)
 
         if (!response.ok()) throw BadRequestException("Google OAuth2 error")
-        return gson.fromJson(response.body(), AccessTokenResponseData::class.java)
+        val body = response.body()
+        println(body)
+        return gson.fromJson(body, AccessTokenResponseData::class.java)
     }
 
     fun exchangeCode(code: String): AccessTokenResponseData {
@@ -59,6 +62,7 @@ class GoogleOAuth2 {
 
         if (!response.ok()) throw BadRequestException("Google authorization error")
         val userDataJsonString = response.body()
+        println(userDataJsonString)
         return gson.fromJson(userDataJsonString, UserData::class.java)
     }
 }
