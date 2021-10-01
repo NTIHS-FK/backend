@@ -51,6 +51,7 @@ fun Route.login() {
                 .withClaim("username", userPasswordVerifyData.userData[UserTable.name])
                 .withClaim("avatar", userPasswordVerifyData.userData[UserTable.name])
                 .withClaim("verify", userPasswordVerifyData.userData[UserTable.verify])
+                .withClaim("type", "default")
                 .withExpiresAt(Date(System.currentTimeMillis() + Config.expiresAt))
                 .sign(Algorithm.HMAC256(Config.secret))
 
