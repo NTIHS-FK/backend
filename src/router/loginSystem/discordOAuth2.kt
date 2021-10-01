@@ -38,6 +38,7 @@ fun Route.discordOAuth2() {
             .withClaim("username", "${userData.username}#${userData.discriminator}")
             .withClaim("avatar", userData.avatar)
             .withClaim("verify", true)
+            .withClaim("type", "discord")
             .withExpiresAt(Date(System.currentTimeMillis() + Config.expiresAt))
             .sign(Algorithm.HMAC256(Config.secret))
 
@@ -56,12 +57,6 @@ fun Route.discordOAuth2() {
         }
 
         call.sessions.set(Login(token))
-        call.respond(
-            apiFrameworkFun(
-                hashMapOf(
-                    "token" to token
-                )
-            )
-        )
+        call.respondRedirect("/")
     }
 }
