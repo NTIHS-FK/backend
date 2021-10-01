@@ -1,6 +1,6 @@
 package com.ntihs_fk.data
 
-data class TwitterConfig(
+data class TwitterConfigData(
     val consumerKey: String,
     val consumerSecret: String,
     val accessToken: String,
