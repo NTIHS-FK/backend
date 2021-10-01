@@ -77,6 +77,7 @@ fun Route.vote() {
             val principal = call.principal<JWTPrincipal>()
             val username = principal!!.payload.getClaim("username").asString()
             val verify = principal.payload.getClaim("verify").asBoolean()
+            val type = principal.payload.getClaim("type").asString()
 
             if (id == null && voteQuery == null) throw BadRequestException("Missing parameter")
             if (!verify) throw BadRequestException("Email not verify")
@@ -84,7 +85,9 @@ fun Route.vote() {
             transaction {
                 if (
                     VoteTable.select {
-                        VoteTable.name.eq(username)
+                        VoteTable.name.eq(username).and(
+                            VoteTable.loginType.eq(type)
+                        )
                     }.firstOrNull() != null
                 ) throw BadRequestException("Voted")
 
@@ -92,6 +95,7 @@ fun Route.vote() {
                     it[name] = username
                     it[postId] = id!!.toInt()
                     it[vote] = voteQuery.toBoolean()
+                    it[loginType] = type
                 }
             }
 
