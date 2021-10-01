@@ -20,6 +20,10 @@ class GoogleOAuth2 {
         val access_token: String
     )
 
+    data class UserData(
+        val name: String,
+        val picture: String
+    )
 
     private inline fun <I, reified O> I.convert(): O {
         val json = DiscordOAuth2.gson.toJson(this)
@@ -49,12 +53,12 @@ class GoogleOAuth2 {
         return requestForm(data.serializeToMap())
     }
 
-    fun getUserinfoProfile(access_token: String) {
+    fun getUserinfoProfile(access_token: String): UserData {
         val response = HttpRequest.get("https://www.googleapis.com/oauth2/v1/userinfo?alt=json")
             .header("Authorization", "Bearer $access_token")
 
         if (!response.ok()) throw BadRequestException("Google authorization error")
         val userDataJsonString = response.body()
-        println(userDataJsonString)
+        return gson.fromJson(userDataJsonString, UserData::class.java)
     }
 }
