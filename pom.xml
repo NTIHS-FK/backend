@@ -189,7 +189,7 @@
     </dependencies>
     <build>
         <sourceDirectory>${project.basedir}/src</sourceDirectory>
-<!--        <testSourceDirectory>${project.basedir}/test</testSourceDirectory>-->
+        <testSourceDirectory>${project.basedir}/test</testSourceDirectory>
         <resources>
             <resource>
                 <directory>${project.basedir}/resources</directory>

@@ -5,6 +5,7 @@
 /build
 /.sessions
 /logs
+/LOG_DEST_IS_UNDEFINED
 *.iml
 *.ipr
 *.iws

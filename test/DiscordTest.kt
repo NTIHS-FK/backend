@@ -13,7 +13,7 @@ class DiscordTest {
         withTestApplication(Application::module) {
             handleWebSocketConversation("/post/broadcast") { incoming, _ ->
                 var greetingText = (incoming.receive() as Frame.Text).readText()
-                assertEquals("You are connected!", greetingText)
+                assertEquals("ok", greetingText)
                 websocketServer.broadcast(mapOf("a" to "b"))
                 greetingText = (incoming.receive() as Frame.Text).readText()
                 assertEquals("{\"a\":\"b\"}", greetingText)
