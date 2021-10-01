@@ -10,7 +10,7 @@ class DiscordOAuth2 {
 
         private const val discordAPIUrl = "https://discord.com/api/v8"
         private const val redirect_uri = "http://127.0.0.1:8080/api/discord/authorize"
-        private val gson = Gson()
+        val gson = Gson()
 
         private data class Data(
             val client_id: String,
@@ -21,7 +21,7 @@ class DiscordOAuth2 {
             val refresh_token: String? = null
         )
 
-        data class AccessTokenResponse(
+        data class AccessTokenResponseData(
             val access_token: String,
             val token_type: String,
             val expires_in: Long,
@@ -36,17 +36,17 @@ class DiscordOAuth2 {
 
         private fun <T> T.serializeToMap(): Map<String, Any> = convert()
 
-        private fun requestForm(formData: Map<String, Any>): AccessTokenResponse {
+        private fun requestForm(formData: Map<String, Any>): AccessTokenResponseData {
             val response = HttpRequest.post("$discordAPIUrl/oauth2/token")
                 .basic(Config.discordConfig.discord_id, Config.discordConfig.discord_secret)
                 .form(formData)
 
             if (!response.ok()) throw BadRequestException("Discord OAuth2 error")
 
-            return gson.fromJson(response.body(), AccessTokenResponse::class.java)
+            return gson.fromJson(response.body(), AccessTokenResponseData::class.java)
         }
 
-        fun exchangeCode(code: String): AccessTokenResponse {
+        fun exchangeCode(code: String): AccessTokenResponseData {
             val data = Data(
                 client_id = Config.discordConfig.discord_id,
                 client_secret = Config.discordConfig.discord_secret,

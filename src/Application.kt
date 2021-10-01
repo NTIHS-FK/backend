@@ -10,6 +10,7 @@ import com.ntihs_fk.functions.*
 import com.ntihs_fk.router.discord
 import com.ntihs_fk.router.loginSystem.discordOAuth2
 import com.ntihs_fk.router.loginSystem.emailVerify
+import com.ntihs_fk.router.loginSystem.googleOAuth2
 import com.ntihs_fk.router.loginSystem.login
 import com.ntihs_fk.router.post
 import com.ntihs_fk.router.vote
@@ -38,10 +39,8 @@ fun Application.module(testing: Boolean = false) {
 
     val myRealm: String = System.getenv("jwt_realm") ?: "Access to login"
 
-    if (!testing) {
+    if (!testing)
         initDatabase(log)
-        init(log)
-    }
 
     if (Config.ssl) install(HSTS)
 
@@ -138,5 +137,6 @@ fun Application.module(testing: Boolean = false) {
         discordOAuth2()
         emailVerify()
         discord()
+        googleOAuth2()
     }
 }
