@@ -1,19 +1,14 @@
 package com.ntihs_fk.functions
 
 import com.google.gson.Gson
-import com.ntihs_fk.data.DiscordConfig
-import com.ntihs_fk.data.GmailConfig
-import com.ntihs_fk.data.TwitterConfig
+import com.ntihs_fk.data.DiscordConfigData
+import com.ntihs_fk.data.GmailConfigData
+import com.ntihs_fk.data.GoogleConfigData
+import com.ntihs_fk.data.TwitterConfigData
 import java.io.File
 
 class Config {
     companion object {
-        // read config json files
-        lateinit var discordConfigFile: File
-        lateinit var gmailConfigFile: File
-        lateinit var twitterConfigFile: File
-
-        private val gson = Gson()
 
         var port = System.getenv("PORT") ?: 8080
         var domain = System.getenv("DOMAIN") ?: "127.0.0.1:8080"
@@ -27,12 +22,15 @@ class Config {
         const val expiresAt = 60000 * 60 * 24 * 7
 
         // Discord config
-        val discordConfig: DiscordConfig = gson.fromJson(discordConfigFile.readText(), DiscordConfig::class.java)
+        lateinit var discordConfig: DiscordConfigData
 
         // Gmail config
-        val gmailConfig: GmailConfig = gson.fromJson(gmailConfigFile.readText(), GmailConfig::class.java)
+        lateinit var gmailConfig: GmailConfigData
 
         // Twitter config
-        val twitterConfig: TwitterConfig = gson.fromJson(twitterConfigFile.readText(), TwitterConfig::class.java)
+        lateinit var twitterConfig: TwitterConfigData
+
+        // Google config
+        lateinit var googleConfig: GoogleConfigData
     }
 }
