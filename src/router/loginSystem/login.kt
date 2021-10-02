@@ -115,6 +115,14 @@ fun Route.login() {
         call.respond(apiFrameworkFun(null))
     }
 
+    post("/api/log-out") {
+        val principal = call.principal<JWTPrincipal>()
+        if (principal != null)
+            JWTBlacklist.addBlacklistTokenId(principal.jwtId!!, principal.expiresAt!!)
+        call.sessions.clear<Login>()
+        call.respond(apiFrameworkFun(null))
+    }
+
     authenticate("auth-jwt") {
         get("/api/user") {
             val principal = call.principal<JWTPrincipal>()
@@ -142,13 +150,6 @@ fun Route.login() {
                 call.respond(apiFrameworkFun(null))
             } else throw BadRequestException("Verified")
 
-        }
-
-        post("/api/log-out") {
-            val principal = call.principal<JWTPrincipal>()
-            JWTBlacklist.addBlacklistTokenId(principal!!.jwtId!!, principal.expiresAt!!)
-            call.sessions.clear<Login>()
-            call.respond(apiFrameworkFun(null))
         }
 
         route("/api/update") {
