@@ -7,7 +7,9 @@ import com.ntihs_fk.data.LoginTokenData
 import com.ntihs_fk.database.initDatabase
 import com.ntihs_fk.error.ForbiddenRequestException
 import com.ntihs_fk.error.UnauthorizedRequestException
-import com.ntihs_fk.functions.*
+import com.ntihs_fk.functions.Config
+import com.ntihs_fk.functions.JWTBlacklist
+import com.ntihs_fk.functions.apiFrameworkFun
 import com.ntihs_fk.router.admin
 import com.ntihs_fk.router.discord
 import com.ntihs_fk.router.loginSystem.discordOAuth2
@@ -18,18 +20,18 @@ import com.ntihs_fk.router.post
 import com.ntihs_fk.router.vote
 import io.jsonwebtoken.JwtException
 import io.ktor.application.*
-import io.ktor.response.*
-import io.ktor.request.*
-import io.ktor.routing.*
-import io.ktor.http.*
-import io.ktor.sessions.*
-import io.ktor.features.*
-import org.slf4j.event.*
 import io.ktor.auth.*
 import io.ktor.auth.jwt.*
+import io.ktor.features.*
 import io.ktor.gson.*
+import io.ktor.http.*
 import io.ktor.http.cio.websocket.*
+import io.ktor.request.*
+import io.ktor.response.*
+import io.ktor.routing.*
+import io.ktor.sessions.*
 import io.ktor.websocket.*
+import org.slf4j.event.Level
 import java.io.File
 import java.time.Duration
 
@@ -46,13 +48,13 @@ fun Application.module(testing: Boolean = false) {
     if (Config.ssl) install(HSTS)
 
     install(Sessions) {
-        cookie<LoginTokenData>("SessionId", directorySessionStorage(File(".sessions"), cached = true))
+    cookie<LoginTokenData>("SessionId", directorySessionStorage(File(".sessions"), cached = true))
     }
 
     install(StatusPages) {
-        val allHttpCode = HttpStatusCode.allStatusCodes.toMutableList()
-        allHttpCode.remove(HttpStatusCode.SwitchingProtocols)
 
+    val allHttpCode = HttpStatusCode.allStatusCodes.toMutableList()
+        allHttpCode.remove(HttpStatusCode.SwitchingProtocols)
         status(*allHttpCode.toTypedArray()) {
             println(it.description)
             call.respond(
