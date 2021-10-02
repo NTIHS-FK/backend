@@ -1,7 +1,7 @@
 package com.ntihs_fk.router.loginSystem
 
 import com.ntihs_fk.database.UserTable
-import com.ntihs_fk.functions.emailVerifyFun
+import com.ntihs_fk.util.emailVerifyFun
 import io.ktor.application.*
 import io.ktor.features.*
 import io.ktor.response.*

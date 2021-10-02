@@ -1,4 +1,4 @@
-package com.ntihs_fk.functions
+package com.ntihs_fk.util
 
 import java.io.File
 import org.slf4j.Logger

@@ -1,4 +1,4 @@
-package com.ntihs_fk.functions
+package com.ntihs_fk.util
 
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.SignatureAlgorithm

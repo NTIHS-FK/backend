@@ -1,4 +1,4 @@
-package com.ntihs_fk.functions
+package com.ntihs_fk.util
 
 import com.google.gson.GsonBuilder
 import java.io.File

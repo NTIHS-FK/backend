@@ -1,6 +1,6 @@
 package com.ntihs_fk.drawImage
 
-import com.ntihs_fk.functions.randomString
+import com.ntihs_fk.util.randomString
 import java.awt.Color
 import java.awt.Font
 import java.awt.GraphicsEnvironment

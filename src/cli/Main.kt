@@ -7,10 +7,10 @@ import com.github.ajalt.clikt.parameters.types.file
 import com.github.ajalt.clikt.parameters.types.int
 import com.google.gson.Gson
 import com.ntihs_fk.data.*
-import com.ntihs_fk.functions.Config
-import com.ntihs_fk.functions.init
-import com.ntihs_fk.functions.initConfigFile
-import com.ntihs_fk.functions.randomString
+import com.ntihs_fk.util.Config
+import com.ntihs_fk.util.init
+import com.ntihs_fk.util.initConfigFile
+import com.ntihs_fk.util.randomString
 import com.ntihs_fk.module
 import io.ktor.application.*
 import io.ktor.network.tls.certificates.*

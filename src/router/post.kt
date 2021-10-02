@@ -3,8 +3,10 @@ package com.ntihs_fk.router
 import com.ntihs_fk.data.ArticleData
 import com.ntihs_fk.database.ArticleTable
 import com.ntihs_fk.drawImage.draw
-import com.ntihs_fk.functions.*
 import com.ntihs_fk.socialSoftware.discord.discordPost
+import com.ntihs_fk.util.Config
+import com.ntihs_fk.util.apiFrameworkFun
+import com.ntihs_fk.util.randomString
 import io.ktor.application.*
 import io.ktor.features.*
 import io.ktor.html.*

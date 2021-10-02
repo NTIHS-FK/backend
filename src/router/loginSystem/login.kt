@@ -9,8 +9,8 @@ import com.ntihs_fk.data.SignInData
 import com.ntihs_fk.data.UserData
 import com.ntihs_fk.database.UserTable
 import com.ntihs_fk.error.UnauthorizedRequestException
-import com.ntihs_fk.functions.*
 import com.ntihs_fk.router.loginSystem.update.update
+import com.ntihs_fk.util.*
 import io.ktor.application.*
 import io.ktor.auth.*
 import io.ktor.auth.jwt.*

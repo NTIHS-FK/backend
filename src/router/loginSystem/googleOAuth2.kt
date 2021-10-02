@@ -3,8 +3,8 @@ package com.ntihs_fk.router.loginSystem
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
 import com.ntihs_fk.data.LoginTokenData
-import com.ntihs_fk.functions.Config
-import com.ntihs_fk.functions.GoogleOAuth2
+import com.ntihs_fk.util.Config
+import com.ntihs_fk.util.GoogleOAuth2
 import io.ktor.application.*
 import io.ktor.features.*
 import io.ktor.response.*

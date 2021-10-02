@@ -1,4 +1,4 @@
-package com.ntihs_fk.functions
+package com.ntihs_fk.util
 
 import at.favre.lib.crypto.bcrypt.BCrypt
 import com.ntihs_fk.data.VerifyUserPasswordData

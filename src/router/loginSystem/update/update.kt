@@ -6,9 +6,9 @@ import com.ntihs_fk.data.UpdateEmailData
 import com.ntihs_fk.data.UpdatePasswordData
 import com.ntihs_fk.database.UserTable
 import com.ntihs_fk.error.UnauthorizedRequestException
-import com.ntihs_fk.functions.JWTBlacklist
-import com.ntihs_fk.functions.apiFrameworkFun
-import com.ntihs_fk.functions.verifyPassword
+import com.ntihs_fk.util.JWTBlacklist
+import com.ntihs_fk.util.apiFrameworkFun
+import com.ntihs_fk.util.verifyPassword
 import io.ktor.application.*
 import io.ktor.auth.*
 import io.ktor.auth.jwt.*

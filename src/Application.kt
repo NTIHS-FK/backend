@@ -7,9 +7,9 @@ import com.ntihs_fk.data.LoginTokenData
 import com.ntihs_fk.database.initDatabase
 import com.ntihs_fk.error.ForbiddenRequestException
 import com.ntihs_fk.error.UnauthorizedRequestException
-import com.ntihs_fk.functions.Config
-import com.ntihs_fk.functions.JWTBlacklist
-import com.ntihs_fk.functions.apiFrameworkFun
+import com.ntihs_fk.util.Config
+import com.ntihs_fk.util.JWTBlacklist
+import com.ntihs_fk.util.apiFrameworkFun
 import com.ntihs_fk.router.admin
 import com.ntihs_fk.router.discord
 import com.ntihs_fk.router.loginSystem.discordOAuth2

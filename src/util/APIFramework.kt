@@ -1,4 +1,4 @@
-package com.ntihs_fk.functions
+package com.ntihs_fk.util
 
 data class APIData <T>(val error: Boolean, val message: String?, val data: T?)
 

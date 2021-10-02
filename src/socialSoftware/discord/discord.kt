@@ -2,7 +2,7 @@ package com.ntihs_fk.socialSoftware.discord
 
 import com.github.kevinsawicki.http.HttpRequest
 import com.google.gson.Gson
-import com.ntihs_fk.functions.Config
+import com.ntihs_fk.util.Config
 import io.ktor.features.*
 import io.ktor.http.*
 

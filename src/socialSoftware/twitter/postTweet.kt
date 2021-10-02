@@ -1,6 +1,6 @@
 package socialSoftware.twitter
 
-import com.ntihs_fk.functions.Config
+import com.ntihs_fk.util.Config
 import twitter4j.StatusUpdate
 import twitter4j.TwitterFactory
 import twitter4j.conf.ConfigurationBuilder

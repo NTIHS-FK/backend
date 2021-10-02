@@ -3,7 +3,7 @@ package com.ntihs_fk.router
 import com.ntihs_fk.data.ArticleData
 import com.ntihs_fk.database.ArticleTable
 import com.ntihs_fk.database.VoteTable
-import com.ntihs_fk.functions.apiFrameworkFun
+import com.ntihs_fk.util.apiFrameworkFun
 import io.ktor.application.*
 import io.ktor.auth.*
 import io.ktor.auth.jwt.*

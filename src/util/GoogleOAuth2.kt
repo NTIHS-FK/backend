@@ -1,4 +1,4 @@
-package com.ntihs_fk.functions
+package com.ntihs_fk.util
 
 import com.github.kevinsawicki.http.HttpRequest
 import com.google.gson.Gson

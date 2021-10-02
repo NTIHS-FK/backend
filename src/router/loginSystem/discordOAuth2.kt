@@ -4,7 +4,8 @@ import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
 import com.ntihs_fk.data.LoginTokenData
 import com.ntihs_fk.database.DiscordOAuth2Table
-import com.ntihs_fk.functions.*
+import com.ntihs_fk.util.Config
+import com.ntihs_fk.util.DiscordOAuth2
 import io.ktor.application.*
 import io.ktor.features.*
 import io.ktor.response.*

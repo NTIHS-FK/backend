@@ -1,6 +1,6 @@
 package com.ntihs_fk
 
-import com.ntihs_fk.functions.websocketServer
+import com.ntihs_fk.util.websocketServer
 import io.ktor.application.*
 import io.ktor.http.cio.websocket.*
 import io.ktor.server.testing.*

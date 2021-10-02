@@ -1,7 +1,7 @@
 package com.ntihs_fk.database
 
 import at.favre.lib.crypto.bcrypt.BCrypt
-import com.ntihs_fk.functions.Config
+import com.ntihs_fk.util.Config
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
 import org.jetbrains.exposed.sql.Database
