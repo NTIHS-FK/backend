@@ -4,7 +4,10 @@ import at.favre.lib.crypto.bcrypt.BCrypt
 import com.ntihs_fk.functions.Config
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
-import org.jetbrains.exposed.sql.*
+import org.jetbrains.exposed.sql.Database
+import org.jetbrains.exposed.sql.SchemaUtils
+import org.jetbrains.exposed.sql.insert
+import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.slf4j.Logger
 
@@ -22,11 +25,17 @@ fun initDatabase(log: Logger) {
     // init table
     transaction {
         SchemaUtils.create(ArticleTable, UserTable, DiscordOAuth2Table, VoteTable, JWTBlacklistTable)
-        UserTable.insertIgnore {
-            it[name] = Config.adminConfig.name
-            it[email] = ""
-            it[hashcode] = BCrypt.withDefaults().hashToString(12, Config.adminConfig.password.toCharArray())
-            it[verify] = true
-        }
+        // 我知道這寫法很破
+        if (
+            UserTable.select {
+                UserTable.name eq Config.adminConfig.name
+            }.firstOrNull() == null
+        )
+            UserTable.insert {
+                it[name] = Config.adminConfig.name
+                it[email] = ""
+                it[hashcode] = BCrypt.withDefaults().hashToString(12, Config.adminConfig.password.toCharArray())
+                it[verify] = true
+            }
     }
 }
