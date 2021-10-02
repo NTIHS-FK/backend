@@ -1,6 +1,6 @@
 package com.ntihs_fk.data
 
-data class Article(
+data class ArticleData(
     val id: Int,
     val time: Long,
     val text: String,

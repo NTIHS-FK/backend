@@ -1,7 +1,7 @@
 package com.ntihs_fk.router.loginSystem.update
 
 import at.favre.lib.crypto.bcrypt.BCrypt
-import com.ntihs_fk.data.Login
+import com.ntihs_fk.data.LoginTokenData
 import com.ntihs_fk.data.UpdateEmailData
 import com.ntihs_fk.data.UpdatePasswordData
 import com.ntihs_fk.database.UserTable
@@ -59,7 +59,7 @@ fun Route.update() {
             }
         } else throw UnauthorizedRequestException()
 
-        call.sessions.clear<Login>()
+        call.sessions.clear<LoginTokenData>()
         JWTBlacklist.addBlacklistTokenId(principal.jwtId!!, principal.expiresAt!!)
         call.respondRedirect("/")
     }

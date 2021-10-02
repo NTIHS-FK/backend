@@ -2,7 +2,7 @@ package com.ntihs_fk.router.loginSystem
 
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
-import com.ntihs_fk.data.Login
+import com.ntihs_fk.data.LoginTokenData
 import com.ntihs_fk.functions.Config
 import com.ntihs_fk.functions.GoogleOAuth2
 import io.ktor.application.*
@@ -28,7 +28,7 @@ fun Route.googleOAuth2() {
             .withExpiresAt(Date(System.currentTimeMillis() + Config.expiresAt))
             .sign(Algorithm.HMAC256(Config.secret))
 
-        call.sessions.set(Login(token))
+        call.sessions.set(LoginTokenData(token))
         call.respondRedirect("/")
     }
 

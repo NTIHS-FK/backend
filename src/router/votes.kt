@@ -1,6 +1,6 @@
 package com.ntihs_fk.router
 
-import com.ntihs_fk.data.Article
+import com.ntihs_fk.data.ArticleData
 import com.ntihs_fk.database.ArticleTable
 import com.ntihs_fk.database.VoteTable
 import com.ntihs_fk.functions.apiFrameworkFun
@@ -17,7 +17,7 @@ import org.jetbrains.exposed.sql.transactions.transaction
 
 fun Route.vote() {
     get("/api/votes") {
-        val rePots = mutableListOf<Article>()
+        val rePots = mutableListOf<ArticleData>()
 
         transaction {
             val data = ArticleTable.select {
@@ -26,7 +26,7 @@ fun Route.vote() {
 
             for (i in data) {
                 rePots.add(
-                    Article(
+                    ArticleData(
                         i[ArticleTable.id],
                         i[ArticleTable.time].millis,
                         i[ArticleTable.text],

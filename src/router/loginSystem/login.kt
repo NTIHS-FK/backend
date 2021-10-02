@@ -3,9 +3,9 @@ package com.ntihs_fk.router.loginSystem
 import at.favre.lib.crypto.bcrypt.BCrypt
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
-import com.ntihs_fk.data.Login
+import com.ntihs_fk.data.LoginTokenData
 import com.ntihs_fk.data.LoginData
-import com.ntihs_fk.data.SignIn
+import com.ntihs_fk.data.SignInData
 import com.ntihs_fk.data.UserData
 import com.ntihs_fk.database.UserTable
 import com.ntihs_fk.error.UnauthorizedRequestException
@@ -29,7 +29,7 @@ fun Route.login() {
 
 
     post("/api/login") {
-        val sessionToken = call.sessions.get<Login>()
+        val sessionToken = call.sessions.get<LoginTokenData>()
 
         if (sessionToken != null) {
             call.respond(apiFrameworkFun(sessionToken))
@@ -63,7 +63,7 @@ fun Route.login() {
                 )
                 .sign(Algorithm.HMAC256(Config.secret))
 
-            call.sessions.set(Login(token))
+            call.sessions.set(LoginTokenData(token))
             call.respond(
                 apiFrameworkFun(
                     hashMapOf(
@@ -75,7 +75,7 @@ fun Route.login() {
     }
 
     post("/api/sign-up") {
-        val user = call.receive<SignIn>()
+        val user = call.receive<SignInData>()
 
         if (user.email == null || user.password == null || user.name == null)
             throw BadRequestException("Missing parameter")
@@ -121,7 +121,7 @@ fun Route.login() {
         if (principal != null)
             JWTBlacklist.addBlacklistTokenId(principal.jwtId!!, principal.expiresAt!!)
 
-        call.sessions.clear<Login>()
+        call.sessions.clear<LoginTokenData>()
         call.respond(apiFrameworkFun(null))
     }
 

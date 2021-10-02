@@ -1,6 +1,6 @@
 package com.ntihs_fk.router
 
-import com.ntihs_fk.data.Article
+import com.ntihs_fk.data.ArticleData
 import com.ntihs_fk.database.ArticleTable
 import com.ntihs_fk.drawImage.draw
 import com.ntihs_fk.functions.*
@@ -17,7 +17,6 @@ import org.apache.tika.Tika
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.io.File
-import java.util.*
 import java.util.Date
 
 fun Route.post(testing: Boolean) {
@@ -109,7 +108,7 @@ fun Route.post(testing: Boolean) {
 
     get("/api/posts") {
         val page = call.request.queryParameters["page"]?.toInt() ?: 0
-        val rePots = mutableListOf<Article>()
+        val rePots = mutableListOf<ArticleData>()
 
         transaction {
 
@@ -119,7 +118,7 @@ fun Route.post(testing: Boolean) {
 
             for (i in data) {
                 rePots.add(
-                    Article(
+                    ArticleData(
                         i[ArticleTable.id],
                         i[ArticleTable.time].millis,
                         i[ArticleTable.text],
@@ -186,7 +185,7 @@ fun Route.post(testing: Boolean) {
 
         call.respond(
             apiFrameworkFun(
-                Article(
+                ArticleData(
                     articleData!![ArticleTable.id],
                     articleData!![ArticleTable.time].millis,
                     articleData!![ArticleTable.text],

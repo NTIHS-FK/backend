@@ -2,12 +2,8 @@ package com.ntihs_fk.router.loginSystem
 
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
-import com.github.kevinsawicki.http.HttpRequest
-import com.google.gson.Gson
-import com.ntihs_fk.data.DiscordUserData
-import com.ntihs_fk.data.Login
+import com.ntihs_fk.data.LoginTokenData
 import com.ntihs_fk.database.DiscordOAuth2Table
-import com.ntihs_fk.database.UserTable
 import com.ntihs_fk.functions.*
 import io.ktor.application.*
 import io.ktor.features.*
@@ -42,7 +38,7 @@ fun Route.discordOAuth2() {
             }
         }
 
-        call.sessions.set(Login(token))
+        call.sessions.set(LoginTokenData(token))
         call.respondRedirect("/")
     }
 

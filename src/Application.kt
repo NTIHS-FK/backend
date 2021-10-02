@@ -3,7 +3,7 @@ package com.ntihs_fk
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
 import com.ntihs_fk.cli.Main
-import com.ntihs_fk.data.Login
+import com.ntihs_fk.data.LoginTokenData
 import com.ntihs_fk.database.initDatabase
 import com.ntihs_fk.error.ForbiddenRequestException
 import com.ntihs_fk.error.UnauthorizedRequestException
@@ -46,7 +46,7 @@ fun Application.module(testing: Boolean = false) {
     if (Config.ssl) install(HSTS)
 
     install(Sessions) {
-        cookie<Login>("SessionId", directorySessionStorage(File(".sessions"), cached = true))
+        cookie<LoginTokenData>("SessionId", directorySessionStorage(File(".sessions"), cached = true))
     }
 
     install(StatusPages) {
