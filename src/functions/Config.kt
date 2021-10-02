@@ -1,11 +1,6 @@
 package com.ntihs_fk.functions
 
-import com.google.gson.Gson
-import com.ntihs_fk.data.DiscordConfigData
-import com.ntihs_fk.data.GmailConfigData
-import com.ntihs_fk.data.GoogleConfigData
-import com.ntihs_fk.data.TwitterConfigData
-import java.io.File
+import com.ntihs_fk.data.*
 
 class Config {
     companion object {
@@ -32,5 +27,8 @@ class Config {
 
         // Google config
         lateinit var googleConfig: GoogleConfigData
+
+        // Admin config
+        lateinit var adminConfig: AdminConfigData
     }
 }

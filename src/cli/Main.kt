@@ -6,13 +6,11 @@ import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.types.file
 import com.github.ajalt.clikt.parameters.types.int
 import com.google.gson.Gson
-import com.ntihs_fk.data.DiscordConfigData
-import com.ntihs_fk.data.GmailConfigData
-import com.ntihs_fk.data.TwitterConfigData
-import com.ntihs_fk.data.GoogleConfigData
+import com.ntihs_fk.data.*
 import com.ntihs_fk.functions.Config
 import com.ntihs_fk.functions.init
 import com.ntihs_fk.functions.initConfigFile
+import com.ntihs_fk.functions.randomString
 import com.ntihs_fk.module
 import io.ktor.application.*
 import io.ktor.network.tls.certificates.*
@@ -35,6 +33,8 @@ class Main : CliktCommand() {
         .default(File("./config/Gmail.config.json"))
     private val googleConfigFile by option(help = "google config file path").file()
         .default(File("./config/Google.config.json"))
+    private val adminConfigFile by option(help = "admin config file path").file()
+        .default(File("./config/Admin.config.json"))
 
     override fun run() {
         val logger = LoggerFactory.getLogger("ntihs-fk.ktor.application")
@@ -73,11 +73,19 @@ class Main : CliktCommand() {
             )
         )
 
+        initConfigFile(
+            adminConfigFile, AdminConfigData(
+                randomString(30),
+                randomString(10)
+            )
+        )
+
         // init config
         Config.discordConfig = gson.fromJson(discordConfigFile.readText(), DiscordConfigData::class.java)
         Config.gmailConfig = gson.fromJson(gmailConfigFile.readText(), GmailConfigData::class.java)
         Config.twitterConfig = gson.fromJson(twitterConfigFile.readText(), TwitterConfigData::class.java)
         Config.googleConfig = gson.fromJson(googleConfigFile.readText(), GoogleConfigData::class.java)
+        Config.adminConfig = gson.fromJson(adminConfigFile.readText(), AdminConfigData::class.java)
         Config.port = port
         Config.domain = host
         Config.ssl = ssl != null
