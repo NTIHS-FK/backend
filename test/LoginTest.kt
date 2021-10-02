@@ -2,9 +2,8 @@ package com.ntihs_fk
 
 import org.junit.Test
 
-data class APIData(val error: Boolean)
-
 class LoginTest {
+    data class APIData(val error: Boolean)
     @Test
     fun login() {
 //        withTestApplication({ module() }) {
