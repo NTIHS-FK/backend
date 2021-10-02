@@ -7,6 +7,7 @@ import com.google.gson.Gson
 import com.ntihs_fk.data.DiscordUserData
 import com.ntihs_fk.data.Login
 import com.ntihs_fk.database.DiscordOAuth2Table
+import com.ntihs_fk.database.UserTable
 import com.ntihs_fk.functions.*
 import io.ktor.application.*
 import io.ktor.features.*
@@ -25,11 +26,11 @@ fun Route.discordOAuth2() {
 
         val token = JWT.create()
             .withIssuer(Config.issuer)
-            .withAudience(Config.audience)
             .withJWTId(UUID.randomUUID().toString())
             .withClaim("username", "${userData.username}#${userData.discriminator}")
             .withClaim("avatar", userData.avatar)
             .withClaim("verify", true)
+            .withClaim("admin", false)
             .withClaim("type", "discord")
             .withExpiresAt(Date(System.currentTimeMillis() + Config.expiresAt))
             .sign(Algorithm.HMAC256(Config.secret))

@@ -7,6 +7,7 @@ import com.ntihs_fk.data.Login
 import com.ntihs_fk.database.initDatabase
 import com.ntihs_fk.error.UnauthorizedException
 import com.ntihs_fk.functions.*
+import com.ntihs_fk.router.admin
 import com.ntihs_fk.router.discord
 import com.ntihs_fk.router.loginSystem.discordOAuth2
 import com.ntihs_fk.router.loginSystem.emailVerify
@@ -94,17 +95,31 @@ fun Application.module(testing: Boolean = false) {
     }
 
     install(Authentication) {
+        val verifier = JWT
+            .require(Algorithm.HMAC256(Config.secret))
+            .withIssuer(Config.issuer)
+            .build()
+
         jwt("auth-jwt") {
             realm = myRealm
-            verifier(
-                JWT
-                .require(Algorithm.HMAC256(Config.secret))
-                .withAudience(Config.audience)
-                .withIssuer(Config.issuer)
-                .build()
-            )
+            verifier(verifier)
+
             validate { credential ->
                 if (JWTBlacklist.isInside(credential.jwtId!!))
+                    JWTPrincipal(credential.payload)
+                else null
+            }
+        }
+
+        jwt("auth-jwt-admin") {
+            realm = myRealm
+            verifier(verifier)
+
+            validate { credential ->
+                if (
+                    JWTBlacklist.isInside(credential.jwtId!!) &&
+                    credential.payload.getClaim("admin")!!.asBoolean()
+                )
                     JWTPrincipal(credential.payload)
                 else null
             }
@@ -137,5 +152,6 @@ fun Application.module(testing: Boolean = false) {
         emailVerify()
         discord()
         googleOAuth2()
+        admin()
     }
 }

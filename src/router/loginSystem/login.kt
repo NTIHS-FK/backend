@@ -46,11 +46,11 @@ fun Route.login() {
         if (userPasswordVerifyData.verify) {
             val token = JWT.create()
                 .withIssuer(Config.issuer)
-                .withAudience(Config.audience)
                 .withJWTId(UUID.randomUUID().toString())
                 .withClaim("username", userPasswordVerifyData.userData[UserTable.name])
                 .withClaim("avatar", userPasswordVerifyData.userData[UserTable.name])
                 .withClaim("verify", userPasswordVerifyData.userData[UserTable.verify])
+                .withClaim("admin", userPasswordVerifyData.userData[UserTable.admin])
                 .withClaim("type", "default")
                 .withExpiresAt(Date(System.currentTimeMillis() + Config.expiresAt))
                 .sign(Algorithm.HMAC256(Config.secret))
