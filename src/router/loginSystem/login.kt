@@ -52,7 +52,15 @@ fun Route.login() {
                 .withClaim("verify", userPasswordVerifyData.userData[UserTable.verify])
                 .withClaim("admin", userPasswordVerifyData.userData[UserTable.admin])
                 .withClaim("type", "default")
-                .withExpiresAt(Date(System.currentTimeMillis() + Config.expiresAt))
+                .withExpiresAt(
+                    Date(
+                        System.currentTimeMillis() +
+                                if (userPasswordVerifyData.userData[UserTable.admin])
+                                    60000 * 60 * 2
+                                else
+                                    Config.expiresAt
+                    )
+                )
                 .sign(Algorithm.HMAC256(Config.secret))
 
             call.sessions.set(Login(token))
