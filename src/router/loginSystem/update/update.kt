@@ -5,7 +5,7 @@ import com.ntihs_fk.data.Login
 import com.ntihs_fk.data.UpdateEmailData
 import com.ntihs_fk.data.UpdatePasswordData
 import com.ntihs_fk.database.UserTable
-import com.ntihs_fk.error.UnauthorizedException
+import com.ntihs_fk.error.UnauthorizedRequestException
 import com.ntihs_fk.functions.JWTBlacklist
 import com.ntihs_fk.functions.apiFrameworkFun
 import com.ntihs_fk.functions.verifyPassword
@@ -37,7 +37,7 @@ fun Route.update() {
                     it[email] = updateData.newEmail
                 }
             }
-        } else throw UnauthorizedException()
+        } else throw UnauthorizedRequestException()
 
         call.respond(apiFrameworkFun(null))
     }
@@ -57,7 +57,7 @@ fun Route.update() {
                     it[hashcode] = BCrypt.withDefaults().hashToString(12, updateData.password.toCharArray())
                 }
             }
-        } else throw UnauthorizedException()
+        } else throw UnauthorizedRequestException()
 
         call.sessions.clear<Login>()
         JWTBlacklist.addBlacklistTokenId(principal.jwtId!!, principal.expiresAt!!)

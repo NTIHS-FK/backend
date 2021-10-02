@@ -8,7 +8,7 @@ import com.ntihs_fk.data.LoginData
 import com.ntihs_fk.data.SignIn
 import com.ntihs_fk.data.UserData
 import com.ntihs_fk.database.UserTable
-import com.ntihs_fk.error.UnauthorizedException
+import com.ntihs_fk.error.UnauthorizedRequestException
 import com.ntihs_fk.functions.*
 import com.ntihs_fk.router.loginSystem.update.update
 import io.ktor.application.*
@@ -63,7 +63,7 @@ fun Route.login() {
                     )
                 )
             )
-        } else throw UnauthorizedException()
+        } else throw UnauthorizedRequestException()
     }
 
     post("/api/sign-up") {
@@ -87,7 +87,7 @@ fun Route.login() {
                     )
                 }.firstOrNull() != null
             )
-                throw UnauthorizedException("With use email or name")
+                throw UnauthorizedRequestException("With use email or name")
         }
 
         // email verify

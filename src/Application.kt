@@ -5,7 +5,8 @@ import com.auth0.jwt.algorithms.Algorithm
 import com.ntihs_fk.cli.Main
 import com.ntihs_fk.data.Login
 import com.ntihs_fk.database.initDatabase
-import com.ntihs_fk.error.UnauthorizedException
+import com.ntihs_fk.error.ForbiddenRequestException
+import com.ntihs_fk.error.UnauthorizedRequestException
 import com.ntihs_fk.functions.*
 import com.ntihs_fk.router.admin
 import com.ntihs_fk.router.discord
@@ -67,16 +68,16 @@ fun Application.module(testing: Boolean = false) {
             )
         }
 
-        exception<UnauthorizedException> {
+        exception<UnauthorizedRequestException> {
             call.respond(
                 HttpStatusCode.Unauthorized,
                 apiFrameworkFun(null, true, it.message)
             )
         }
 
-        exception<Throwable> {
+        exception<ForbiddenRequestException> {
             call.respond(
-                HttpStatusCode.InternalServerError,
+                HttpStatusCode.Forbidden,
                 apiFrameworkFun(null, true, it.message)
             )
         }
@@ -85,6 +86,13 @@ fun Application.module(testing: Boolean = false) {
             call.respond(
                 HttpStatusCode.Unauthorized,
                 apiFrameworkFun(null, true, "token error")
+            )
+        }
+
+        exception<Throwable> {
+            call.respond(
+                HttpStatusCode.InternalServerError,
+                apiFrameworkFun(null, true, it.message)
             )
         }
     }
@@ -121,7 +129,7 @@ fun Application.module(testing: Boolean = false) {
                     credential.payload.getClaim("admin")!!.asBoolean()
                 )
                     JWTPrincipal(credential.payload)
-                else null
+                else throw ForbiddenRequestException()
             }
         }
     }
