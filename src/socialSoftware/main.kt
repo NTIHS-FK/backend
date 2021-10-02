@@ -15,13 +15,21 @@ fun mainPost(id: Int) {
     transaction {
         article = ArticleTable.select {
             ArticleTable.id.eq(id)
-        }.firstOrNull() ?: throw BadRequestException("no this article")
+        }.firstOrNull() ?: throw BadRequestException("There is no this article")
     }
 
     val publishText = """
         |#靠北南工$id
+        |----------------------------
+        |
         |${article[ArticleTable.text]}
         |
+        |----------------------------
+        |
+        |Discord --->
+        |Twitter --->
+        |FaceBook --->
+        |Instagram --->
     """.trimMargin()
 
     // social software
