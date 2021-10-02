@@ -39,8 +39,7 @@ fun Application.module(testing: Boolean = false) {
 
     val myRealm: String = System.getenv("jwt_realm") ?: "Access to login"
 
-    if (!testing)
-        initDatabase(log)
+    if (!testing) initDatabase(log)
 
     if (Config.ssl) install(HSTS)
 
