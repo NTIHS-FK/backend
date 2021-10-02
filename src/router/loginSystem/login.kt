@@ -117,8 +117,10 @@ fun Route.login() {
 
     post("/api/log-out") {
         val principal = call.principal<JWTPrincipal>()
+
         if (principal != null)
             JWTBlacklist.addBlacklistTokenId(principal.jwtId!!, principal.expiresAt!!)
+
         call.sessions.clear<Login>()
         call.respond(apiFrameworkFun(null))
     }
