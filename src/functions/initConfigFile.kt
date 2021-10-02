@@ -1,12 +1,11 @@
 package com.ntihs_fk.functions
 
-import com.google.gson.Gson
-import com.ntihs_fk.data.TwitterConfigData
+import com.google.gson.GsonBuilder
 import java.io.File
 
 fun <T> initConfigFile(file: File, data: T, throwException: Boolean = true) {
     if (!file.exists() && !file.isFile) {
-        val gson = Gson()
+        val gson = GsonBuilder().setPrettyPrinting().create()
 
         file.writeText(
             gson.toJson(data)
