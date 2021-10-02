@@ -8,4 +8,5 @@ object UserTable : Table() {
     val email = text("email")
     val hashcode = text("hashcode")
     val verify = bool("verify").default(false)
+    val admin = bool("admin").default(false)
 }
