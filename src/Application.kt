@@ -87,14 +87,14 @@ fun Application.module(testing: Boolean = false) {
         exception<JwtException> {
             call.respond(
                 HttpStatusCode.Unauthorized,
-                apiFrameworkFun(null, true, "token error")
+                apiFrameworkFun(null, true, "Token error")
             )
         }
 
         exception<Throwable> {
             call.respond(
                 HttpStatusCode.InternalServerError,
-                apiFrameworkFun(null, true, it.message)
+                apiFrameworkFun(null, true, "Server Error")
             )
         }
     }
