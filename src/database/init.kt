@@ -36,6 +36,7 @@ fun initDatabase(log: Logger) {
                 it[email] = ""
                 it[hashcode] = BCrypt.withDefaults().hashToString(12, Config.adminConfig.password.toCharArray())
                 it[verify] = true
+                it[admin] = true
             }
     }
 }

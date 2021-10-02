@@ -13,7 +13,6 @@ class Config {
         // JWT config
         val secret = System.getenv("jwt_secret") ?: "secret"
         val issuer = "http${if (ssl) "s" else ""}://$domain"
-        val audience = "$issuer/vote"
         const val expiresAt = 60000 * 60 * 24 * 7
 
         // Discord config
