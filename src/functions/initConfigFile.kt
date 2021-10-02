@@ -4,20 +4,15 @@ import com.google.gson.Gson
 import com.ntihs_fk.data.TwitterConfigData
 import java.io.File
 
-fun <T> initConfigFile(file: File, data: T) {
+fun <T> initConfigFile(file: File, data: T, throwException: Boolean = true) {
     if (!file.exists() && !file.isFile) {
         val gson = Gson()
+
         file.writeText(
-            gson.toJson(
-                TwitterConfigData(
-                    "you consumer key",
-                    "you consumer secret",
-                    "access token",
-                    "access token secret"
-                )
-            )
+            gson.toJson(data)
         )
 
-        throw NoSuchFileException(file)
+        if (throwException)
+            throw NoSuchFileException(file)
     }
 }

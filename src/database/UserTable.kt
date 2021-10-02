@@ -7,5 +7,5 @@ object UserTable : Table() {
     val name = text("name")
     val email = text("email")
     val hashcode = text("hashcode")
-    val verify = bool("verify").clientDefault { false }
+    val verify = bool("verify").default(false)
 }

@@ -121,7 +121,7 @@ fun Route.login() {
             val principal = call.principal<JWTPrincipal>()
             val username = principal!!.payload.getClaim("username").asString()
             val verify = principal.payload.getClaim("verify").asBoolean()
-            var email = ""
+            lateinit var email: String
 
             transaction {
                 email = UserTable.select {

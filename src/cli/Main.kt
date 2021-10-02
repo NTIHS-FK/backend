@@ -77,7 +77,8 @@ class Main : CliktCommand() {
             adminConfigFile, AdminConfigData(
                 randomString(30),
                 randomString(10)
-            )
+            ),
+            false
         )
 
         // init config
