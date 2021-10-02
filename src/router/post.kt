@@ -38,7 +38,7 @@ fun Route.post(testing: Boolean) {
                     val fileBytes = part.streamProvider().readBytes()
                     val fileType = Tika().detect(fileBytes)
 
-                    fileName = Date().time.toString() + randomString() + part.originalFileName as String
+                    fileName = Date().time.toString() + randomString(30) + part.originalFileName as String
 
                     call.application.log.info(fileType)
 

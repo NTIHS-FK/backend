@@ -23,7 +23,7 @@ fun defaultDraw(text: String): String {
     val height = top + (fontSize.toInt() + 10) * linesData.size + 100
     val image = BufferedImage(width, height, BufferedImage.TYPE_INT_RGB)
     val g2d = image.createGraphics()
-    val fileName = Date().time.toString() + randomString()
+    val fileName = Date().time.toString() + randomString(30)
     val ge = GraphicsEnvironment.getLocalGraphicsEnvironment()
     val classloader = Thread.currentThread().contextClassLoader
     val fontFile = classloader.getResource("font/sarasa-mono-sc-bolditalic.ttf")
