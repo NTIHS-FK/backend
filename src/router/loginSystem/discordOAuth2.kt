@@ -5,7 +5,7 @@ import com.auth0.jwt.algorithms.Algorithm
 import com.ntihs_fk.data.LoginTokenData
 import com.ntihs_fk.database.DiscordOAuth2Table
 import com.ntihs_fk.util.Config
-import com.ntihs_fk.util.DiscordOAuth2
+import com.ntihs_fk.util.oauth2.DiscordOAuth2
 import io.ktor.application.*
 import io.ktor.features.*
 import io.ktor.response.*
@@ -18,8 +18,9 @@ import java.util.*
 fun Route.discordOAuth2() {
     get("/api/discord/authorize") {
         val code = call.request.queryParameters["code"] ?: throw BadRequestException("Missing parameter")
-        val data = DiscordOAuth2.exchangeCode(code)
-        val userData = DiscordOAuth2.getUserinfoData(data.access_token)
+        val discordOAuth2 = DiscordOAuth2()
+        val data = discordOAuth2.exchangeCode(code)
+        val userData = discordOAuth2.getUserinfoData(data.access_token)
 
         val token = JWT.create()
             .withIssuer(Config.issuer)
