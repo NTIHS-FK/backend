@@ -82,6 +82,7 @@ fun Application.module(testing: Boolean = false) {
         }
 
         exception<Throwable> {
+            log.error(this.context.toString())
             call.respond(
                 HttpStatusCode.InternalServerError,
                 apiFrameworkFun(null, true, "Server Error")

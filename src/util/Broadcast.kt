@@ -7,7 +7,7 @@ import io.ktor.request.*
 import io.ktor.websocket.*
 import kotlinx.coroutines.runBlocking
 
-class DiscordBotBroadcast {
+class Broadcast {
     private val users: MutableList<DefaultWebSocketServerSession> = mutableListOf()
     private val gson: Gson = Gson()
 
@@ -28,4 +28,4 @@ class DiscordBotBroadcast {
     }
 }
 
-val websocketServer = DiscordBotBroadcast()
+val websocketServer = Broadcast()
