@@ -13,4 +13,4 @@
 *.ttf
 *.png
 /resources/hikari.properties
-*.config.json
+Config.json

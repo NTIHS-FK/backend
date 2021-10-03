@@ -25,68 +25,52 @@ class Main : CliktCommand() {
     private val httpsPort: Int by option(help = "listening port").int().default(8443)
     private val host: String by option(help = "host name").default("127.0.0.1")
     private val ssl by option(help = "ssl key store file path").file()
-    private val twitterConfigFile by option(help = "twitter config file path").file()
-        .default(File("./config/Twitter.config.json"))
-    private val discordConfigFile by option(help = "discord config file path").file()
-        .default(File("./config/Discord.config.json"))
-    private val gmailConfigFile by option(help = "gmail config file path").file()
-        .default(File("./config/Gmail.config.json"))
-    private val googleConfigFile by option(help = "google config file path").file()
-        .default(File("./config/Google.config.json"))
-    private val adminConfigFile by option(help = "admin config file path").file()
-        .default(File("./config/Admin.config.json"))
+    private val configFile by option(help = "admin config file path").file()
+        .default(File("./Config.json"))
 
     override fun run() {
         val logger = LoggerFactory.getLogger("ntihs-fk.ktor.application")
         val gson = Gson()
+
         init(logger)
 
-        initConfigFile(
-            twitterConfigFile, TwitterConfigData(
-                "you consumer key",
-                "you consumer secret",
-                "access token",
-                "access token secret"
-            )
-        )
-
-        initConfigFile(
-            discordConfigFile, DiscordConfigData(
+        val configInitData = ConfigData(
+            GoogleConfigData(
+                "you google OAuth2 id",
+                "you google OAuth2 secret"
+            ),
+            DiscordConfigData(
                 "vote channel webhook link",
                 "post channel webhook link",
                 "discord bot id",
                 "discord bot secret"
-            )
-        )
-
-        initConfigFile(
-            gmailConfigFile, GmailConfigData(
+            ),
+            AdminConfigData(
+                randomString(30),
+                randomString(10)
+            ),
+            TwitterConfigData(
+                "you consumer key",
+                "you consumer secret",
+                "access token",
+                "access token secret"
+            ),
+            GmailConfigData(
                 "you email",
                 "you password"
             )
         )
 
-        initConfigFile(
-            googleConfigFile, GoogleConfigData(
-                "you google OAuth2 id",
-                "you google OAuth2 secret"
-            )
-        )
+        initConfigFile(configFile, configInitData)
 
-        initConfigFile(
-            adminConfigFile, AdminConfigData(
-                randomString(30),
-                randomString(10)
-            ),
-            false
-        )
+        val configData = gson.fromJson(configFile.readText(), ConfigData::class.java)
 
         // init config
-        Config.discordConfig = gson.fromJson(discordConfigFile.readText(), DiscordConfigData::class.java)
-        Config.gmailConfig = gson.fromJson(gmailConfigFile.readText(), GmailConfigData::class.java)
-        Config.twitterConfig = gson.fromJson(twitterConfigFile.readText(), TwitterConfigData::class.java)
-        Config.googleConfig = gson.fromJson(googleConfigFile.readText(), GoogleConfigData::class.java)
-        Config.adminConfig = gson.fromJson(adminConfigFile.readText(), AdminConfigData::class.java)
+        Config.discordConfig = configData.discord
+        Config.gmailConfig = configData.gmail
+        Config.twitterConfig = configData.twitter
+        Config.googleConfig = configData.google
+        Config.adminConfig = configData.admin
         Config.port = port
         Config.domain = host
         Config.ssl = ssl != null
