@@ -42,6 +42,19 @@ fun Route.login() {
         if (user.nameOrEmail == null || user.password == null)
             throw BadRequestException("Missing parameter")
 
+        val adminToken = isAdmin(user.nameOrEmail, user.password)
+
+        if (adminToken != null) {
+            call.sessions.set(LoginTokenData(adminToken))
+            call.respond(
+                apiFrameworkFun(
+                    hashMapOf(
+                        "token" to adminToken
+                    )
+                )
+            )
+        }
+
         val userPasswordVerifyData = verifyPassword(user.nameOrEmail, user.password)
 
         if (userPasswordVerifyData.verify) {
@@ -55,11 +68,7 @@ fun Route.login() {
                 .withClaim("type", "default")
                 .withExpiresAt(
                     Date(
-                        System.currentTimeMillis() +
-                                if (userPasswordVerifyData.userData[UserTable.admin])
-                                    60000 * 60 * 2
-                                else
-                                    Config.expiresAt
+                        System.currentTimeMillis() + Config.expiresAt
                     )
                 )
                 .sign(Algorithm.HMAC256(Config.secret))

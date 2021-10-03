@@ -25,18 +25,5 @@ fun initDatabase(log: Logger) {
     // init table
     transaction {
         SchemaUtils.create(ArticleTable, UserTable, DiscordOAuth2Table, VoteTable, JWTBlacklistTable)
-        // 我知道這寫法很破
-        if (
-            UserTable.select {
-                UserTable.name eq Config.adminConfig.name
-            }.firstOrNull() == null
-        )
-            UserTable.insert {
-                it[name] = Config.adminConfig.name
-                it[email] = ""
-                it[hashcode] = BCrypt.withDefaults().hashToString(12, Config.adminConfig.password.toCharArray())
-                it[verify] = true
-                it[admin] = true
-            }
     }
 }
