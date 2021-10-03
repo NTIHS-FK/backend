@@ -6,7 +6,6 @@ import io.ktor.http.cio.websocket.*
 import io.ktor.request.*
 import io.ktor.routing.*
 import io.ktor.websocket.*
-import kotlinx.coroutines.async
 
 fun Route.broadcast() {
     webSocket("/post/broadcast") {

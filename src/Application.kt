@@ -7,9 +7,6 @@ import com.ntihs_fk.data.LoginTokenData
 import com.ntihs_fk.database.initDatabase
 import com.ntihs_fk.error.ForbiddenRequestException
 import com.ntihs_fk.error.UnauthorizedRequestException
-import com.ntihs_fk.util.Config
-import com.ntihs_fk.util.JWTBlacklist
-import com.ntihs_fk.util.apiFrameworkFun
 import com.ntihs_fk.router.admin
 import com.ntihs_fk.router.broadcast
 import com.ntihs_fk.router.loginSystem.discordOAuth2
@@ -18,6 +15,9 @@ import com.ntihs_fk.router.loginSystem.googleOAuth2
 import com.ntihs_fk.router.loginSystem.login
 import com.ntihs_fk.router.post
 import com.ntihs_fk.router.vote
+import com.ntihs_fk.util.Config
+import com.ntihs_fk.util.JWTBlacklist
+import com.ntihs_fk.util.apiFrameworkFun
 import io.jsonwebtoken.JwtException
 import io.ktor.application.*
 import io.ktor.auth.*
@@ -48,20 +48,10 @@ fun Application.module(testing: Boolean = false) {
     if (Config.ssl) install(HSTS)
 
     install(Sessions) {
-    cookie<LoginTokenData>("SessionId", directorySessionStorage(File(".sessions"), cached = true))
+        cookie<LoginTokenData>("SessionId", directorySessionStorage(File(".sessions"), cached = true))
     }
 
     install(StatusPages) {
-
-    val allHttpCode = HttpStatusCode.allStatusCodes.toMutableList()
-        allHttpCode.remove(HttpStatusCode.SwitchingProtocols)
-        status(*allHttpCode.toTypedArray()) {
-            println(it.description)
-            call.respond(
-                HttpStatusCode(it.value, it.description),
-                apiFrameworkFun(null, true, it.description)
-            )
-        }
 
         exception<BadRequestException> {
             call.respond(

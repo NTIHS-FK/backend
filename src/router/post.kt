@@ -16,10 +16,12 @@ import io.ktor.response.*
 import io.ktor.routing.*
 import kotlinx.html.*
 import org.apache.tika.Tika
-import org.jetbrains.exposed.sql.*
+import org.jetbrains.exposed.sql.ResultRow
+import org.jetbrains.exposed.sql.insert
+import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.io.File
-import java.util.Date
+import java.util.*
 
 fun Route.post(testing: Boolean) {
 

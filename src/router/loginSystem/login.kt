@@ -3,8 +3,8 @@ package com.ntihs_fk.router.loginSystem
 import at.favre.lib.crypto.bcrypt.BCrypt
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
-import com.ntihs_fk.data.LoginTokenData
 import com.ntihs_fk.data.LoginData
+import com.ntihs_fk.data.LoginTokenData
 import com.ntihs_fk.data.SignInData
 import com.ntihs_fk.data.UserData
 import com.ntihs_fk.database.UserTable
@@ -19,10 +19,11 @@ import io.ktor.request.*
 import io.ktor.response.*
 import io.ktor.routing.*
 import io.ktor.sessions.*
-import org.jetbrains.exposed.sql.*
+import org.jetbrains.exposed.sql.and
+import org.jetbrains.exposed.sql.insert
+import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.util.*
-import java.util.Date
 
 
 fun Route.login() {
