@@ -115,7 +115,7 @@ fun Route.login() {
         call.respond(apiFrameworkFun(null))
     }
 
-    post("/api/log-out") {
+    delete("/api/log-out") {
         val principal = call.principal<JWTPrincipal>()
 
         if (principal != null)

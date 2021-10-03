@@ -11,7 +11,7 @@ import com.ntihs_fk.util.Config
 import com.ntihs_fk.util.JWTBlacklist
 import com.ntihs_fk.util.apiFrameworkFun
 import com.ntihs_fk.router.admin
-import com.ntihs_fk.router.discord
+import com.ntihs_fk.router.broadcast
 import com.ntihs_fk.router.loginSystem.discordOAuth2
 import com.ntihs_fk.router.loginSystem.emailVerify
 import com.ntihs_fk.router.loginSystem.googleOAuth2
@@ -160,7 +160,7 @@ fun Application.module(testing: Boolean = false) {
         vote()
         discordOAuth2()
         emailVerify()
-        discord()
+        broadcast()
         googleOAuth2()
         admin()
     }

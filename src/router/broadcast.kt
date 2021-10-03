@@ -8,7 +8,7 @@ import io.ktor.routing.*
 import io.ktor.websocket.*
 import kotlinx.coroutines.async
 
-fun Route.discord() {
+fun Route.broadcast() {
     webSocket("/post/broadcast") {
         websocketServer.addUser(this)
         application.log.info("${call.request.host()} connected!")
