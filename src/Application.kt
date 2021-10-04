@@ -53,6 +53,18 @@ fun Application.module(testing: Boolean = false) {
 
     install(StatusPages) {
 
+        status(HttpStatusCode.NotFound) {
+            log.error(this.context.request.host())
+            // 404 page
+        }
+
+        exception<NoSuchFileException> {
+            call.respond(
+                HttpStatusCode.NotFound,
+                apiFrameworkFun(null, true, "No Such File ${it.message}")
+            )
+        }
+
         exception<BadRequestException> {
             call.respond(
                 HttpStatusCode.BadRequest,
@@ -61,6 +73,7 @@ fun Application.module(testing: Boolean = false) {
         }
 
         exception<UnauthorizedRequestException> {
+            call.sessions.clear<LoginTokenData>()
             call.respond(
                 HttpStatusCode.Unauthorized,
                 apiFrameworkFun(null, true, it.message)
@@ -82,7 +95,7 @@ fun Application.module(testing: Boolean = false) {
         }
 
         exception<Throwable> {
-            log.error(this.context.toString())
+            log.error("${call.request.host()} Send ---> ${call.request.httpMethod} - ${call.request.path()}")
             call.respond(
                 HttpStatusCode.InternalServerError,
                 apiFrameworkFun(null, true, "Server Error")
