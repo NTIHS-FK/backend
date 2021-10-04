@@ -6,18 +6,18 @@ import com.ntihs_fk.data.MemoryData
 import com.ntihs_fk.data.StatesData
 import com.ntihs_fk.data.ThreadData
 import com.sun.management.OperatingSystemMXBean
-import io.ktor.application.*
 import io.ktor.http.cio.websocket.*
 import io.ktor.routing.*
 import io.ktor.websocket.*
 import kotlinx.coroutines.delay
 import java.lang.management.ManagementFactory
+import java.util.*
 
 fun Route.states() {
     webSocket("/api/states") {
 
         val gson = Gson()
-        while(true) {
+        while (true) {
             val lRuntime = Runtime.getRuntime()
             val thread = ManagementFactory.getThreadMXBean()
             val system = ManagementFactory.getPlatformMXBean(OperatingSystemMXBean::class.java)
@@ -36,7 +36,8 @@ fun Route.states() {
                 ThreadData(
                     thread.peakThreadCount,
                     thread.threadCount
-                )
+                ),
+                Date().time
             )
 
             send(gson.toJson(states))
