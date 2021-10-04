@@ -86,14 +86,15 @@ fun Route.post(testing: Boolean) {
                     }.resultedValues ?: throw Error("Insert error")
 
                     // post discord
-                    for (i in data) {
-                        discordPost(
-                            Config.discordConfig.voteChannelWebhook,
-                            i[ArticleTable.text],
-                            i[ArticleTable.textImage],
-                            i[ArticleTable.id]
-                        )
-                    }
+                    if (!Config.discordConfig.disable)
+                        for (i in data) {
+                            discordPost(
+                                Config.discordConfig.voteChannelWebhook,
+                                i[ArticleTable.text],
+                                i[ArticleTable.textImage],
+                                i[ArticleTable.id]
+                            )
+                        }
                 }
 
             // log OAO

@@ -151,11 +151,11 @@ fun Application.module(testing: Boolean = false) {
         vote()
         admin()
         broadcast()
-        if (Config.discordConfig.disable)
+        if (!Config.discordConfig.disable)
             discordOAuth2()
-        if (Config.gmailConfig.disable)
+        if (!Config.gmailConfig.disable)
             emailVerify()
-        if (Config.googleConfig.disable)
+        if (!Config.googleConfig.disable)
             googleOAuth2()
     }
 }
