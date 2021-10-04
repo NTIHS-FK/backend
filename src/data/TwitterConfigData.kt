@@ -4,5 +4,6 @@ data class TwitterConfigData(
     val consumerKey: String,
     val consumerSecret: String,
     val accessToken: String,
-    val accessTokenSecret: String
+    val accessTokenSecret: String,
+    val disable: Boolean = false
 )

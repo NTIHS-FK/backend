@@ -37,7 +37,7 @@ class Main : CliktCommand() {
         val configInitData = ConfigData(
             GoogleConfigData(
                 "you google OAuth2 id",
-                "you google OAuth2 secret"
+                "you google OAuth2 secret",
             ),
             DiscordConfigData(
                 "vote channel webhook link",

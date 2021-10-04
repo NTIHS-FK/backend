@@ -109,8 +109,8 @@ fun Route.login() {
         }
 
         // email verify
-
-        emailVerifyFun.sendEmail(user.email)
+        if (Config.gmailConfig.disable)
+            emailVerifyFun.sendEmail(user.email)
 
         // add data to the database
 
@@ -119,6 +119,7 @@ fun Route.login() {
                 it[name] = user.name
                 it[email] = user.email
                 it[hashcode] = BCrypt.withDefaults().hashToString(12, user.password.toCharArray())
+                it[verify] = Config.gmailConfig.disable
             }
         }
 

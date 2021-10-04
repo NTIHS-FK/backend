@@ -149,10 +149,13 @@ fun Application.module(testing: Boolean = false) {
         login()
         post(testing)
         vote()
-        discordOAuth2()
-        emailVerify()
-        broadcast()
-        googleOAuth2()
         admin()
+        broadcast()
+        if (Config.discordConfig.disable)
+            discordOAuth2()
+        if (Config.gmailConfig.disable)
+            emailVerify()
+        if (Config.googleConfig.disable)
+            googleOAuth2()
     }
 }
