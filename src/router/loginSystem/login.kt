@@ -53,6 +53,7 @@ fun Route.login() {
                     )
                 )
             )
+            return@post
         }
 
         val userPasswordVerifyData = verifyPassword(user.nameOrEmail, user.password)
