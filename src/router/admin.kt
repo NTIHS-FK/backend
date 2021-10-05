@@ -1,5 +1,6 @@
 package com.ntihs_fk.router
 
+import com.ntihs_fk.router.admin.adminBroadcastConnect
 import com.ntihs_fk.router.admin.adminLog
 import com.ntihs_fk.router.admin.adminPost
 import com.ntihs_fk.router.admin.states
@@ -13,6 +14,7 @@ fun Route.admin() {
             adminPost()
             states()
             adminLog()
+            adminBroadcastConnect()
 
             static {
                 // 等寫完frontend再寫上去

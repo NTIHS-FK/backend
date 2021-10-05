@@ -14,6 +14,12 @@ class Broadcast {
     private val users: MutableList<BroadcastConnectData> = mutableListOf()
     private val gson: Gson = Gson()
 
+    val usersData get() = run {
+        users.map {
+            BroadcastUserData(it.host, it.time)
+        }
+    }
+
     fun addUser(user: DefaultWebSocketServerSession) {
         users.add(
             BroadcastConnectData(
@@ -40,9 +46,14 @@ class Broadcast {
         }
     }
 
-    val usersData get() = run {
-        users.map {
-            BroadcastUserData(it.host, it.time)
+    fun delUser(host: String) {
+        users.forEach {
+            if (it.host == host) {
+                runBlocking {
+                    it.webSocketServerSession.close(CloseReason(CloseReason.Codes.NORMAL, "GG you bad bad"))
+                    users.remove(it)
+                }
+            }
         }
     }
 }
