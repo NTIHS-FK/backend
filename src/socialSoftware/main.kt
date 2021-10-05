@@ -3,7 +3,7 @@ package com.ntihs_fk.socialSoftware
 import com.ntihs_fk.data.BroadcastData
 import com.ntihs_fk.database.ArticleTable
 import com.ntihs_fk.util.Config
-import com.ntihs_fk.util.websocketServer
+import com.ntihs_fk.util.webSocketServer
 import com.ntihs_fk.socialSoftware.discord.discordPost
 import io.ktor.features.*
 import org.jetbrains.exposed.sql.ResultRow
@@ -36,7 +36,7 @@ fun mainPost(id: Int) {
 
     // broadcast
 
-    websocketServer.broadcast(
+    webSocketServer.broadcast(
         BroadcastData(
             publishText,
             article[ArticleTable.textImage]

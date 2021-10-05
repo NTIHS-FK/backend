@@ -5,8 +5,11 @@ import com.ntihs_fk.data.CPULoad
 import com.ntihs_fk.data.MemoryData
 import com.ntihs_fk.data.StatesData
 import com.ntihs_fk.data.ThreadData
+import com.ntihs_fk.util.apiFrameworkFun
 import com.sun.management.OperatingSystemMXBean
+import io.ktor.application.*
 import io.ktor.http.cio.websocket.*
+import io.ktor.response.*
 import io.ktor.routing.*
 import io.ktor.websocket.*
 import kotlinx.coroutines.delay
@@ -14,9 +17,10 @@ import java.lang.management.ManagementFactory
 import java.util.*
 
 fun Route.states() {
-    webSocket("/api/states") {
 
-        val gson = Gson()
+    val gson = Gson()
+
+    webSocket("/api/states") {
         while (true) {
             val lRuntime = Runtime.getRuntime()
             val thread = ManagementFactory.getThreadMXBean()
@@ -43,5 +47,10 @@ fun Route.states() {
             send(gson.toJson(states))
             delay(1_000)
         }
+    }
+
+    post("/api/call/gc") {
+        System.gc()
+        call.respond(apiFrameworkFun(null))
     }
 }

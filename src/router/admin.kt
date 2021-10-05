@@ -1,7 +1,7 @@
 package com.ntihs_fk.router
 
+import com.ntihs_fk.router.admin.adminLog
 import com.ntihs_fk.router.admin.adminPost
-import com.ntihs_fk.router.admin.log
 import com.ntihs_fk.router.admin.states
 import io.ktor.auth.*
 import io.ktor.http.content.*
@@ -12,7 +12,7 @@ fun Route.admin() {
         route("/admin") {
             adminPost()
             states()
-            log()
+            adminLog()
 
             static {
                 // 等寫完frontend再寫上去
