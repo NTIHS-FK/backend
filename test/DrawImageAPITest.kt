@@ -1,5 +1,6 @@
 package com.ntihs_fk
 
+import com.ntihs_fk.cli.Main
 import com.ntihs_fk.drawImage.defaultDraw
 import io.ktor.http.*
 import io.ktor.http.content.*
@@ -23,6 +24,7 @@ class DrawImageAPITest {
 
     @Test
     fun testRequests() {
+        Main().main(arrayListOf())
         withTestApplication({ module(testing = true) }) {
             val boundary = "WebAppBoundary"
 //            val fileBytes = File("a.jpg").readBytes()
