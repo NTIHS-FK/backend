@@ -126,7 +126,7 @@ fun Route.post(testing: Boolean) {
                     ArticleData(
                         i[ArticleTable.id],
                         i[ArticleTable.time].millis,
-                        i[ArticleTable.text],
+                        null,
                         i[ArticleTable.image],
                         i[ArticleTable.textImage],
                         i[ArticleTable.voting]
