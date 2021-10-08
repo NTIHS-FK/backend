@@ -21,7 +21,7 @@ fun Route.vote() {
 
         transaction {
             val data = ArticleTable.select {
-                ArticleTable.votingThreshold.eq(false)
+                ArticleTable.voting.eq(false)
             }
 
             for (i in data) {
@@ -32,7 +32,7 @@ fun Route.vote() {
                         i[ArticleTable.text],
                         i[ArticleTable.image],
                         i[ArticleTable.textImage],
-                        i[ArticleTable.votingThreshold]
+                        i[ArticleTable.voting]
                     )
                 )
             }

@@ -51,6 +51,10 @@ fun Application.module(testing: Boolean = false) {
         cookie<LoginTokenData>("SessionId", directorySessionStorage(File(".sessions"), cached = true))
     }
 
+    install(CORS) {
+        anyHost()
+    }
+
     install(StatusPages) {
 
         status(HttpStatusCode.NotFound) {
@@ -95,7 +99,10 @@ fun Application.module(testing: Boolean = false) {
         }
 
         exception<Throwable> {
-            log.error("${call.request.host()} Send ---> ${call.request.httpMethod} - ${call.request.path()}")
+            log.error(
+                "${call.request.host()} Send ---> ${call.request.httpMethod.value} - ${call.request.path()}" +
+                        "error message ${it.localizedMessage}"
+            )
             call.respond(
                 HttpStatusCode.InternalServerError,
                 apiFrameworkFun(null, true, "Server Error")

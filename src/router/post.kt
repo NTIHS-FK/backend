@@ -47,7 +47,7 @@ fun Route.post(testing: Boolean) {
 
                     if (fileType.startsWith("image")) {
                         if (!testing)
-                            File("./img/$fileName").writeBytes(fileBytes)
+                            File("./image/$fileName").writeBytes(fileBytes)
                     } else throw BadRequestException("This file not image")
                 }
 
@@ -70,7 +70,7 @@ fun Route.post(testing: Boolean) {
                     ArticleTable.select {
                         ArticleTable.text.eq(text!!)
                     }.firstOrNull() != null
-                ) throw BadRequestException("WTF")
+                ) throw BadRequestException("Duplicate publication")
             }
 
             // draw image
@@ -118,7 +118,7 @@ fun Route.post(testing: Boolean) {
         transaction {
 
             val data = ArticleTable.select {
-                ArticleTable.votingThreshold.eq(true)
+                ArticleTable.voting.eq(true)
             }.limit(page * 10, (page + 1) * 10)
 
             for (i in data) {
@@ -129,7 +129,7 @@ fun Route.post(testing: Boolean) {
                         i[ArticleTable.text],
                         i[ArticleTable.image],
                         i[ArticleTable.textImage],
-                        i[ArticleTable.votingThreshold]
+                        i[ArticleTable.voting]
                     )
                 )
             }
@@ -196,7 +196,7 @@ fun Route.post(testing: Boolean) {
                     articleData!![ArticleTable.text],
                     articleData!![ArticleTable.image],
                     articleData!![ArticleTable.textImage],
-                    articleData!![ArticleTable.votingThreshold]
+                    articleData!![ArticleTable.voting]
                 )
             )
         )

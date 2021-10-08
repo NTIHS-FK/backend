@@ -29,7 +29,7 @@ fun Route.adminPost() {
 
         transaction {
             ArticleTable.update({ ArticleTable.id eq id }) {
-                it[votingThreshold] = true
+                it[voting] = true
             }
         }
 
