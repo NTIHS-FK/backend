@@ -7,14 +7,11 @@ import com.ntihs_fk.data.LoginTokenData
 import com.ntihs_fk.database.initDatabase
 import com.ntihs_fk.error.ForbiddenRequestException
 import com.ntihs_fk.error.UnauthorizedRequestException
-import com.ntihs_fk.router.admin
-import com.ntihs_fk.router.broadcast
+import com.ntihs_fk.router.*
 import com.ntihs_fk.router.loginSystem.discordOAuth2
 import com.ntihs_fk.router.loginSystem.emailVerify
 import com.ntihs_fk.router.loginSystem.googleOAuth2
 import com.ntihs_fk.router.loginSystem.login
-import com.ntihs_fk.router.post
-import com.ntihs_fk.router.vote
 import com.ntihs_fk.util.Config
 import com.ntihs_fk.util.JWTBlacklist
 import com.ntihs_fk.util.apiFrameworkFun
@@ -166,6 +163,7 @@ fun Application.module(testing: Boolean = false) {
     }
 
     routing {
+        static()
         login()
         post(testing)
         vote()
