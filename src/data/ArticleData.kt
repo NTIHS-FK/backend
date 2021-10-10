@@ -6,5 +6,5 @@ data class ArticleData(
     val text: String?,
     val image: String?,
     val textImage: String,
-    val votingThreshold: Boolean
+    val voting: Boolean
 )
