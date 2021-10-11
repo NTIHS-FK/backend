@@ -33,7 +33,13 @@ fun Route.login() {
         val sessionToken = call.sessions.get<LoginTokenData>()
 
         if (sessionToken != null) {
-            call.respond(apiFrameworkFun(sessionToken))
+            call.respond(
+                apiFrameworkFun(
+                    hashMapOf(
+                        "token" to sessionToken
+                    )
+                )
+            )
             return@post
         }
 

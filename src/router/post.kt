@@ -45,9 +45,8 @@ fun Route.post(testing: Boolean) {
 
                     call.application.log.info(fileType)
 
-                    if (fileType.startsWith("image")) {
-                        if (!testing)
-                            File("./image/$fileName").writeBytes(fileBytes)
+                    if (fileType.startsWith("image") && !testing) {
+                        File("./image/$fileName").writeBytes(fileBytes)
                     } else throw BadRequestException("This file not image")
                 }
 
