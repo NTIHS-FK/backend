@@ -1,5 +1,5 @@
 docker run -d -p 5432:5432 --name pgdb \
--e POSTGRES_USER=pguser \
+-e POSTGRES_USER=postgres \
 -e POSTGRES_PASSWORD=4818115 \
 --restart always postgres
 
