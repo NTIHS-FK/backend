@@ -20,7 +20,7 @@ fun verifyPassword(password: String, username: String): VerifyUserPasswordData {
         }.firstOrNull()
     }
     // 沒找到就給他丟錯誤
-    if (userData == null) throw UnauthorizedRequestException()
+    if (userData == null) throw UnauthorizedRequestException("name or email error")
     // 驗證密碼真實性
     val verify = BCrypt.verifyer()
         .verify(password.toCharArray(), userData!![UserTable.hashcode]).verified

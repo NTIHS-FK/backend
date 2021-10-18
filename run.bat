@@ -1,6 +1,7 @@
 docker run -d -p 5432:5432 --name pgdb \
 -e POSTGRES_USER=postgres \
 -e POSTGRES_PASSWORD=4818115 \
+-e POSTGRES_DB=fk \
 --restart always postgres
 
 @REM JAR 參數 -DLOG_DEST=./logs -DLOG_MAX_HISTORY=1

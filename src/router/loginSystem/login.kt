@@ -88,7 +88,7 @@ fun Route.login() {
                     )
                 )
             )
-        } else throw UnauthorizedRequestException()
+        } else throw UnauthorizedRequestException("password error")
     }
 
     post("/api/sign-up") {
