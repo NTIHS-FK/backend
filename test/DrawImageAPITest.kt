@@ -7,6 +7,7 @@ import io.ktor.http.content.*
 import io.ktor.server.testing.*
 import junit.framework.TestCase.assertEquals
 import org.junit.Test
+import java.util.*
 
 class DrawImageAPITest {
     private val text = "\\Young 教我/" +
@@ -63,6 +64,6 @@ class DrawImageAPITest {
 
     @Test
     fun testDraw() {
-        defaultDraw(text)
+        defaultDraw(text, Date())
     }
 }

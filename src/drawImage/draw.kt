@@ -1,8 +1,9 @@
 package com.ntihs_fk.drawImage
 
 import io.ktor.features.*
+import java.util.*
 
-fun draw(mode: String): ((String) -> ByteArray) {
+fun draw(mode: String): ((String, Date) -> ByteArray) {
     val modes = mapOf(
         "default" to ::defaultDraw
     )

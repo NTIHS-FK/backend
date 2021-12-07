@@ -14,15 +14,17 @@ fun Route.textImage() {
     get("/textImage/{id}") {
         val id = call.parameters["id"]
         var article: ResultRow? = null
+
         if (!id.isNullOrEmpty()) {
             transaction {
                 article = ArticleTable.select {
                     ArticleTable.id eq id.toInt()
                 }.firstOrNull() ?: throw NotFoundException("no id")
-
             }
+
             if (article != null) {
-                call.respond(draw("default")(article!![ArticleTable.text]))
+                val data = article!![ArticleTable.time].toDate()
+                call.respond(draw("default")(article!![ArticleTable.text], data!!))
             }
         }
 

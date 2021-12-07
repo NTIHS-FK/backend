@@ -8,10 +8,9 @@ import java.util.*
 /**
  * 繪製發文時間
  */
-fun drawNowTime(graphics: Graphics2D, height: Int, width: Int, font: Font) {
+fun drawNowTime(graphics: Graphics2D, height: Int, width: Int, font: Font, date: Date) {
     val sdfDate = SimpleDateFormat("yyyy-MM-dd HH:mm:ss") //dd/MM/yyyy
-    val now = Date()
-    val strDate = sdfDate.format(now)
+    val strDate = sdfDate.format(date)
 
     graphics.font = font.deriveFont(40f)
     graphics.drawString(strDate, width - 20 * 20, height - 20)

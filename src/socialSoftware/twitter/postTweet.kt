@@ -7,8 +7,9 @@ import twitter4j.TwitterFactory
 import twitter4j.conf.ConfigurationBuilder
 import java.io.ByteArrayInputStream
 import java.io.File
+import java.util.*
 
-fun postTweet(text: String, imagePath: String? = null, textImage: String) {
+fun postTweet(text: String, imagePath: String? = null, textImage: String, date: Date) {
     val mediaIds = mutableListOf<Long>()
     val cb = ConfigurationBuilder()
 
@@ -25,7 +26,7 @@ fun postTweet(text: String, imagePath: String? = null, textImage: String) {
     val statusUpdate = StatusUpdate(text)
 
     // text image
-    val textImageMedia = twitter.uploadMedia(textImage, ByteArrayInputStream(draw("default")(text)))
+    val textImageMedia = twitter.uploadMedia(textImage, ByteArrayInputStream(draw("default")(text, date)))
     mediaIds.add(textImageMedia.mediaId)
 
     // image

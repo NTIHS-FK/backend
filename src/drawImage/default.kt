@@ -1,6 +1,5 @@
 package com.ntihs_fk.drawImage
 
-import com.ntihs_fk.util.randomString
 import java.awt.Color
 import java.awt.Font
 import java.awt.GraphicsEnvironment
@@ -15,7 +14,7 @@ import javax.imageio.ImageIO
  * 預設圖文
  * 傳入: [text]
  */
-fun defaultDraw(text: String): ByteArray {
+fun defaultDraw(text: String, date: Date): ByteArray {
     val width = 960
     val top = 100
     val left = 100
@@ -42,7 +41,7 @@ fun defaultDraw(text: String): ByteArray {
     g2d.clearRect(0, 0, width, height)
     // 繪製內容
     drawString(g2d, top, left, linesData, font, fontSize.toInt())
-    drawNowTime(g2d, height, width, font)
+    drawNowTime(g2d, height, width, font, date)
     // 寫入檔案
     g2d.dispose()
     val imageByte = ByteArrayOutputStream()

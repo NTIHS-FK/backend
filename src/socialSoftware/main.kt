@@ -46,5 +46,5 @@ fun mainPost(id: Int) {
     // social software
 
     discordPost(Config.discordConfig.postChannelWebhook, publishText, id)
-    postTweet(publishText, article[ArticleTable.image], article[ArticleTable.id].toString())
+    postTweet(publishText, article[ArticleTable.image], article[ArticleTable.id].toString(), article[ArticleTable.time].toDate())
 }
