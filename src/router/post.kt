@@ -72,16 +72,12 @@ fun Route.post(testing: Boolean) {
                 ) throw BadRequestException("Duplicate publication")
             }
 
-            // draw image
-            val drawImageFileName = draw(textImageType)(text!!)
-
             // database
             if (!testing)
                 transaction {
                     val data = ArticleTable.insert {
                         it[this.text] = text!!
                         it[this.image] = fileName
-                        it[this.textImage] = drawImageFileName
                     }.resultedValues ?: throw Error("Insert error")
 
                     // post discord
@@ -90,7 +86,6 @@ fun Route.post(testing: Boolean) {
                             discordPost(
                                 Config.discordConfig.voteChannelWebhook,
                                 i[ArticleTable.text],
-                                i[ArticleTable.textImage],
                                 i[ArticleTable.id]
                             )
                         }
@@ -100,8 +95,7 @@ fun Route.post(testing: Boolean) {
             call.application.log.info(
                 "[${call.request.host()}] " +
                         "Say:\n\u001B[34m[Text]\u001b[0m \n\u001B[35m$text\u001B[0m\n" +
-                        "\u001B[34m[Image]\u001B[0m ${fileName ?: "No image"} " +
-                        "\u001B[34m[Text Image]\u001B[0m $drawImageFileName"
+                        "\u001B[34m[Image]\u001B[0m ${fileName ?: "No image"} "
             )
 
             // respond api
@@ -127,7 +121,7 @@ fun Route.post(testing: Boolean) {
                         i[ArticleTable.time].millis,
                         null,
                         null,
-                        i[ArticleTable.textImage],
+                        "${Config.issuer}/textImage/${i[ArticleTable.id]}",
                         i[ArticleTable.voting]
                     )
                 )
@@ -156,7 +150,7 @@ fun Route.post(testing: Boolean) {
                     meta("og:description", data!![ArticleTable.text])
                     meta(
                         "og:image",
-                        "${Config.issuer}/image/${data!![ArticleTable.textImage]}.jpg"
+                        "${Config.issuer}/textImage/${data!![ArticleTable.id]}"
                     )
                     meta("og:url", "${Config.issuer}/post/$id")
                     meta("og:type", "website")
@@ -194,7 +188,7 @@ fun Route.post(testing: Boolean) {
                     articleData!![ArticleTable.time].millis,
                     articleData!![ArticleTable.text],
                     articleData!![ArticleTable.image],
-                    articleData!![ArticleTable.textImage],
+                    "${Config.issuer}/textImage/${articleData!![ArticleTable.id]}",
                     articleData!![ArticleTable.voting]
                 )
             )

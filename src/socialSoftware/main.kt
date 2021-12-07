@@ -39,12 +39,12 @@ fun mainPost(id: Int) {
     webSocketServer.broadcast(
         BroadcastData(
             publishText,
-            article[ArticleTable.textImage]
+            "${Config.issuer}/textImage/${article[ArticleTable.id]}"
         )
     )
 
     // social software
 
-    discordPost(Config.discordConfig.postChannelWebhook, publishText, article[ArticleTable.textImage], id)
-    postTweet(publishText, article[ArticleTable.image], article[ArticleTable.textImage])
+    discordPost(Config.discordConfig.postChannelWebhook, publishText, id)
+    postTweet(publishText, article[ArticleTable.image], article[ArticleTable.id].toString())
 }

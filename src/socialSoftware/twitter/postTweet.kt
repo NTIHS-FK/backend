@@ -1,9 +1,11 @@
 package socialSoftware.twitter
 
+import com.ntihs_fk.drawImage.draw
 import com.ntihs_fk.util.Config
 import twitter4j.StatusUpdate
 import twitter4j.TwitterFactory
 import twitter4j.conf.ConfigurationBuilder
+import java.io.ByteArrayInputStream
 import java.io.File
 
 fun postTweet(text: String, imagePath: String? = null, textImage: String) {
@@ -23,8 +25,7 @@ fun postTweet(text: String, imagePath: String? = null, textImage: String) {
     val statusUpdate = StatusUpdate(text)
 
     // text image
-    val textImageFile = File("./textImage/$textImage.jpg")
-    val textImageMedia = twitter.uploadMedia(textImageFile)
+    val textImageMedia = twitter.uploadMedia(textImage, ByteArrayInputStream(draw("default")(text)))
     mediaIds.add(textImageMedia.mediaId)
 
     // image

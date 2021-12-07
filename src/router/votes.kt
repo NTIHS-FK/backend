@@ -3,6 +3,7 @@ package com.ntihs_fk.router
 import com.ntihs_fk.data.ArticleData
 import com.ntihs_fk.database.ArticleTable
 import com.ntihs_fk.database.VoteTable
+import com.ntihs_fk.util.Config
 import com.ntihs_fk.util.apiFrameworkFun
 import io.ktor.application.*
 import io.ktor.auth.*
@@ -31,7 +32,7 @@ fun Route.vote() {
                         i[ArticleTable.time].millis,
                         i[ArticleTable.text],
                         i[ArticleTable.image],
-                        i[ArticleTable.textImage],
+                        "${Config.issuer}/textImage/${i[ArticleTable.id]}",
                         i[ArticleTable.voting]
                     )
                 )

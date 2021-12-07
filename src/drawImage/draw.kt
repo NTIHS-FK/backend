@@ -2,7 +2,7 @@ package com.ntihs_fk.drawImage
 
 import io.ktor.features.*
 
-fun draw(mode: String): ((String) -> String) {
+fun draw(mode: String): ((String) -> ByteArray) {
     val modes = mapOf(
         "default" to ::defaultDraw
     )

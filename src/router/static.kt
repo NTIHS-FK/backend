@@ -6,7 +6,6 @@ import io.ktor.routing.*
 fun Route.static() {
     static {
         default("")
-        files("./textImage")
         files("./image")
     }
 }

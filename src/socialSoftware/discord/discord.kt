@@ -8,7 +8,7 @@ import io.ktor.http.*
 
 // discord publish
 
-fun discordPost(webhookUrl: String, text: String, textImage: String, id: Int) {
+fun discordPost(webhookUrl: String, text: String, id: Int) {
 
     val embed = DiscordWebhookEmbed(
         author = Author(
@@ -18,7 +18,7 @@ fun discordPost(webhookUrl: String, text: String, textImage: String, id: Int) {
         ),
         color = 0xE8D44F,
         image = Image(
-            url = "${Config.issuer}/textImage/$textImage.jpg"
+            url = "${Config.issuer}/textImage/$id"
         ),
         description = text,
         footer = Footer(

@@ -6,6 +6,7 @@ import java.awt.Font
 import java.awt.GraphicsEnvironment
 import java.awt.RenderingHints
 import java.awt.image.BufferedImage
+import java.io.ByteArrayOutputStream
 import java.io.File
 import java.util.*
 import javax.imageio.ImageIO
@@ -14,7 +15,7 @@ import javax.imageio.ImageIO
  * 預設圖文
  * 傳入: [text]
  */
-fun defaultDraw(text: String): String {
+fun defaultDraw(text: String): ByteArray {
     val width = 960
     val top = 100
     val left = 100
@@ -23,7 +24,6 @@ fun defaultDraw(text: String): String {
     val height = top + (fontSize.toInt() + 10) * linesData.size + 100
     val image = BufferedImage(width, height, BufferedImage.TYPE_INT_RGB)
     val g2d = image.createGraphics()
-    val fileName = Date().time.toString() + randomString(30)
     val ge = GraphicsEnvironment.getLocalGraphicsEnvironment()
     val classloader = Thread.currentThread().contextClassLoader
     val fontFile = classloader.getResource("font/sarasa-mono-sc-bolditalic.ttf")
@@ -45,7 +45,9 @@ fun defaultDraw(text: String): String {
     drawNowTime(g2d, height, width, font)
     // 寫入檔案
     g2d.dispose()
-    ImageIO.write(image, "jpeg", File("./textImage/${fileName}.jpg"))
+    val imageByte = ByteArrayOutputStream()
+    ImageIO.write(image, "jpeg", imageByte)
+    imageByte.flush()
 
-    return fileName
+    return imageByte.toByteArray()
 }
