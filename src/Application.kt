@@ -169,6 +169,7 @@ fun Application.module(testing: Boolean = false) {
         vote()
         admin()
         broadcast()
+        textImage()
         if (!Config.discordConfig.disable)
             discordOAuth2()
         if (!Config.gmailConfig.disable)
