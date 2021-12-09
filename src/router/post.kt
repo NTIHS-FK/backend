@@ -8,6 +8,8 @@ import com.ntihs_fk.util.Config
 import com.ntihs_fk.util.apiFrameworkFun
 import com.ntihs_fk.util.randomString
 import io.ktor.application.*
+import io.ktor.auth.*
+import io.ktor.auth.jwt.*
 import io.ktor.features.*
 import io.ktor.html.*
 import io.ktor.http.content.*
@@ -25,82 +27,85 @@ import java.util.*
 
 fun Route.post(testing: Boolean) {
 
+    authenticate("auth-jwt") {
+        post("/api/post") {
+            val article = call.receiveMultipart()
+            val principal = call.principal<JWTPrincipal>()
+            var fileName: String? = null
+            var text: String? = null
+            var textImageType = "default"
 
-    post("/api/post") {
-        val article = call.receiveMultipart()
-        var fileName: String? = null
-        var text: String? = null
-        var textImageType = "default"
+            article.forEachPart { part ->
+                when (part) {
 
-        article.forEachPart { part ->
-            when (part) {
+                    // upload image file
+                    is PartData.FileItem -> {
+                        if (fileName != null) throw BadRequestException("Multipart error")
+                        val fileBytes = part.streamProvider().readBytes()
+                        val fileType = Tika().detect(fileBytes)
 
-                // upload image file
-                is PartData.FileItem -> {
-                    if (fileName != null) throw BadRequestException("Multipart error")
-                    val fileBytes = part.streamProvider().readBytes()
-                    val fileType = Tika().detect(fileBytes)
+                        fileName = Date().time.toString() + randomString(30) + part.originalFileName as String
 
-                    fileName = Date().time.toString() + randomString(30) + part.originalFileName as String
+                        call.application.log.info(fileType)
 
-                    call.application.log.info(fileType)
-
-                    if (fileType.startsWith("image") && !testing) {
-                        File("./image/$fileName").writeBytes(fileBytes)
-                    } else throw BadRequestException("This file not image")
-                }
-
-                // 貼文內容
-                is PartData.FormItem -> {
-                    when (part.name) {
-                        "text" -> text = part.value
-                        "textImageType" -> textImageType = part.value
+                        if (fileType.startsWith("image") && !testing) {
+                            File("./image/$fileName").writeBytes(fileBytes)
+                        } else throw BadRequestException("This file not image")
                     }
-                }
-                else -> throw BadRequestException("Multipart error")
-            }
-        }
 
-        if (text == null) throw BadRequestException("Missing text")
-        else {
-            // select text
-            transaction {
-                if (
-                    ArticleTable.select {
-                        ArticleTable.text.eq(text!!)
-                    }.firstOrNull() != null
-                ) throw BadRequestException("Duplicate publication")
-            }
-
-            // database
-            if (!testing)
-                transaction {
-                    val data = ArticleTable.insert {
-                        it[this.text] = text!!
-                        it[this.image] = fileName
-                    }.resultedValues ?: throw Error("Insert error")
-
-                    // post discord
-                    if (!Config.discordConfig.disable)
-                        for (i in data) {
-                            discordPost(
-                                Config.discordConfig.voteChannelWebhook,
-                                i[ArticleTable.text],
-                                i[ArticleTable.id]
-                            )
+                    // 貼文內容
+                    is PartData.FormItem -> {
+                        when (part.name) {
+                            "text" -> text = part.value
+                            "textImageType" -> textImageType = part.value
                         }
+                    }
+                    else -> throw BadRequestException("Multipart error")
+                }
+            }
+
+            if (text == null) throw BadRequestException("Missing text")
+            else {
+                // select text
+                transaction {
+                    if (
+                        ArticleTable.select {
+                            ArticleTable.text.eq(text!!)
+                        }.firstOrNull() != null
+                    ) throw BadRequestException("Duplicate publication")
                 }
 
-            // log OAO
-            call.application.log.info(
-                "[${call.request.host()}] " +
-                        "Say:\n\u001B[34m[Text]\u001b[0m \n\u001B[35m$text\u001B[0m\n" +
-                        "\u001B[34m[Image]\u001B[0m ${fileName ?: "No image"} "
-            )
+                // database
+                if (!testing)
+                    transaction {
+                        val data = ArticleTable.insert {
+                            it[this.text] = text!!
+                            it[this.image] = fileName
+                            it[this.imageType] = textImageType
+                        }.resultedValues ?: throw Error("Insert error")
 
-            // respond api
-            call.respond(apiFrameworkFun(null))
+                        // post discord
+                        if (!Config.discordConfig.disable)
+                            for (i in data) {
+                                discordPost(
+                                    Config.discordConfig.voteChannelWebhook,
+                                    i[ArticleTable.text],
+                                    i[ArticleTable.id]
+                                )
+                            }
+                    }
 
+                // log OAO
+                call.application.log.info(
+                    "[${call.request.host()}] " +
+                            "Say:\n\u001B[34m[Text]\u001b[0m \n\u001B[35m$text\u001B[0m\n" +
+                            "\u001B[34m[Image]\u001B[0m ${fileName ?: "No image"} "
+                )
+
+                // respond api
+                call.respond(apiFrameworkFun(null))
+
+            }
         }
     }
 

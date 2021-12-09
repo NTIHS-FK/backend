@@ -8,5 +8,6 @@ object ArticleTable : Table() {
     val time = datetime("time").clientDefault { DateTime.now() }
     val text = text("Text")
     val image = text("Image").nullable()
+    val imageType = text("imageType").clientDefault { "default" }
     val voting = bool("Vote").clientDefault { false }
 }
