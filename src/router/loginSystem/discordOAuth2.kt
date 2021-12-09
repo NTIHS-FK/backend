@@ -27,7 +27,7 @@ fun Route.discordOAuth2() {
             .withJWTId(UUID.randomUUID().toString())
             .withClaim("username", "${userData.username}#${userData.discriminator}")
             .withClaim("avatar", userData.avatar)
-            .withClaim("verify", true)
+            .withClaim("verify", userData.verified)
             .withClaim("admin", false)
             .withClaim("type", "discord")
             .withExpiresAt(Date(System.currentTimeMillis() + Config.expiresAt))

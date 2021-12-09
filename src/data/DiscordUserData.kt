@@ -6,5 +6,5 @@ data class DiscordUserData(
     val avatar: String,
     val discriminator: Int,
     val email: String,
-    val verified: String
+    val verified: Boolean
 )

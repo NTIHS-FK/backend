@@ -38,7 +38,7 @@ class DiscordOAuth2 : OAuth2() {
         if (!response.ok()) throw BadRequestException("Discord authorization error")
 
         val userDataJsonString = response.body()
-
+        println(userDataJsonString)
         return Gson().fromJson(userDataJsonString, DiscordUserData::class.java)
     }
 

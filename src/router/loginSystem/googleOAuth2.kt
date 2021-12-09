@@ -23,7 +23,7 @@ fun Route.googleOAuth2() {
             .withJWTId(UUID.randomUUID().toString())
             .withClaim("username", userData.name)
             .withClaim("avatar", userData.picture)
-            .withClaim("verify", true)
+            .withClaim("verify", userData.verified_email)
             .withClaim("admin", false)
             .withClaim("type", "google")
             .withExpiresAt(Date(System.currentTimeMillis() + Config.expiresAt))
