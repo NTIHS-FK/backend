@@ -2,7 +2,6 @@ package com.ntihs_fk.router
 
 import com.ntihs_fk.data.ArticleData
 import com.ntihs_fk.database.ArticleTable
-import com.ntihs_fk.drawImage.draw
 import com.ntihs_fk.socialSoftware.discord.discordPost
 import com.ntihs_fk.util.Config
 import com.ntihs_fk.util.apiFrameworkFun
@@ -82,6 +81,7 @@ fun Route.post(testing: Boolean) {
                             it[this.text] = text!!
                             it[this.image] = fileName
                             it[this.imageType] = textImageType
+                            it[this.jwtID] = principal!!.jwtId.toString()
                         }.resultedValues ?: throw Error("Insert error")
 
                         // post discord

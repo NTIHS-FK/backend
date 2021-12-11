@@ -66,9 +66,10 @@ fun Route.login() {
         val userPasswordVerifyData = verifyPassword(user.nameOrEmail, user.password)
 
         if (userPasswordVerifyData.verify) {
+            val jwtID = UUID.randomUUID().toString()
             val token = JWT.create()
                 .withIssuer(Config.issuer)
-                .withJWTId(UUID.randomUUID().toString())
+                .withJWTId(jwtID)
                 .withClaim("username", userPasswordVerifyData.userData[UserTable.name])
                 .withClaim("avatar", userPasswordVerifyData.userData[UserTable.name])
                 .withClaim("verify", userPasswordVerifyData.userData[UserTable.verify])
@@ -84,7 +85,7 @@ fun Route.login() {
             transaction {
                 PrivateClaims.insert {
                     it[this.email] = userPasswordVerifyData.userData[UserTable.email]
-                    it[this.token] = token
+                    it[this.jwtID] = jwtID
                 }
             }
 

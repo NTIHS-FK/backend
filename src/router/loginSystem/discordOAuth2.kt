@@ -21,10 +21,10 @@ fun Route.discordOAuth2() {
         val discordOAuth2 = DiscordOAuth2()
         val data = discordOAuth2.exchangeCode(code)
         val userData = discordOAuth2.getUserinfoData(data.access_token)
-
+        val jwtID = UUID.randomUUID().toString()
         val token = JWT.create()
             .withIssuer(Config.issuer)
-            .withJWTId(UUID.randomUUID().toString())
+            .withJWTId(jwtID)
             .withClaim("username", "${userData.username}#${userData.discriminator}")
             .withClaim("avatar", userData.avatar)
             .withClaim("verify", userData.verified)
@@ -36,7 +36,7 @@ fun Route.discordOAuth2() {
         transaction {
             PrivateClaims.insert {
                 it[this.email] = userData.email
-                it[this.token] = token
+                it[this.jwtID] = jwtID
             }
         }
 

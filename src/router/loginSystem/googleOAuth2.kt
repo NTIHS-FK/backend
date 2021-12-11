@@ -21,9 +21,10 @@ fun Route.googleOAuth2() {
         val googleOAuth2 = GoogleOAuth2()
         val accessToken = googleOAuth2.exchangeCode(code).access_token
         val userData = googleOAuth2.getUserinfoProfile(accessToken)
+        val jwtID = UUID.randomUUID().toString()
         val token = JWT.create()
             .withIssuer(Config.issuer)
-            .withJWTId(UUID.randomUUID().toString())
+            .withJWTId(jwtID)
             .withClaim("username", userData.name)
             .withClaim("avatar", userData.picture)
             .withClaim("verify", userData.verified_email)
@@ -35,7 +36,7 @@ fun Route.googleOAuth2() {
         transaction {
             PrivateClaims.insert {
                 it[this.email] = userData.email
-                it[this.token] = token
+                it[this.jwtID] = jwtID
             }
         }
 

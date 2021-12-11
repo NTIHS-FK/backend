@@ -10,4 +10,5 @@ object ArticleTable : Table() {
     val image = text("Image").nullable()
     val imageType = text("imageType").clientDefault { "default" }
     val voting = bool("Vote").clientDefault { false }
+    val jwtID = text("jwtID")
 }
