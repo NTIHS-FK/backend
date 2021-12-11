@@ -27,8 +27,6 @@ fun Route.update() {
         val principal = call.principal<JWTPrincipal>()
         val username = principal!!.payload.getClaim("username").asString()
 
-        if (updateData.newEmail == null || updateData.password == null) throw BadRequestException("Missing parameter")
-
         val verifyData = verifyPassword(updateData.password, username)
 
         if (verifyData.verify) {
@@ -47,14 +45,12 @@ fun Route.update() {
         val principal = call.principal<JWTPrincipal>()
         val username = principal!!.payload.getClaim("username").asString()
 
-        if (updateData.password == null) throw BadRequestException("Missing parameter")
-
         val verifyData = verifyPassword(updateData.password, username)
 
         if (verifyData.verify) {
             transaction {
                 UserTable.update({ UserTable.name eq username }) {
-                    it[hashcode] = BCrypt.withDefaults().hashToString(12, updateData.password.toCharArray())
+                    it[hashcode] = BCrypt.withDefaults().hashToString(12, updateData.newPassword.toCharArray())
                 }
             }
         } else throw UnauthorizedRequestException()

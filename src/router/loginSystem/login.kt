@@ -46,8 +46,6 @@ fun Route.login() {
 
         val user = call.receive<LoginData>()
 
-        if (user.nameOrEmail == null || user.password == null)
-            throw BadRequestException("Missing parameter")
 
         val adminToken = isAdmin(user.nameOrEmail, user.password)
 

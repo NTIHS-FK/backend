@@ -105,6 +105,13 @@ fun Application.module(testing: Boolean = false) {
                 apiFrameworkFun(null, true, "Server Error")
             )
         }
+
+        exception<UnsupportedMediaTypeException> {
+            call.respond(
+                HttpStatusCode.UnsupportedMediaType,
+                apiFrameworkFun(null, true, "Missing parameter")
+            )
+        }
     }
 
     install(CallLogging) {
