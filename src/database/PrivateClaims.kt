@@ -4,5 +4,5 @@ import org.jetbrains.exposed.sql.Table
 
 object PrivateClaims: Table() {
     val email = text("email")
-    val jwtID = text("jwtID")
+    val jwtID = text("jwtID").primaryKey()
 }
