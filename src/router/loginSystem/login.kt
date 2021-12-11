@@ -7,6 +7,7 @@ import com.ntihs_fk.data.LoginData
 import com.ntihs_fk.data.LoginTokenData
 import com.ntihs_fk.data.SignInData
 import com.ntihs_fk.data.UserData
+import com.ntihs_fk.database.PrivateClaims
 import com.ntihs_fk.database.UserTable
 import com.ntihs_fk.error.UnauthorizedRequestException
 import com.ntihs_fk.router.loginSystem.update.update
@@ -79,6 +80,13 @@ fun Route.login() {
                     )
                 )
                 .sign(Algorithm.HMAC256(Config.secret))
+
+            transaction {
+                PrivateClaims.insert {
+                    it[this.email] = userPasswordVerifyData.userData[UserTable.email]
+                    it[this.token] = token
+                }
+            }
 
             call.sessions.set(LoginTokenData(token))
             call.respond(

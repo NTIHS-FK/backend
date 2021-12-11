@@ -3,6 +3,7 @@ package com.ntihs_fk.router.loginSystem
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
 import com.ntihs_fk.data.LoginTokenData
+import com.ntihs_fk.database.PrivateClaims
 import com.ntihs_fk.util.Config
 import com.ntihs_fk.util.oauth2.GoogleOAuth2
 import io.ktor.application.*
@@ -10,6 +11,8 @@ import io.ktor.features.*
 import io.ktor.response.*
 import io.ktor.routing.*
 import io.ktor.sessions.*
+import org.jetbrains.exposed.sql.insert
+import org.jetbrains.exposed.sql.transactions.transaction
 import java.util.*
 
 fun Route.googleOAuth2() {
@@ -28,6 +31,13 @@ fun Route.googleOAuth2() {
             .withClaim("type", "google")
             .withExpiresAt(Date(System.currentTimeMillis() + Config.expiresAt))
             .sign(Algorithm.HMAC256(Config.secret))
+
+        transaction {
+            PrivateClaims.insert {
+                it[this.email] = userData.email
+                it[this.token] = token
+            }
+        }
 
         call.sessions.set(LoginTokenData(token))
         call.respondRedirect("/")
